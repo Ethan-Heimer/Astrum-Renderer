@@ -1,6 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <vector>
 namespace Renderer{
     class Mesh{
         public:
@@ -10,15 +11,27 @@ namespace Renderer{
     
             ~Mesh();
 
+            Mesh(const Mesh& src);
+            Mesh(Mesh&& src);
+
             void Delete();
     
             unsigned int GetVertexArrayObject() const;
-            // copy and move eventualy
+
+            unsigned int GetIndiciesCount() const;
+            unsigned int GetVertexCount() const;
+            unsigned int GetUVCount() const;
     
         private:
             unsigned int VAO;
             unsigned int VBO;
             unsigned int EBO;
+
+            std::vector<float> verticies;
+            std::vector<unsigned int> indicies;
+            std::vector<float> uvs;
+
+            void CreateBuffers();
     };
 }
 

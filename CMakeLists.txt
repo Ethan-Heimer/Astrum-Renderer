@@ -37,6 +37,10 @@ target_include_directories(${NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/project/source/Renderer/include
 )
 
+target_include_directories(${NAME} PUBLIC
+    ${CMAKE_SOURCE_DIR}/project/source/Utils/include
+)
+
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/external/json/include)
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/include)
 

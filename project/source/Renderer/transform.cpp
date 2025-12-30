@@ -1,11 +1,20 @@
 #include "transform.h"
 
 #include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/vector_float3.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
 Renderer::Transform::Transform() : transformMatrix(glm::mat4(1.0f)), position(0.0f, 0.0f, 0.0f),
                                    rotation(0.0f, 0.0f, 0.0f), scale(1.0f, 1.0f, 1.0f){}
+
+Renderer::Transform::Transform(const Transform& src) 
+    : transformMatrix(src.transformMatrix), position(src.position),
+      rotation(src.rotation), scale(src.scale){}
+
+Renderer::Transform::Transform(Transform&& src)
+    : transformMatrix(std::move(src.transformMatrix)), position(std::move(src.position)),
+      rotation(std::move(src.rotation)), scale(std::move(src.scale)){}
 
 glm::mat4 Renderer::Transform::GetTransfromMatrix() const{
     return transformMatrix;
@@ -24,9 +33,7 @@ glm::vec3 Renderer::Transform::GetScale() const{
 }
 
 void Renderer::Transform::SetPosition(float x, float y, float z){
-    position.x = x;
-    position.y = y;
-    position.z = z;
+    position = glm::vec3(x, y, z);
 
     SetTransformMatrix();
 }
@@ -38,9 +45,7 @@ void Renderer::Transform::SetRotation(float x, float y, float z){
 }
 
 void Renderer::Transform::SetScale(float x, float y, float z){
-    scale.x = x;
-    scale.y = y;
-    scale.z = z;
+    scale = glm::vec3(x, y, z);        
 
     SetTransformMatrix();
 }

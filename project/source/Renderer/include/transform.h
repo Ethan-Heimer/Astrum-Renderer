@@ -9,6 +9,10 @@ namespace Renderer{
     class Transform{
         public:    
             Transform();
+            ~Transform() = default;
+
+            Transform(const Transform& src);
+            Transform(Transform&& src);
 
             glm::mat4 GetTransfromMatrix() const;
 
