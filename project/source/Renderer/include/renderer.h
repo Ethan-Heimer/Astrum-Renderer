@@ -26,12 +26,17 @@ namespace Renderer{
     class BasicRenderer{
         public:
             BasicRenderer(GLFWwindow* window);
+            void Initalize();
+
             void QueueObject(const Mesh* mesh, const Transform* transform, const Shader* shader, const Texture* texture);
-            void Draw(const Renderer::Camera* camera); 
+            void Draw(); 
+
+            Camera* GetCamera();
 
         private:
             std::queue<std::shared_ptr<RenderData>> renderQueue;
             GLFWwindow* window;
+            Camera camera;
 
     };
 }

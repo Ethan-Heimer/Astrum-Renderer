@@ -5,27 +5,27 @@
 namespace Utils{
     class Input{
         public:
-            static void Initalize(GLFWwindow* window);
-            static void PollInputState();
+            Input(GLFWwindow* window);
 
-            static bool IsKeyDown(unsigned int KeyCode);
+            void Initalize();
+            void PollInputState();
 
-            static void GetMousePos(double* posX, double* posY);
-            static void GetMouseScrollDelta(double* scrollDelta);
-            static void GetMousePosDelta(double* posDeltaX, double* posDeltaY);
+            bool IsKeyDown(unsigned int KeyCode);
+
+            void GetMousePos(double* posX, double* posY);
+            
+            void GetMouseScrollDelta(double* scrollDelta);
+            void GetMousePosDelta(double* posDeltaX, double* posDeltaY);
 
         private:
-            static GLFWwindow* Window;
+            GLFWwindow* window;
 
-            static double xCurrentPos, yCurrentPos, xLastPos, yLastPos;
-            static double xMouseDelta, yMouseDelta;
-            static double xScrollDelta, yScrollDelta;
+            double xCurrentPos, yCurrentPos, xLastPos, yLastPos;
+            double xMouseDelta, yMouseDelta;
+            double xScrollDelta, yScrollDelta;
 
-            static bool mouseDeltaCalculated, initalized;
-            static bool ignoreFirstCallback;
-
-            static void mouseCallback(GLFWwindow* window, double xpos, double ypos);
-            static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+            void mouseCallback(GLFWwindow* window, double xpos, double ypos);
+            void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
     };
 }
 

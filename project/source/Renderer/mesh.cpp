@@ -3,6 +3,7 @@
 #include "glad/glad.h"
 
 #include <vector>
+#include <iostream>
 
 Renderer::Mesh::Mesh(float* verticies, unsigned int vert_size,
                     unsigned int* indicies, unsigned int indicies_size,
@@ -46,6 +47,8 @@ unsigned int Renderer::Mesh::GetUVCount() const{
 }
 
 void Renderer::Mesh::Delete(){
+    std::cout << "Mesh Delete Called" << std::endl;
+
     glDeleteBuffers(1, &EBO);
     glDeleteBuffers(1, &VBO);
 

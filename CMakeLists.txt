@@ -41,10 +41,14 @@ target_include_directories(${NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/project/source/Utils/include
 )
 
+target_include_directories(${NAME} PUBLIC
+    ${CMAKE_SOURCE_DIR}/project/source/Core/include
+)
+
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/external/json/include)
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/include)
 
-#target_link_libraries(${NAME} nlohmann_json)
+# Lua and GLFW are libs that need to be installed. 
 
 target_link_libraries(${NAME} glfw)
 target_link_libraries(${NAME} GLU)
@@ -56,6 +60,8 @@ target_link_libraries(${NAME} Xinerama)
 target_link_libraries(${NAME} X11)
 target_link_libraries(${NAME} rt)
 target_link_libraries(${NAME} dl)
+target_link_libraries(${NAME} lua)
+
 
 file(COPY "${CMAKE_SOURCE_DIR}/project/source/assets/"
      DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets"

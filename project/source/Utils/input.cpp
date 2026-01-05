@@ -1,21 +1,7 @@
 #include "input.h"
 
 #include <GLFW/glfw3.h>
-
-double Utils::Input::xCurrentPos = 0;
-double Utils::Input::yCurrentPos = 0;
-
-double Utils::Input::xLastPos = 0;
-double Utils::Input::yLastPos = 0;
-
-double Utils::Input::xMouseDelta = 0;
-double Utils::Input::yMouseDelta = 0;
-
-double Utils::Input::xScrollDelta = 0;
-double Utils::Input::yScrollDelta = 0;
-
-bool Utils::Input::mouseDeltaCalculated = true;
-bool Utils::Input::initalized = false;
+#include <iostream>
 
 /*
  * Disabling the cursor invokes a cursor pos callback, therefor the first 
@@ -23,48 +9,42 @@ bool Utils::Input::initalized = false;
  *
  * this cam probably be removed when app core is implemented
  */
-bool Utils::Input::ignoreFirstCallback = true;
 
-GLFWwindow* Utils::Input::Window = nullptr;
+Utils::Input::Input(GLFWwindow* window)
+    : window(window){}
 
-void Utils::Input::Initalize(GLFWwindow* window){
-    Window = window;
 
+void Utils::Input::Initalize(){
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-    glfwSetCursorPosCallback(window, mouseCallback);
-    glfwSetScrollCallback(window, scrollCallback);
 
     int width, height;
     glfwGetWindowSize(window, &width, &height);
 
+    glfwSetWindowUserPointer(window, this);
+    glfwSetScrollCallback(window, [](GLFWwindow* window, double x, double y){
+        Input* input = (Input*)glfwGetWindowUserPointer(window);
+        input->scrollCallback(window, x, y);
+    });
 
     xCurrentPos = width/2.0f;
     yCurrentPos = height/2.0f;
 
     xLastPos = width/2.0f;
     yLastPos = height/2.0f;
-
-    initalized = true;
 }
 
 void Utils::Input::PollInputState(){
-    if(!initalized)
-        return;
+    xLastPos = xCurrentPos;
+    yLastPos = yCurrentPos;
 
-    if(!mouseDeltaCalculated){
-        xMouseDelta = xLastPos - xCurrentPos;
-        yMouseDelta = yLastPos - yCurrentPos;
+    glfwGetCursorPos(window, &xCurrentPos, &yCurrentPos);
 
-        mouseDeltaCalculated = true;
-    } else {
-        xMouseDelta = 0;
-        yMouseDelta = 0;
-    }
+    xMouseDelta = xLastPos - xCurrentPos;
+    yMouseDelta = yLastPos - yCurrentPos;
 }
 
 bool Utils::Input::IsKeyDown(unsigned int keyCode){
-   return glfwGetKey(Window, keyCode) == GLFW_PRESS;
+   return glfwGetKey(window, keyCode) == GLFW_PRESS;
 }
 
 void Utils::Input::GetMousePos(double *posX, double *posY){
@@ -81,33 +61,7 @@ void Utils::Input::GetMousePosDelta(double *posDeltaX, double *posDeltaY){
     *posDeltaY = yMouseDelta;
 }
 
-void Utils::Input::mouseCallback(GLFWwindow* window, double xpos, double ypos){
-    if(!initalized)
-        return;
-
-    if(ignoreFirstCallback){
-        ignoreFirstCallback = false;
-        return;
-    }
-
-    xLastPos = xCurrentPos;
-    yLastPos = yCurrentPos;
-
-    xCurrentPos = xpos;
-    yCurrentPos = ypos;
-
-    mouseDeltaCalculated = false;
-}
-
 void Utils::Input::scrollCallback(GLFWwindow* window, double xoffset, double yoffset){
-    if(!initalized)
-        return;
-
-    if(ignoreFirstCallback){
-        ignoreFirstCallback = false;
-        return;
-    }
-
     xScrollDelta = xoffset;
     yScrollDelta = yoffset;
 }

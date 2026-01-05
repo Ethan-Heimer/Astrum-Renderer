@@ -1,5 +1,6 @@
 #include "camera.h"
 #include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/scalar_constants.hpp"
 #include "glm/ext/vector_float3.hpp"
 #include "glm/geometric.hpp"
 
@@ -27,14 +28,14 @@ void Renderer::Camera::GetRotation(float* pitch, float* yaw) const{
 }
 
 void Renderer::Camera::SetRotation(float pitch, float yaw){
-    this->pitch = pitch;
     this->yaw = yaw;
 
     if(pitch > 89)
-        pitch = 89;
-
-    if(pitch < -89)
-        pitch = -89;
+        this->pitch = 89;
+    else if(pitch < -89)
+        this->pitch = -89;
+    else
+        this->pitch = pitch;
 
     glm::vec3 direction{0, 0, 0}; 
 
