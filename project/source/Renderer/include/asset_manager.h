@@ -1,23 +1,35 @@
 #ifndef ASSET_MANAGER_H
 #define ASSET_MANAGER_H
 
+#include <map>
 #include <memory>
 #include <vector>
 
 #include "shader.h"
 #include "texture.h"
+#include "material.h"
 
 using namespace std;
 
 namespace Renderer{
     class AssetManager{
         public:
-            Shader& CreateShader(string vertexPath, string shaderPath);
+            Shader* CreateShader
+                (const string& name, const string& vertexShader, const string& fragmentShader);
+            Material* CreateMaterial(const string& name, Shader* shader);
+
             Texture& CreateTexture(string texturePath);
 
+            Shader* GetShader(const string& name);
+            Material* GetMaterial(const string& name);
+
+
         private:
-            vector<unique_ptr<Shader>> shaders;
+            map<string, shared_ptr<Shader>> shaders;
+            map<string, shared_ptr<Material>> materials;
+
             vector<unique_ptr<Texture>> textures;
+            
 
     };
 }

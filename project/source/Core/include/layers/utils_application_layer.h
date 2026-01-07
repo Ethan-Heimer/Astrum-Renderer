@@ -3,6 +3,7 @@
 
 #include "application.h"
 #include "application_layer.h"
+#include "file_watcher.h"
 #include "input.h"
 
 namespace Core{
@@ -11,6 +12,7 @@ namespace Core{
             UtilsApplicationLayer(Application* application);
         private:
             Utils::Input inputManager;
+            Utils::FileWatcher fileWatcher;
     };
 }
 

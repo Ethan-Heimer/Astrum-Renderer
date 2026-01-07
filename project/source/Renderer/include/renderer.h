@@ -6,6 +6,8 @@
 #include "shader.h"
 #include "texture.h"
 #include "transform.h"
+#include "material.h"
+
 #include <queue>
 #include <memory>
 
@@ -15,12 +17,11 @@
 namespace Renderer{
     class RenderData{
         public:
-            RenderData(const Mesh* mesh, const Transform* transform, const Shader* shader, const Texture* texture);
+            RenderData(const Mesh* mesh, const Transform* transform, Material* material);
 
             const Renderer::Mesh* mesh;
             const Renderer::Transform* transform;
-            const Renderer::Shader* shader;
-            const Renderer::Texture* texture;
+            Renderer::Material* material;
     };
 
     class BasicRenderer{
@@ -28,7 +29,7 @@ namespace Renderer{
             BasicRenderer(GLFWwindow* window);
             void Initalize();
 
-            void QueueObject(const Mesh* mesh, const Transform* transform, const Shader* shader, const Texture* texture);
+            void QueueObject(const Mesh* mesh, const Transform* transform, Material* material);
             void Draw(); 
 
             Camera* GetCamera();

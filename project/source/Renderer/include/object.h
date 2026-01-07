@@ -1,6 +1,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include "material.h"
 #include "mesh.h"
 #include "shader.h"
 #include "transform.h"
@@ -10,23 +11,23 @@ using namespace std;
 namespace Renderer{
     class Object{
         public:
-            Object(Mesh& mesh, Shader& shader);
+            Object(Mesh& mesh, Material& material);
+            ~Object();
 
             Object(const Object& object);
             Object(Object&& object);
 
-            void SetShader(Shader& shader);
+            void SetMaterial(Material& material);
 
             Mesh& GetMesh();
             Transform& GetTransform();
 
-            Shader& GetShader();
+            Material& GetMaterial();
 
         private:
-           shared_ptr<Mesh> mesh;
-           shared_ptr<Transform> transform; 
-
-           Shader& shader;
+           unique_ptr<Mesh> mesh;
+           unique_ptr<Transform> transform; 
+           unique_ptr<Material> material;
     };
 }
 

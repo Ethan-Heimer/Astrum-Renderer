@@ -1,5 +1,6 @@
 #include "renderer.h"
 #include "glm/ext/matrix_clip_space.hpp"
+#include "material.h"
 #include "mesh.h"
 #include "shader.h"
 #include "texture.h"
@@ -13,8 +14,8 @@
 
 using namespace Renderer;
 
-RenderData::RenderData(const Mesh* mesh, const Transform* transform, const Shader* shader, const Texture* texture) : 
-    mesh(mesh), transform(transform), shader(shader), texture(texture){
+RenderData::RenderData(const Mesh* mesh, const Transform* transform, Material* material) : 
+    mesh(mesh), transform(transform), material(material){
 };
 
 BasicRenderer::BasicRenderer(GLFWwindow* window){
@@ -48,8 +49,8 @@ Camera* BasicRenderer::GetCamera(){
 }
 
 void BasicRenderer::QueueObject(const Mesh* mesh, const Transform* transform,
-                                const Shader* shader, const Texture* texture){
-    auto renderData = std::make_shared<RenderData>(mesh, transform, shader, texture);
+                                Material* material){
+    auto renderData = std::make_shared<RenderData>(mesh, transform, material);
 
     renderQueue.push(renderData);
 }
@@ -71,18 +72,15 @@ void BasicRenderer::Draw(){
     while(!renderQueue.empty()){
         auto renderData = renderQueue.front();
 
-        glUseProgram(renderData->shader->GetShaderId());
+        Shader* shader = renderData->material->GetShader();
+
+        glUseProgram(shader->GetId());
         glBindTexture(GL_TEXTURE_2D, texture.GetTextureID());
         glBindVertexArray(renderData->mesh->GetVertexArrayObject());
 
-        unsigned int location = glGetUniformLocation(renderData->shader->GetShaderId() ,"model");
-        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(renderData->transform->GetTransfromMatrix()));
-
-        location = glGetUniformLocation(renderData->shader->GetShaderId() ,"view");
-        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewMatrix));
-
-        location = glGetUniformLocation(renderData->shader->GetShaderId() ,"projection");
-        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
+        shader->SetMatrix4x4("model", glm::value_ptr(renderData->transform->GetTransfromMatrix()));
+        shader->SetMatrix4x4("view", glm::value_ptr(viewMatrix));
+        shader->SetMatrix4x4("projection", glm::value_ptr(projection));
 
         glDrawElements(GL_TRIANGLES, renderData->mesh->GetIndiciesCount(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);

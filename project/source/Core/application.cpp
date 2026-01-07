@@ -42,6 +42,7 @@ void Core::Application::CreateWindow(){
 
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    //---------------------------------------------------------------------! <- monitor here for full screen
     window = glfwCreateWindow(mode->width, mode->height, "Render Script", monitor, NULL);
 
     if (window == NULL)

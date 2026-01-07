@@ -86,6 +86,38 @@ void Renderer::Shader::Delete(){
     glDeleteProgram(shaderProgramID);
 }
 
-unsigned int Renderer::Shader::GetShaderId() const {
+void Renderer::Shader::SetBool(const std::string& name, bool value){
+    glUniform1i(glGetUniformLocation(shaderProgramID, name.c_str()), value);
+}
+
+void Renderer::Shader::SetInt(const std::string& name, int value){
+    glUniform1i(glGetUniformLocation(shaderProgramID, name.c_str()), value);
+}
+
+void Renderer::Shader::SetUnsignedInt(const std::string& name, unsigned int value){
+    glUniform1ui(glGetUniformLocation(shaderProgramID, name.c_str()), value);
+}
+
+void Renderer::Shader::SetFloat(const std::string& name, float value){
+    glUniform1f(glGetUniformLocation(shaderProgramID, name.c_str()), value);
+}
+
+void Renderer::Shader::SetVector2(const std::string& name, float x, float y){
+    glUniform2f(glGetUniformLocation(shaderProgramID, name.c_str()), x, y);
+}
+
+void Renderer::Shader::SetVector3(const std::string& name, float x, float y, float z){
+    glUniform3f(glGetUniformLocation(shaderProgramID, name.c_str()), x, y, z);
+}
+
+void Renderer::Shader::SetVector4(const std::string& name, float x, float y, float z, float w){
+    glUniform4f(glGetUniformLocation(shaderProgramID, name.c_str()), x, y, z, w);
+}
+
+void Renderer::Shader::SetMatrix4x4(const std::string& name, const float* matrix){
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, name.c_str()), 1, GL_FALSE, matrix);
+}
+
+unsigned int Renderer::Shader::GetId() const {
     return shaderProgramID;
 }

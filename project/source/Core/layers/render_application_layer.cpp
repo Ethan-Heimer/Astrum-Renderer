@@ -18,7 +18,16 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
     application->RegisterResource<Renderer::ObjectManager>(&objectManager);
     application->RegisterResource<Renderer::AssetManager>(&assetManager);
 
-    application->SubscribeToInitialize([this](){this->renderer.Initalize();});
+    application->SubscribeToInitialize([this](){
+            this->renderer.Initalize();
+
+            Renderer::Shader* defaultShader = this->assetManager.CreateShader("Default", 
+                "./shaders/standard_vertex.glsl", "./shaders/standard_fragment.glsl");
+
+            if(defaultShader)
+                this->assetManager.CreateMaterial("Default", defaultShader);
+
+        });
     application->SubscribeToUpdate([this](){
             auto input = this->application->GetResource<Utils::Input>();
             auto camera = this->renderer.GetCamera();
