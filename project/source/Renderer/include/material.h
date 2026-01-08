@@ -25,10 +25,10 @@ namespace Renderer{
             bool HasTexture() const;
 
         private:
-            Shader* shader;
-
-            Texture* texture;
             glm::vec4 color;
+
+            Shader* shader;
+            Texture* texture;
     };
 }
 

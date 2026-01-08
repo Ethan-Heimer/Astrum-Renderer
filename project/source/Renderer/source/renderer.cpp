@@ -5,6 +5,7 @@
 #include "shader.h"
 #include "texture.h"
 #include "transform.h"
+#include <ctime>
 #include <memory>
 
 #include <iostream>
@@ -67,17 +68,28 @@ void BasicRenderer::Draw(){
     glClearColor(0.2, 0.2, 0.2, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
  
-    Texture texture{"./assets/dog.jpg"};
-
     while(!renderQueue.empty()){
         auto renderData = renderQueue.front();
 
         Shader* shader = renderData->material->GetShader();
 
         glUseProgram(shader->GetId());
-        glBindTexture(GL_TEXTURE_2D, texture.GetTextureID());
         glBindVertexArray(renderData->mesh->GetVertexArrayObject());
 
+        //-- Set Color / Texture     
+        if(renderData->material->HasTexture()){
+            glBindTexture(GL_TEXTURE_2D, renderData->material->GetTexture()->GetTextureID());
+            shader->SetBool("useTexture", true);
+        }
+        else{
+            shader->SetBool("useTexture", false);
+        }
+
+        auto color = renderData->material->GetColor();
+        shader->SetVector4("color", color.r, color.g, color.b, color.a);
+
+        // Use a UBO for Model and View to save memory allocations on GPU
+        
         shader->SetMatrix4x4("model", glm::value_ptr(renderData->transform->GetTransfromMatrix()));
         shader->SetMatrix4x4("view", glm::value_ptr(viewMatrix));
         shader->SetMatrix4x4("projection", glm::value_ptr(projection));

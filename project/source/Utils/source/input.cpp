@@ -11,11 +11,11 @@
  */
 
 Utils::Input::Input(GLFWwindow* window)
-    : window(window){}
+    : window(window), isInputFocused(0){}
 
 
 void Utils::Input::Initalize(){
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     int width, height;
     glfwGetWindowSize(window, &width, &height);
@@ -41,6 +41,8 @@ void Utils::Input::PollInputState(){
 
     xMouseDelta = xLastPos - xCurrentPos;
     yMouseDelta = yLastPos - yCurrentPos;
+
+    isInputFocused = glfwGetWindowAttrib(window, GLFW_FOCUSED);
 }
 
 bool Utils::Input::IsKeyDown(unsigned int keyCode){
@@ -57,8 +59,13 @@ void Utils::Input::GetMouseScrollDelta(double* scrollDelta){
 }
 
 void Utils::Input::GetMousePosDelta(double *posDeltaX, double *posDeltaY){
-    *posDeltaX = xMouseDelta;
-    *posDeltaY = yMouseDelta;
+    if(!isInputFocused){
+        *posDeltaX = 0;
+        *posDeltaY = 0;
+    } else {
+        *posDeltaX = xMouseDelta;
+        *posDeltaY = yMouseDelta;
+    }
 }
 
 void Utils::Input::scrollCallback(GLFWwindow* window, double xoffset, double yoffset){

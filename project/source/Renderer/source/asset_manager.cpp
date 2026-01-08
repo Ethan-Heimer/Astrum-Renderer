@@ -18,13 +18,14 @@ Renderer::Material* Renderer::AssetManager::CreateMaterial(const string& name, S
     return materials[name].get();
 }
 
-Renderer::Texture& Renderer::AssetManager::CreateTexture(string texturePath){
-    unique_ptr<Texture> newTexture = make_unique<Texture>(texturePath);
-    Texture& ref = *newTexture.get();
+Renderer::Texture* Renderer::AssetManager::CreateTexture(string texturePath){
+    if(textures.contains(texturePath))
+        return textures[texturePath].get();
 
-    textures.push_back(std::move(newTexture));
+    shared_ptr<Texture> newTexture = make_shared<Texture>(texturePath);
+    textures[texturePath] = std::move(newTexture);
 
-    return ref;
+    return textures[texturePath].get();
 }
 
 Renderer::Shader* Renderer::AssetManager::GetShader(const string& name){
@@ -33,6 +34,13 @@ Renderer::Shader* Renderer::AssetManager::GetShader(const string& name){
 }
 
 Renderer::Material* Renderer::AssetManager::GetMaterial(const string& name){
-    std::cout << name;
     return materials[name].get();
+}
+
+Renderer::Texture* Renderer::AssetManager::GetTexture(const string& name){ 
+    return textures[name].get();
+}
+
+void Renderer::AssetManager::ClearTextures(){
+    textures.clear();
 }

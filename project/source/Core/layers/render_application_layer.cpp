@@ -1,5 +1,6 @@
 #include "layers/render_application_layer.h"
 #include "asset_manager.h"
+#include "console/console.h"
 #include "input.h"
 #include "mesh_builder.h"
 #include "object_manager.h"
@@ -26,6 +27,8 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
 
             if(defaultShader)
                 this->assetManager.CreateMaterial("Default", defaultShader);
+
+            Console::Log(Message, "Renderer", Green, "Renderer Initialized!");
 
         });
     application->SubscribeToUpdate([this](){

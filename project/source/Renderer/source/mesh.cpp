@@ -47,8 +47,6 @@ unsigned int Renderer::Mesh::GetUVCount() const{
 }
 
 void Renderer::Mesh::Delete(){
-    std::cout << "Mesh Delete Called" << std::endl;
-
     glDeleteBuffers(1, &EBO);
     glDeleteBuffers(1, &VBO);
 

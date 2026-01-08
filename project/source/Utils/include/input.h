@@ -24,6 +24,8 @@ namespace Utils{
             double xMouseDelta, yMouseDelta;
             double xScrollDelta, yScrollDelta;
 
+            int isInputFocused;
+
             void mouseCallback(GLFWwindow* window, double xpos, double ypos);
             void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
     };

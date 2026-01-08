@@ -14,6 +14,9 @@ namespace Lua{
        int lua_Translate(lua_State* L);
        int lua_Scale(lua_State* L);
        int lua_Rotate(lua_State* L);
+
+       int lua_ChangeMaterialColor(lua_State* L);
+       int lua_ChangeMaterialTexture(lua_State* L);
     }
 }
 

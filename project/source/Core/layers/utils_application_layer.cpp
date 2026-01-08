@@ -1,5 +1,6 @@
 #include "layers/utils_application_layer.h"
 #include "application.h"
+#include "console/console.h"
 #include "file_watcher.h"
 #include "input.h"
 #include <GLFW/glfw3.h>
@@ -14,6 +15,8 @@ Core::UtilsApplicationLayer::UtilsApplicationLayer(Application* application)
 
     application->SubscribeToInitialize([this](){
             this->inputManager.Initalize();
+
+            Console::Log(Message, "Engine", Green, "Engine Initilaized!");
         });
     application->SubscribeToUpdate([this](){
             this->inputManager.PollInputState();

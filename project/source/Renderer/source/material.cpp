@@ -4,14 +4,11 @@
 using namespace Renderer;
 
 Material::Material(Shader* shader) : shader(shader), texture(nullptr), color(1,1,1,1){
-    std::cout << "Material Created" << std::endl;
 }
 
 Material::Material(const Material& src) : shader(src.shader){
     this->texture = src.texture;
     this->color = src.color;
-
-    std::cout << "material copied" << std::endl;
 }
 
 Material::Material(Material&& src) : shader(src.shader){
@@ -20,8 +17,6 @@ Material::Material(Material&& src) : shader(src.shader){
 
     src.texture = nullptr;
     src.color = glm::vec4(0,0,0,0);
-
-    std::cout << "material moved" << std::endl;
 }
 
 void Material::SetShader(Shader* shader){

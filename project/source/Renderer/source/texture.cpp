@@ -25,6 +25,7 @@ Renderer::Texture::Texture(std::string imagePath){
         std::cout << "Failed to load texture" << std::endl; 
     }
 
+    glBindTexture(GL_TEXTURE_2D, 0);
     stbi_image_free(data);
 }
 

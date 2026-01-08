@@ -7,7 +7,7 @@ set(NAME Renderer)
 project(${NAME} VERSION 1.0.0 LANGUAGES CXX)
 
 # Set C++ standard (e.g., C++17, C++20)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)        
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -22,16 +22,25 @@ add_executable(${NAME}
     ${SOURCE_FILES}
 )
 
-message("Ensuring Json Parser is installed")
+# message("Ensuring Json Parser is installed")
+# include(FetchContent)
+# FetchContent_Declare(
+#   Json
+#   GIT_REPOSITORY "https://github.com/nlohmann/json"
+#   GIT_TAG "origin/master"
+#   SOURCE_DIR "${CMAKE_SOURCE_DIR}/project/libs/external/json"
+# )
+# FetchContent_MakeAvailable(Json)
 
+message("Ensuring Sol is installed")
 include(FetchContent)
 FetchContent_Declare(
-    Json
-    GIT_REPOSITORY "https://github.com/nlohmann/json"
-    GIT_TAG "origin/master"
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/project/libs/external/json"
+    Sol2 
+    GIT_REPOSITORY "https://github.com/ThePhD/sol2"
+    GIT_TAG "origin/main"
+    SOURCE_DIR "${CMAKE_SOURCE_DIR}/project/libs/external/sol"
 )
-FetchContent_MakeAvailable(Json)
+FetchContent_MakeAvailable(Sol2)
 
 target_include_directories(${NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/project/source/Renderer/include

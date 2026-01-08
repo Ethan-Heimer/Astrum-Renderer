@@ -28,9 +28,7 @@ Renderer::Object::Object(Object&& src){
     material = std::move(src.material);
 }
 
-Renderer::Object::~Object(){
-    std::cout << "Object Destroyed" << std::endl;
-}
+Renderer::Object::~Object(){}
 
 void Renderer::Object::SetMaterial(Material& material){
     this->material.reset(new Material(material));

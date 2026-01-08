@@ -4,6 +4,7 @@
 #include <iterator>
 #include <typeinfo>
 
+#include "console/console.h"
 #include "layers/lua_application_layer.h"
 #include "layers/render_application_layer.h"
 #include "layers/utils_application_layer.h"
@@ -23,6 +24,7 @@ Core::Application::Application() : exit(false){
     /*
     * Integrate Application Layers here
     */
+
     Core::RendererApplicationLayer rendererLayer{this}; 
     Core::UtilsApplicationLayer utilsLayer{this};
     Core::LuaApplicationLayer luaLayer{this};
@@ -39,16 +41,18 @@ void Core::Application::CreateWindow(){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_DECORATED, GL_TRUE);
 
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     //---------------------------------------------------------------------! <- monitor here for full screen
-    window = glfwCreateWindow(mode->width, mode->height, "Render Script", monitor, NULL);
+    window = glfwCreateWindow(mode->width/2, mode->height/2, "Render Script", NULL, NULL);
 
     if (window == NULL)
     {
-        std::cout << "Failed to create GLFW window" << std::endl;
+        Console::Log(Error, "Failed to create GLFW window");
         glfwTerminate();
+
         return;
     }
     glfwMakeContextCurrent(window);

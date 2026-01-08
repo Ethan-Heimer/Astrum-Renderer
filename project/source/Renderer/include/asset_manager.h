@@ -17,20 +17,18 @@ namespace Renderer{
             Shader* CreateShader
                 (const string& name, const string& vertexShader, const string& fragmentShader);
             Material* CreateMaterial(const string& name, Shader* shader);
-
-            Texture& CreateTexture(string texturePath);
+            Texture* CreateTexture(string texturePath);
 
             Shader* GetShader(const string& name);
             Material* GetMaterial(const string& name);
+            Texture* GetTexture(const string& name);
 
+            void ClearTextures();
 
         private:
             map<string, shared_ptr<Shader>> shaders;
             map<string, shared_ptr<Material>> materials;
-
-            vector<unique_ptr<Texture>> textures;
-            
-
+            map<string, shared_ptr<Texture>> textures; 
     };
 }
 
