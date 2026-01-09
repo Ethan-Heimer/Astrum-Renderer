@@ -2,13 +2,28 @@
 #define MESH_H
 
 #include <vector>
+#include "glm/ext/vector_float3.hpp"
+#include "glm/glm.hpp"
+
 namespace Renderer{
+    class Vertex{
+        public:
+            glm::vec3 Position{0.0f, 0.0f, 0.0f};
+            glm::vec3 Normal{0.0f, 0.0f, 0.0f};
+            glm::vec2 Uv{0.0f, 0.0f};
+    };
+
     class Mesh{
         public:
             Mesh(float* verticies, unsigned int vert_size, 
-                unsigned int* indiceies, unsigned int indicies_size, 
-                float* uv_coords, unsigned int uv_size);
+                float* uv_coords, unsigned int uv_size,
+                float* normals, unsigned int normal_size,
+                unsigned int* indiceies, unsigned int indicies_size);
     
+            Mesh(float* verticies, unsigned int vert_size, 
+                float* uv_coords, unsigned int uv_size,
+                unsigned int* indiceies, unsigned int indicies_size);
+
             ~Mesh();
 
             Mesh(const Mesh& src);
@@ -27,11 +42,11 @@ namespace Renderer{
             unsigned int VBO;
             unsigned int EBO;
 
-            std::vector<float> verticies;
+            std::vector<Vertex> verticies;
             std::vector<unsigned int> indicies;
-            std::vector<float> uvs;
 
             void CreateBuffers();
+            void CalculateVertexNormals();
     };
 }
 

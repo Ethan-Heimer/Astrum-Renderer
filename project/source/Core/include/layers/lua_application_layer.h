@@ -4,18 +4,14 @@
 #include "application.h"
 #include "application_layer.h"
 
-extern "C"{
-    #include <lua.h>
-    #include <lualib.h>
-    #include <lauxlib.h>
-}
+#include "sol/sol.hpp"
 
 namespace Core{
     class LuaApplicationLayer : ApplicationLayer{
         public:
             LuaApplicationLayer(Application* application);
-        private:
-            lua_State* L;
+        private: 
+            sol::state lua;
 
     };
 }

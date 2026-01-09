@@ -5,6 +5,7 @@
 #include "shader.h"
 #include "texture.h"
 #include "transform.h"
+#include <cstdlib>
 #include <ctime>
 #include <memory>
 
@@ -12,6 +13,7 @@
 
 #include "glad/glad.h"
 #include "glm/glm.hpp"
+#include "light.h"
 
 using namespace Renderer;
 
@@ -67,6 +69,12 @@ void BasicRenderer::Draw(){
 
     glClearColor(0.2, 0.2, 0.2, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    Renderer::PointLight light{};
+    light.SetColor(1, 1, 1);
+    light.SetPosition(10, 0, 10);
+
+    glm::vec3 ambient{.75, .75, .75};
  
     while(!renderQueue.empty()){
         auto renderData = renderQueue.front();
@@ -86,13 +94,23 @@ void BasicRenderer::Draw(){
         }
 
         auto color = renderData->material->GetColor();
+
+        auto lightPosition = light.GetPosition();
+        auto lightColor = light.GetColor();
+
         shader->SetVector4("color", color.r, color.g, color.b, color.a);
 
-        // Use a UBO for Model and View to save memory allocations on GPU
-        
+        shader->SetVector3("l_ambient", ambient.x, ambient.y, ambient.x);
+        shader->SetVector3("l_color", lightColor.x, lightColor.y, lightColor.x);
+        shader->SetVector3("l_position", lightPosition.x, lightPosition.y, lightPosition.z);
+
+        shader->SetVector3("viewPos", camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
+
+        // Use a UBO for Model and View to save memory allocations on GPU 
         shader->SetMatrix4x4("model", glm::value_ptr(renderData->transform->GetTransfromMatrix()));
         shader->SetMatrix4x4("view", glm::value_ptr(viewMatrix));
         shader->SetMatrix4x4("projection", glm::value_ptr(projection));
+
 
         glDrawElements(GL_TRIANGLES, renderData->mesh->GetIndiciesCount(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
