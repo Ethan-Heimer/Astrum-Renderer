@@ -31,16 +31,17 @@ add_executable(${NAME}
 #   SOURCE_DIR "${CMAKE_SOURCE_DIR}/project/libs/external/json"
 # )
 # FetchContent_MakeAvailable(Json)
-
-message("Ensuring Sol is installed")
-include(FetchContent)
-FetchContent_Declare(
-    Sol2 
-    GIT_REPOSITORY "https://github.com/ThePhD/sol2"
-    GIT_TAG "origin/main"
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/project/libs/external/sol"
-)
-FetchContent_MakeAvailable(Sol2)
+if(NOT IS_DIRECTORY ${CMAKE_SOURCE_DIR}/project/libs/external/sol) 
+    message("Ensuring Sol is installed")
+    include(FetchContent)
+    FetchContent_Declare(
+        Sol2 
+        GIT_REPOSITORY "https://github.com/ThePhD/sol2"
+        GIT_TAG "origin/main"
+        SOURCE_DIR "${CMAKE_SOURCE_DIR}/project/libs/external/sol"
+    )
+    FetchContent_MakeAvailable(Sol2)
+endif()
 
 target_include_directories(${NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/project/source/Renderer/include
@@ -54,7 +55,7 @@ target_include_directories(${NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/project/source/Core/include
 )
 
-target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/external/json/include)
+target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/external/sol/include)
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/include)
 
 # Lua and GLFW are libs that need to be installed. 

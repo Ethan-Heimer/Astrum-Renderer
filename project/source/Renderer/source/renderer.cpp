@@ -2,7 +2,9 @@
 #include "glm/ext/matrix_clip_space.hpp"
 #include "material.h"
 #include "mesh.h"
+#include "mesh_builder.h"
 #include "shader.h"
+#include "sol/forward.hpp"
 #include "texture.h"
 #include "transform.h"
 #include <cstdlib>
@@ -70,11 +72,20 @@ void BasicRenderer::Draw(){
     glClearColor(0.2, 0.2, 0.2, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Renderer::PointLight light{};
-    light.SetColor(1, 1, 1);
-    light.SetPosition(10, 0, 10);
+    DirectionalLight dirLight{};
+    PointLight pointLight{};
 
-    glm::vec3 ambient{.75, .75, .75};
+    dirLight.Ambient = {.8, .8, .8};
+    dirLight.Diffuse = {1, 1, 1};
+    dirLight.Specular = {1, 1, 1};
+    dirLight.Direction = {1, 0, 0};
+
+    pointLight.Ambient = {1, 0, 0};
+    pointLight.Diffuse = {0, 0, 0};
+    pointLight.Specular = {0, 0, 0};
+
+    pointLight.Position = {0, 0, 0};
+    pointLight.KQuadratic = .1;
  
     while(!renderQueue.empty()){
         auto renderData = renderQueue.front();
@@ -93,16 +104,29 @@ void BasicRenderer::Draw(){
             shader->SetBool("useTexture", false);
         }
 
-        auto color = renderData->material->GetColor();
 
-        auto lightPosition = light.GetPosition();
-        auto lightColor = light.GetColor();
+        auto* material = renderData->material;
 
-        shader->SetVector4("color", color.r, color.g, color.b, color.a);
+        shader->SetVector3("material.ambient", material->Ambient.x, material->Ambient.y, material->Ambient.z);
+        shader->SetVector3("material.diffuse", material->Diffuse.x, material->Diffuse.y, material->Diffuse.z);
+        shader->SetVector3("material.specular", material->Specular.x, material->Specular.y, material->Specular.z);
+        shader->SetFloat("material.shininess", material->Shininess);
 
-        shader->SetVector3("l_ambient", ambient.x, ambient.y, ambient.x);
-        shader->SetVector3("l_color", lightColor.x, lightColor.y, lightColor.x);
-        shader->SetVector3("l_position", lightPosition.x, lightPosition.y, lightPosition.z);
+        //Directional Light
+        shader->SetVector3("dirLight.direction", dirLight.Direction.x, dirLight.Direction.y, dirLight.Direction.z);
+        shader->SetVector3("dirLight.ambient", dirLight.Ambient.x, dirLight.Ambient.y, dirLight.Ambient.z);
+        shader->SetVector3("dirLight.diffuse", dirLight.Diffuse.x, dirLight.Diffuse.y, dirLight.Diffuse.z);
+        shader->SetVector3("dirLight.specular", dirLight.Specular.x, dirLight.Specular.y, dirLight.Specular.z);
+
+        //point Light
+        shader->SetVector3("pointLight.position", pointLight.Position.x, pointLight.Position.y, pointLight.Position.z);
+        shader->SetVector3("pointLight.ambient", pointLight.Ambient.x, pointLight.Ambient.y, pointLight.Ambient.z);
+        shader->SetVector3("pointLight.diffuse", pointLight.Diffuse.x, pointLight.Diffuse.y, pointLight.Diffuse.z);
+        shader->SetVector3("pointLight.specular", pointLight.Specular.x, pointLight.Specular.y, pointLight.Specular.z);
+
+        shader->SetFloat("pointLight.constant", pointLight.KConstant);
+        shader->SetFloat("pointLight.linear", pointLight.KLinear);
+        shader->SetFloat("pointLight.quadratic", pointLight.KQuadratic);
 
         shader->SetVector3("viewPos", camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
 

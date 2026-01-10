@@ -9,62 +9,8 @@
 #include <vector>
 #include <iostream>
 
-Renderer::Mesh::Mesh(float* verticies, unsigned int vert_size,
-                    float* uv_coords, unsigned int uv_size,
-                    float* normals, unsigned int normal_size,
-                    unsigned int* indicies, unsigned int indicies_size)
-    : indicies(indicies, indicies + (indicies_size/sizeof(int))){
-
-    size_t vertex_size = vert_size/sizeof(float)/3;
-    this->verticies.resize(vertex_size);
-
-    // -- Fill Vertex Data
-    for(int i = 0; i < vertex_size; i++){
-        float x = verticies[i * 3];
-        float y = verticies[i * 3 + 1];
-        float z = verticies[i * 3 + 2];
-
-        this->verticies[i].Position = glm::vec3(x, y, z);
-
-        float nx = normals[i * 3];
-        float ny = normals[i * 3 + 1];
-        float nz = normals[i * 3 + 2];
-
-        this->verticies[i].Normal = glm::vec3(nx, ny, nz);
-
-        float u = uv_coords[i * 2];
-        float v = uv_coords[i * 2 + 1];
-
-        this->verticies[i].Uv = glm::vec2(u, v);
-    }
-
-    CreateBuffers();
-}
-
-Renderer::Mesh::Mesh(float* verticies, unsigned int vert_size,
-                    float* uv_coords, unsigned int uv_size,
-                    unsigned int* indicies, unsigned int indicies_size)
-    : indicies(indicies, indicies + (indicies_size/sizeof(int))){
-
-    size_t vertex_size = vert_size/sizeof(float)/3;
-    this->verticies.resize(vertex_size);
-
-    // -- Fill Vertex Data
-    for(int i = 0; i < vertex_size; i++){
-        float x = verticies[i * 3];
-        float y = verticies[i * 3 + 1];
-        float z = verticies[i * 3 + 2];
-
-        this->verticies[i].Position = glm::vec3(x, y, z);
-
-        float u = uv_coords[i * 2];
-        float v = uv_coords[i * 2 + 1];
-
-        this->verticies[i].Uv = glm::vec2(u, v);
-    }
-
-    CalculateVertexNormals();
-
+Renderer::Mesh::Mesh(std::vector<Vertex>& verticies, std::vector<unsigned int>& indicies):
+    verticies(verticies), indicies(indicies){
     CreateBuffers();
 }
 
@@ -74,16 +20,24 @@ Renderer::Mesh::~Mesh(){
 
 Renderer::Mesh::Mesh(const Mesh& src) 
     : verticies(src.verticies), indicies(src.indicies){
-
-    CreateBuffers();
+    this->VAO = src.VAO;
+    this->VBO = src.VBO;
+    this->EBO = src.EBO;
 }
 
 Renderer::Mesh::Mesh(Mesh&& src) 
     : verticies(std::move(src.verticies)), indicies(std::move(src.indicies)){ 
+    
+    this->VAO = src.VAO;
+    this->VBO = src.VBO;
+    this->EBO = src.EBO;
 
-    src.Delete();
-
-    CreateBuffers();
+    src.VAO = 0;
+    src.VBO = 0;
+    src.EBO = 0;
+    
+    src.verticies.clear();
+    src.indicies.clear();
 }
 
 unsigned int Renderer::Mesh::GetVertexCount() const{
@@ -192,6 +146,4 @@ void Renderer::Mesh::CalculateVertexNormals(){
     }
 
     std::cout << std::endl;
-
-
 }

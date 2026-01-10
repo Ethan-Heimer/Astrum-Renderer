@@ -15,15 +15,8 @@ namespace Renderer{
 
     class Mesh{
         public:
-            Mesh(float* verticies, unsigned int vert_size, 
-                float* uv_coords, unsigned int uv_size,
-                float* normals, unsigned int normal_size,
-                unsigned int* indiceies, unsigned int indicies_size);
+            Mesh(std::vector<Vertex>& verticiesm, std::vector<unsigned int>& indicies);
     
-            Mesh(float* verticies, unsigned int vert_size, 
-                float* uv_coords, unsigned int uv_size,
-                unsigned int* indiceies, unsigned int indicies_size);
-
             ~Mesh();
 
             Mesh(const Mesh& src);

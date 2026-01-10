@@ -25,9 +25,9 @@ namespace Renderer{
             Material& GetMaterial();
 
         private:
-           unique_ptr<Mesh> mesh;
            unique_ptr<Transform> transform; 
            unique_ptr<Material> material;
+           unique_ptr<Mesh> mesh;
     };
 }
 

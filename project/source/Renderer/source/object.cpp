@@ -9,7 +9,6 @@
  * Every Object Copys Mesh and Materials
  */
 
-
 Renderer::Object::Object(Mesh& mesh, Material& material){
     this->mesh = make_unique<Mesh>(mesh);
     this->transform = make_unique<Transform>();
@@ -17,8 +16,8 @@ Renderer::Object::Object(Mesh& mesh, Material& material){
 }
 
 Renderer::Object::Object(const Object& src){
-    this->transform = make_unique<Transform>(*src.transform);
     this->mesh = make_unique<Mesh>(*src.mesh);
+    this->transform = make_unique<Transform>(*src.transform);
     this->material = make_unique<Material>(*src.material);
 }
 

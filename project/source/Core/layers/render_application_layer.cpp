@@ -2,6 +2,7 @@
 #include "asset_manager.h"
 #include "console/console.h"
 #include "input.h"
+#include "mesh.h"
 #include "mesh_builder.h"
 #include "object_manager.h"
 #include "renderer.h"
@@ -27,6 +28,14 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
 
             if(defaultShader)
                 this->assetManager.CreateMaterial("Default", defaultShader);
+
+            std::vector<Renderer::Vertex> verticies;
+            std::vector<unsigned int> indicies;
+
+            Renderer::Primatives::Cube(verticies, indicies);
+            this->assetManager.CreateMesh("Cube", verticies, indicies);
+
+            Renderer::Mesh* cube = this->assetManager.GetMesh("Cube");
 
             Console::Log(Message, "Renderer", Green, "Renderer Initialized!");
 

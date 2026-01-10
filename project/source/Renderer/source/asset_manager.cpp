@@ -28,6 +28,18 @@ Renderer::Texture* Renderer::AssetManager::CreateTexture(string texturePath){
     return textures[texturePath].get();
 }
 
+Renderer::Mesh* Renderer::AssetManager::CreateMesh(const string& name,
+        std::vector<Vertex>& verticies, std::vector<unsigned int>& indicies){
+    if(meshs.contains(name))
+        return meshs[name].get();
+
+    shared_ptr<Mesh> newMesh = make_shared<Mesh>(verticies, indicies);
+    meshs[name] = std::move(newMesh);
+
+    return meshs[name].get();
+}
+
+
 Renderer::Shader* Renderer::AssetManager::GetShader(const string& name){
     std::cout << name;
     return shaders[name].get();
@@ -39,6 +51,10 @@ Renderer::Material* Renderer::AssetManager::GetMaterial(const string& name){
 
 Renderer::Texture* Renderer::AssetManager::GetTexture(const string& name){ 
     return textures[name].get();
+}
+
+Renderer::Mesh* Renderer::AssetManager::GetMesh(const string& name){
+    return meshs[name].get();
 }
 
 void Renderer::AssetManager::ClearTextures(){

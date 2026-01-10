@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <memory>
 
-std::unique_ptr<Renderer::Mesh> Renderer::MeshBuilder::Cube(){    
-    float vertices[] = {
+void Renderer::Primatives::Cube(std::vector<Vertex>& verticies, std::vector<unsigned int>& indicies){
+    float verts[] = {
         -0.5f, -0.5f, -0.5f,  
         0.5f, -0.5f, -0.5f,
         0.5f, 0.5f, -0.5f,
@@ -48,27 +48,8 @@ std::unique_ptr<Renderer::Mesh> Renderer::MeshBuilder::Cube(){
         -0.5f, 0.5f, -0.5f,
     };
     
-    unsigned int indices[] = {
-        0, 1, 2,
-        3, 4, 5,
     
-        6, 7, 8,
-        9, 10, 11, 
-    
-        12, 13, 14,
-        15, 16, 17,
-    
-        18, 19, 20,
-        21, 22, 23,
-    
-        24, 25, 26,
-        27, 28, 29, 
-    
-        30, 31, 32,
-        33, 34, 35
-    };
-    
-    float uv[] = {
+    float uvs[] = {
         0.0, 0.0,
         1.0, 0.0,
         1.0, 1.0,
@@ -157,10 +138,62 @@ std::unique_ptr<Renderer::Mesh> Renderer::MeshBuilder::Cube(){
         0.0, 1.0, 0.0,
     };
 
-    unsigned int vert_size = sizeof(vertices);
-    unsigned int indicies_size = sizeof(indices);
-    unsigned int uv_size = sizeof(indices);
-    unsigned int normal_size = sizeof(normals);
+    indicies = {
+        0, 1, 2,
+        3, 4, 5,
+    
+        6, 7, 8,
+        9, 10, 11, 
+    
+        12, 13, 14,
+        15, 16, 17,
+    
+        18, 19, 20,
+        21, 22, 23,
+    
+        24, 25, 26,
+        27, 28, 29, 
+    
+        30, 31, 32,
+        33, 34, 35
+    };
 
-    return std::make_unique<Renderer::Mesh>(vertices, vert_size, uv, uv_size, normals, normal_size, indices, indicies_size);
+    unsigned int vert_size = sizeof(verts);
+    unsigned int uv_size = sizeof(uvs);
+    unsigned int normal_size = sizeof(normals);
+    unsigned int indicies_size = sizeof(indicies);
+
+    //create verticies
+    MeshBuilder::CreateVerticies(verticies, verts, vert_size, 
+            uvs, uv_size, normals, normal_size);
 };
+
+
+void Renderer::MeshBuilder::CreateVerticies(std::vector<Vertex>& verticies,
+                float* verts, unsigned int vert_size,
+                float* uvs, unsigned int uv_size,
+                float* normals, unsigned int normal_size){
+
+    size_t vertex_size = vert_size/sizeof(float)/3;
+    verticies.resize(vertex_size);
+
+    // -- Fill Vertex Data
+    for(int i = 0; i < vertex_size; i++){
+        float x = verts[i * 3];
+        float y = verts[i * 3 + 1];
+        float z = verts[i * 3 + 2];
+
+        verticies[i].Position = glm::vec3(x, y, z);
+
+        float nx = normals[i * 3];
+        float ny = normals[i * 3 + 1];
+        float nz = normals[i * 3 + 2];
+
+        verticies[i].Normal = glm::vec3(nx, ny, nz);
+
+        float u = uvs[i * 2];
+        float v = uvs[i * 2 + 1];
+
+        verticies[i].Uv = glm::vec2(u, v);
+    }
+}

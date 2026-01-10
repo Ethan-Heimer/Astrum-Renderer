@@ -10,22 +10,24 @@
 namespace Renderer{
     class Material{
         public:
+            glm::vec3 Ambient{1, 1, 1};
+            glm::vec3 Diffuse{1, 1, 1};
+            glm::vec3 Specular{1, 1, 1};
+            float Shininess = 32;
+
             Material(Shader* shader);
             Material(const Material& src);
             Material(Material&& src);
 
             void SetShader(Shader* shader);
             void SetTexture(Texture* texture);
-            void SetColor(float r, float g, float b, float a);
 
             Shader* GetShader() const;
             Texture* GetTexture() const;
-            glm::vec4 GetColor() const;
 
             bool HasTexture() const;
 
         private:
-            glm::vec4 color;
 
             Shader* shader;
             Texture* texture;

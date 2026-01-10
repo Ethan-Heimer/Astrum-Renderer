@@ -3,8 +3,7 @@
 #include "asset_manager.h"
 #include "console/console.h"
 #include "file_watcher.h"
-#include "lua/lua_render_functions.h"
-#include "lua/lua_util_functions.h"
+#include "glm/detail/qualifier.hpp"
 #include "mesh_builder.h"
 #include "object_manager.h"
 
@@ -55,10 +54,10 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
                     auto objectManager = this->application->GetResource<Renderer::ObjectManager>();
                     auto assetManager = this->application->GetResource<Renderer::AssetManager>();
 
-                    auto cubeMesh = Renderer::MeshBuilder::Cube();
+                    Renderer::Mesh* mesh = assetManager->GetMesh("Cube");
                     Renderer::Material* material = assetManager->GetMaterial("Default");
 
-                    Renderer::Object& cube = objectManager->CreateObject(*cubeMesh, *material);    
+                    Renderer::Object& cube = objectManager->CreateObject(*mesh, *material);    
                     return cube;
                 };
 
@@ -89,7 +88,7 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
                     g = g/255;
                     b = b/255;
 
-                    material->SetColor(r, g, b, a);
+                    material->Ambient = glm::vec3(r, g, b);
                 };
 
                 materialAPI["SetTexture"] = [this](Renderer::Material* material, std::string texturePath){

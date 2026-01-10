@@ -4,16 +4,36 @@
 #include "glm/ext/vector_float3.hpp"
 #include "transform.h"
 namespace Renderer{
-    class PointLight{
+    class Light{
         public:
-            glm::vec3 GetPosition() const;
-            void SetPosition(float x, float y, float z);
-
-            glm::vec3 GetColor() const;
-            void SetColor(float r, float g, float b);
+            glm::vec3 Ambient{1, 1, 1};
+            glm::vec3 Diffuse{1, 1, 1};
+            glm::vec3 Specular{1, 1, 1};
         private:
-            glm::vec3 position{0, 0, 0};
-            glm::vec3 color{1, 1, 1};
+    };
+
+    class DirectionalLight : public Light{
+        public: 
+            glm::vec3 Direction;
+        private:
+    };
+
+    class PointLight : public Light{
+        public:
+            glm::vec3 Position{0, 0, 0};
+
+            float KConstant = 1;
+            float KLinear = 0.09;
+            float KQuadratic = 0.032;
+        private:
+    };
+
+    class SpotLight : public Light{
+        public:
+            glm::vec3 position;
+            glm::vec3 direction;
+            float cutOff;
+        private:
     };
 }
 
