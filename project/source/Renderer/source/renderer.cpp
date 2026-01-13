@@ -84,7 +84,7 @@ void BasicRenderer::Draw(){
     pointLight.Diffuse = {0, 0, 0};
     pointLight.Specular = {0, 0, 0};
 
-    pointLight.Position = {0, 0, 0};
+    pointLight.Position = {10, 0, 1};
     pointLight.KQuadratic = .1;
  
     while(!renderQueue.empty()){
@@ -103,7 +103,6 @@ void BasicRenderer::Draw(){
         else{
             shader->SetBool("useTexture", false);
         }
-
 
         auto* material = renderData->material;
 

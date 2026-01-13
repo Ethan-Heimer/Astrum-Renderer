@@ -35,10 +35,7 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
             Renderer::Primatives::Cube(verticies, indicies);
             this->assetManager.CreateMesh("Cube", verticies, indicies);
 
-            Renderer::Mesh* cube = this->assetManager.GetMesh("Cube");
-
             Console::Log(Message, "Renderer", Green, "Renderer Initialized!");
-
         });
     application->SubscribeToUpdate([this](){
             auto input = this->application->GetResource<Utils::Input>();

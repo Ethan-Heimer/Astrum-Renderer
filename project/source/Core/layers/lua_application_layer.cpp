@@ -20,9 +20,8 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
 
     application->SubscribeToInitialize([this](){
         // -- Initialize Sol and Load Script
-        lua.open_libraries(sol::lib::base, sol::lib::io, sol::lib::math, sol::lib::table);
-
         auto load_script = [this](){
+            lua.open_libraries(sol::lib::base, sol::lib::io, sol::lib::math, sol::lib::table);
             try{
                 lua.safe_script_file("test.lua");
                 Console::Log(Message, "Lua", Green, "Lua File Found!");
@@ -105,7 +104,7 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
         };
 
         auto fileWatcher = this->application->GetResource<Utils::FileWatcher>();
-        fileWatcher->WatchFile("test.lua", [this, execute_start, load_script](){
+        fileWatcher->WatchFile("test.lua", [this, execute_start, init_api, load_script](){
             // Delete Old Assets
             Renderer::ObjectManager* objectManager = this->application->
                             GetResource<Renderer::ObjectManager>();
@@ -113,13 +112,14 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
             Renderer::AssetManager* assetManager = this->application->
                 GetResource<Renderer::AssetManager>();
 
-            objectManager->Clear();
+            //objectManager->Clear();
             assetManager->ClearTextures();
 
             Console::Log(Message, "Lua", Yellow, "Lua Script Loaded");
 
             // Restart Script
             load_script();
+            init_api();
             execute_start();
         });
 
