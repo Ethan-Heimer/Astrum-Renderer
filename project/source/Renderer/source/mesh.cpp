@@ -15,6 +15,7 @@ Renderer::Mesh::Mesh(std::vector<Vertex>& verticies, std::vector<unsigned int>& 
 }
 
 Renderer::Mesh::~Mesh(){
+    std::cout << "Deleted Mesh ??" << std::endl;
     Delete();
 }
 

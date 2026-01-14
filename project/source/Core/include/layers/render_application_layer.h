@@ -4,7 +4,7 @@
 #include "application_layer.h"
 #include "asset_manager.h"
 #include "renderer.h"
-#include "object_manager.h"
+#include "scene/scene.h"
 
 namespace Core{
     class RendererApplicationLayer : ApplicationLayer{
@@ -12,8 +12,8 @@ namespace Core{
             RendererApplicationLayer(Application* application);
         private:
             Renderer::BasicRenderer renderer;
-            Renderer::ObjectManager objectManager;
             Renderer::AssetManager assetManager;
+            Renderer::Scene::Scene scene;
     };
 }
 

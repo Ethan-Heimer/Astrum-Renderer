@@ -4,11 +4,8 @@
 #include "mesh.h"
 #include "mesh_builder.h"
 #include "shader.h"
-#include "sol/forward.hpp"
 #include "texture.h"
 #include "transform.h"
-#include <cstdlib>
-#include <ctime>
 #include <memory>
 
 #include <iostream>

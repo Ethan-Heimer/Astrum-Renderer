@@ -4,21 +4,26 @@
 #include "input.h"
 #include "mesh.h"
 #include "mesh_builder.h"
-#include "object_manager.h"
 #include "renderer.h"
 #include "shader.h"
 #include "texture.h"
 #include "transform.h"
 
+#include "scene/scene.h"
+#include "scene/mesh_scene_node.h"
+
 #include <iostream>
+
+using namespace Renderer;
+using namespace Scene;
 
 Core::RendererApplicationLayer::RendererApplicationLayer(Application* application)
     : ApplicationLayer(application), renderer(application->GetWindow()), 
-      objectManager(), assetManager(){
+      assetManager(), scene(){
 
     application->RegisterResource<Renderer::BasicRenderer>(&renderer);
-    application->RegisterResource<Renderer::ObjectManager>(&objectManager);
     application->RegisterResource<Renderer::AssetManager>(&assetManager);
+    application->RegisterResource<Renderer::Scene::Scene>(&scene);
 
     application->SubscribeToInitialize([this](){
             this->renderer.Initalize();
@@ -37,6 +42,7 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
 
             Console::Log(Message, "Renderer", Green, "Renderer Initialized!");
         });
+
     application->SubscribeToUpdate([this](){
             auto input = this->application->GetResource<Utils::Input>();
             auto camera = this->renderer.GetCamera();
@@ -54,6 +60,7 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
 
             camera->SetRotation(pitch, yaw);
 
+            scene.Render(this->renderer);
             this->renderer.Draw();
-            });
+        });
 }

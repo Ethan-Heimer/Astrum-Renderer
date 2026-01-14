@@ -5,11 +5,12 @@
 #include "file_watcher.h"
 #include "glm/detail/qualifier.hpp"
 #include "mesh_builder.h"
-#include "object_manager.h"
 
 #include <iostream>
 
 #include "renderer.h"
+#include "scene/mesh_scene_node.h"
+#include "scene/scene.h"
 #include "sol/sol.hpp"
 #include "texture.h"
 
@@ -50,33 +51,32 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
         auto init_api = [this](){
             try{
                 lua["Cube"] = [this](){
-                    auto objectManager = this->application->GetResource<Renderer::ObjectManager>();
                     auto assetManager = this->application->GetResource<Renderer::AssetManager>();
+                    auto scene = this->application->GetResource<Renderer::Scene::Scene>();
 
                     Renderer::Mesh* mesh = assetManager->GetMesh("Cube");
                     Renderer::Material* material = assetManager->GetMaterial("Default");
 
-                    Renderer::Object& cube = objectManager->CreateObject(*mesh, *material);    
-                    return cube;
+                    Renderer::Scene::MeshSceneNode* node = 
+                        scene->AddChildAtRoot<Renderer::Scene::MeshSceneNode>(mesh, material);
+
+                    return node;
                 };
 
-                lua["Draw"] = [this](Renderer::Object* object){
-                    auto renderer = this->application->GetResource<Renderer::BasicRenderer>();
-                    renderer->QueueObject(&object->GetMesh(), &object->GetTransform(), &object->GetMaterial());
+                lua["Translate"] = [this](Renderer::Scene::MeshSceneNode* node, float x, float y, float z){
+                    node->GetTransform().SetPosition(x, y, z);
                 };
 
-                lua["Translate"] = [this](Renderer::Object* object, float x, float y, float z){
-                    object->GetTransform().SetPosition(x, y, z);
+
+                lua["Rotate"] = [this](Renderer::Scene::MeshSceneNode* node, float x, float y, float z){
+                    node->GetTransform().SetRotation(x, y, z);
                 };
 
-                lua["Rotate"] = [this](Renderer::Object* object, float x, float y, float z){
-                    object->GetTransform().SetRotation(x, y, z);
+                lua["Scale"] = [this](Renderer::Scene::MeshSceneNode* node, float x, float y, float z){
+                    node->GetTransform().SetScale(x, y, z);
                 };
 
-                lua["Scale"] = [this](Renderer::Object* object, float x, float y, float z){
-                    object->GetTransform().SetScale(x, y, z);
-                };
-
+                /*
                 sol::table materialAPI = lua.create_named_table("Material");
                 materialAPI["GetFrom"] = [this](Renderer::Object* object){
                     return &object->GetMaterial();
@@ -96,6 +96,7 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
 
                     material->SetTexture(texture);
                 };
+                */
             } catch(const sol::error& e){ 
                 Console::Log(Error, "An Error from Sol occured while binding c++ functions.");
             } catch(...){
@@ -106,16 +107,14 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
         auto fileWatcher = this->application->GetResource<Utils::FileWatcher>();
         fileWatcher->WatchFile("test.lua", [this, execute_start, init_api, load_script](){
             // Delete Old Assets
-            Renderer::ObjectManager* objectManager = this->application->
-                            GetResource<Renderer::ObjectManager>();
-
             Renderer::AssetManager* assetManager = this->application->
                 GetResource<Renderer::AssetManager>();
 
-            //objectManager->Clear();
             assetManager->ClearTextures();
 
             Console::Log(Message, "Lua", Yellow, "Lua Script Loaded");
+
+            lua.collect_garbage();
 
             // Restart Script
             load_script();
