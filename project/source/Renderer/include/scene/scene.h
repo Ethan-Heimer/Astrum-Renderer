@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "glm/glm.hpp"
-#include "renderer.h"
+#include "renderer/renderer.h"
 
 using namespace std;
 
@@ -33,7 +33,7 @@ namespace Renderer{
                     return child;
                 }
 
-                virtual void OnRendered(BasicRenderer& renderer) = 0; 
+                virtual void OnRendered(IRenderQueue* renderer) = 0; 
 
             protected:
                 vector<SceneNode*> children;
@@ -44,7 +44,7 @@ namespace Renderer{
             public:
                 RootSceneNode(SceneNode* parent);
 
-                void OnRendered(BasicRenderer& renderer) override;
+                void OnRendered(IRenderQueue* renderer) override;
             private:
                 glm::vec3 skyColor;  
 
@@ -55,7 +55,7 @@ namespace Renderer{
                 Scene();
                 ~Scene();
 
-                void Render(BasicRenderer& renderer);
+                void Render(IRenderQueue* renderer);
                 void Clear();
 
                 template<class T, class... U>
@@ -67,7 +67,7 @@ namespace Renderer{
             private:
                 RootSceneNode* root;
                 
-                void RenderNode(BasicRenderer& renderer, SceneNode& node);
+                void RenderNode(IRenderQueue* renderer, SceneNode& node);
                 void ClearNode(SceneNode& node);
         };
     }

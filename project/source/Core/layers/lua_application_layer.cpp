@@ -8,7 +8,6 @@
 
 #include <iostream>
 
-#include "renderer.h"
 #include "scene/mesh_scene_node.h"
 #include "scene/scene.h"
 #include "sol/sol.hpp"

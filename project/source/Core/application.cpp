@@ -8,7 +8,6 @@
 #include "layers/lua_application_layer.h"
 #include "layers/render_application_layer.h"
 #include "layers/utils_application_layer.h"
-#include "renderer.h"
 
 Core::Application::Application() : exit(false){
     /*

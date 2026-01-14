@@ -1,4 +1,4 @@
-#include "renderer.h"
+#include "renderer/renderer.h"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "material.h"
 #include "mesh.h"
@@ -20,12 +20,17 @@ RenderData::RenderData(const Mesh* mesh, const Transform* transform, Material* m
     mesh(mesh), transform(transform), material(material){
 };
 
-BasicRenderer::BasicRenderer(GLFWwindow* window){
+IRenderer::IRenderer(GLFWwindow* window){
     this->window = window;
 
     camera.SetRotation(0, -90);
 }
 
+IRenderQueue* IRenderer::GetQueue() const{
+    return this->queue.get();
+}
+
+/*
 void BasicRenderer::Initalize(){
     std::cout << "Renderer Initialized" << std::endl;
 
@@ -48,13 +53,6 @@ void BasicRenderer::Initalize(){
 
 Camera* BasicRenderer::GetCamera(){
     return &camera;
-}
-
-void BasicRenderer::QueueObject(const Mesh* mesh, const Transform* transform,
-                                Material* material){
-    auto renderData = std::make_shared<RenderData>(mesh, transform, material);
-
-    renderQueue.push(renderData);
 }
 
 void BasicRenderer::Draw(){
@@ -140,3 +138,4 @@ void BasicRenderer::Draw(){
 
     glfwSwapBuffers(window);
 }
+*/

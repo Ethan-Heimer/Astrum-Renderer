@@ -20,7 +20,7 @@ Scene::SceneNode::~SceneNode(){
 }
 
 Scene::RootSceneNode::RootSceneNode(SceneNode* parent) : SceneNode(parent){};
-void Scene::RootSceneNode::OnRendered(BasicRenderer& renderer){}
+void Scene::RootSceneNode::OnRendered(IRenderQueue* renderer){}
 
 Scene::Scene::Scene(){
     root = new RootSceneNode(nullptr);
@@ -30,11 +30,11 @@ Scene::Scene::~Scene(){
     delete root;
 }
 
-void Scene::Scene::Render(BasicRenderer& renderer){
+void Scene::Scene::Render(IRenderQueue* renderer){
     RenderNode(renderer, *root);
 }
 
-void Scene::Scene::RenderNode(BasicRenderer& renderer, SceneNode& node){
+void Scene::Scene::RenderNode(IRenderQueue* renderer, SceneNode& node){
     // Post Traversal Order     
     for(auto& child : node.children){
         RenderNode(renderer, *child);

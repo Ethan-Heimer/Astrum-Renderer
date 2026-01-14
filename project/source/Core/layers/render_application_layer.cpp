@@ -4,29 +4,36 @@
 #include "input.h"
 #include "mesh.h"
 #include "mesh_builder.h"
-#include "renderer.h"
+#include "renderer/renderer.h"
+
+#include "renderer/standard_renderer_queue.h"
+#include "renderer/standard_renderer.h"
+
 #include "shader.h"
-#include "texture.h"
-#include "transform.h"
 
 #include "scene/scene.h"
 #include "scene/mesh_scene_node.h"
 
 #include <iostream>
+#include <memory>
 
 using namespace Renderer;
 using namespace Scene;
 
 Core::RendererApplicationLayer::RendererApplicationLayer(Application* application)
-    : ApplicationLayer(application), renderer(application->GetWindow()), 
-      assetManager(), scene(){
+    : ApplicationLayer(application), assetManager(), scene(){
 
-    application->RegisterResource<Renderer::BasicRenderer>(&renderer);
+    std::unique_ptr<StandardRenderer<StandardRenderQueue>> rendererRef =
+        std::make_unique<StandardRenderer<StandardRenderQueue>>(application->GetWindow());
+
+    renderer = std::move(rendererRef);
+
+    application->RegisterResource<Renderer::IRenderer>(&renderer);
     application->RegisterResource<Renderer::AssetManager>(&assetManager);
     application->RegisterResource<Renderer::Scene::Scene>(&scene);
 
     application->SubscribeToInitialize([this](){
-            this->renderer.Initalize();
+            this->renderer->Initalize();
 
             Renderer::Shader* defaultShader = this->assetManager.CreateShader("Default", 
                 "./shaders/standard_vertex.glsl", "./shaders/standard_fragment.glsl");
@@ -45,7 +52,7 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
 
     application->SubscribeToUpdate([this](){
             auto input = this->application->GetResource<Utils::Input>();
-            auto camera = this->renderer.GetCamera();
+            auto camera = this->renderer->GetCamera();
 
             float pitch = 0, yaw = 0;
             double deltaX = 0, deltaY = 0;
@@ -60,7 +67,7 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
 
             camera->SetRotation(pitch, yaw);
 
-            scene.Render(this->renderer);
-            this->renderer.Draw();
+            scene.Render(this->renderer->GetQueue());
+            this->renderer->Draw();
         });
 }

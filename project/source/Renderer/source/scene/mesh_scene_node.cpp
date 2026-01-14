@@ -19,8 +19,8 @@ MeshSceneNode::~MeshSceneNode(){
         delete mesh;
 };
 
-void MeshSceneNode::OnRendered(BasicRenderer& renderer){
-    renderer.QueueObject(mesh, &transform, material);
+void MeshSceneNode::OnRendered(IRenderQueue* renderer){
+    renderer->QueueDraw(mesh, &transform, material);
 }
 
 void MeshSceneNode::SetMaterial(Material& material){
