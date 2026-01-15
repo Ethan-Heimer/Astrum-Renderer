@@ -1,4 +1,5 @@
 #include "application.h"
+#include <getopt.h>
 #include <iostream>
 #include <algorithm>
 #include <iterator>
@@ -9,15 +10,17 @@
 #include "layers/render_application_layer.h"
 #include "layers/utils_application_layer.h"
 
-Core::Application::Application() : exit(false){
+Core::Application::Application(int argc, char* argv[]) : exit(false){
+    /*
+     * Parse Arguments
+     */
+    ParseArguments(argc, argv);
+
     /*
      * Initialize Window
      */
 
-    // Make it possable to manage multiple windows- as well as give renderers
-    // the power to create windows
     glfwInit();
-
     CreateWindow(); 
     
     /*
@@ -28,10 +31,17 @@ Core::Application::Application() : exit(false){
     Core::UtilsApplicationLayer utilsLayer{this};
     Core::LuaApplicationLayer luaLayer{this};
 
-    Initialize();
+    /*
+     * Run Program Callbacks
+     */
 
+    Initialize();
     Run();
     Shutdown();
+
+    /*
+     * Free GLFW
+     */
 
     glfwTerminate();
 }
@@ -101,6 +111,30 @@ void Core::Application::Run(){
 void Core::Application::Shutdown(){
     ExecuteDelegate(&shutdownEvent);
 }
+
+void Core::Application::ParseArguments(int argc, char** argv){
+    int c = 0;
+    while((c = getopt(argc, argv, "s:")) != -1){
+        switch(c){
+            case 's': 
+                this->AddArgument("Script", optarg);
+                this->AddArgument("s", optarg);
+            break;
+
+            case '?':
+                Console::Log(Warning, "Program", Red, "Invalid Option");
+            break;
+        }
+    }
+}
+
+void Core::Application::AddArgument(std::string name, std::string value){
+    arguments[name] = value;     
+}
+
+std::string Core::Application::GetArgument(const std::string& name){
+    return arguments[name];
+};
 
 void Core::Application::ExecuteDelegate(Delegate* delegate){
     for(auto o : *delegate){

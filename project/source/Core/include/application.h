@@ -16,7 +16,7 @@ using Delegate = vector<function<void()>>;
 namespace Core{
     class Application{
         public:
-            Application();
+            Application(int argc, char** argv);
             
             void SubscribeToInitialize(function<void()> callback);
             void SubscribeToStart(function<void()> callback);
@@ -27,6 +27,7 @@ namespace Core{
 
             GLFWwindow* GetWindow();
             void GetWindowSize(GLFWwindow* window, int* width, int* height);
+            std::string GetArgument(const std::string& name);
 
             template<typename T>
             void RegisterResource(void* resource){ 
@@ -52,12 +53,16 @@ namespace Core{
             Delegate shutdownEvent;
 
             std::unordered_map<std::string, void*> resourceMap;
+            std::unordered_map<std::string, std::string> arguments;
 
             GLFWwindow* window;
 
             bool exit;
 
             void CreateWindow();
+
+            void ParseArguments(int argc, char** argv);
+            void AddArgument(std::string name, std::string value);
 
             void Initialize();
             void Run();

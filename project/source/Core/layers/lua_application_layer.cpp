@@ -10,6 +10,7 @@
 
 #include "scene/mesh_scene_node.h"
 #include "scene/scene.h"
+#include "sol/error.hpp"
 #include "sol/sol.hpp"
 #include "texture.h"
 
@@ -24,10 +25,18 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
         auto load_script = [this](){
             lua.open_libraries(sol::lib::base, sol::lib::io, sol::lib::math, sol::lib::table);
             try{
-                lua.safe_script_file("test.lua");
+                std::string file = this->application->GetArgument("s");
+                if(file.empty())
+                    throw sol::error{""};
+
+                lua.safe_script_file(file);
+                scriptInitilaized = true;
+
                 Console::Log(Message, "Lua", Green, "Lua File Found!");
             } catch(const sol::error& e){ 
                 Console::Log(Error, "Lua File Not Found.");
+
+                this->scriptInitilaized = false;
                 return;
             }
         };
@@ -133,16 +142,25 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
 
             // Restart Script
             load_script();
-            init_api();
-            execute_start();
+
+            if(this->scriptInitilaized){
+                init_api();
+                execute_start();
+            }
         });
 
         load_script();
-        init_api();
-        execute_start();
+
+        if(this->scriptInitilaized){
+            init_api();
+            execute_start();
+        }
     });
 
     application->SubscribeToUpdate([this](){ 
+        if(!scriptInitilaized)
+            return;
+
         sol::protected_function update = lua["Update"];
         if(update){
             auto result = update();

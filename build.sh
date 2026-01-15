@@ -13,7 +13,7 @@ while getopts "vs" opt; do
             valgrind --leak-check=full --suppressions=../../opengl.supp ./Renderer
             ;;
         s)
-            ./Renderer
+            ./Renderer -s "./test.lua"
             ;;
     esac
 done

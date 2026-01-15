@@ -12,6 +12,7 @@ namespace Core{
             LuaApplicationLayer(Application* application);
         private: 
             sol::state lua;
+            bool scriptInitilaized{false};
 
     };
 }
