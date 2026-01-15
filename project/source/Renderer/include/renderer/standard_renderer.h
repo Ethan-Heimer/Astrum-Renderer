@@ -57,13 +57,13 @@ namespace Renderer{
                 dirLight.Ambient = {.8, .8, .8};
                 dirLight.Diffuse = {1, 1, 1};
                 dirLight.Specular = {1, 1, 1};
-                dirLight.Direction = {1, 0, 0};
+                dirLight.Direction = {1, 1, 0};
 
-                pointLight.Ambient = {1, 0, 0};
+                pointLight.Ambient = {1, 1, 1};
                 pointLight.Diffuse = {0, 0, 0};
                 pointLight.Specular = {0, 0, 0};
 
-                pointLight.Position = {10, 0, 1};
+                pointLight.Position = {0, 0, 0};
                 pointLight.KQuadratic = .1;
  
                 while(!queue->IsEmpty()){

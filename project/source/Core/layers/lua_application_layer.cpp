@@ -4,6 +4,7 @@
 #include "console/console.h"
 #include "file_watcher.h"
 #include "glm/detail/qualifier.hpp"
+#include "input.h"
 #include "mesh_builder.h"
 
 #include <iostream>
@@ -119,6 +120,56 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
 
                     material->SetTexture(texture);
                 };
+
+                sol::table InputAPI = lua.create_named_table("Input");
+
+                InputAPI["Space_Key"] = 32;
+
+                InputAPI["0_Key"] = 48;
+                InputAPI["1_Key"] = 49;
+                InputAPI["2_Key"] = 50;
+                InputAPI["3_Key"] = 51;
+                InputAPI["4_Key"] = 52;
+                InputAPI["5_Key"] = 53;
+                InputAPI["6_Key"] = 54;
+                InputAPI["7_Key"] = 55;
+                InputAPI["8_Key"] = 56;
+                InputAPI["9_Key"] = 57;
+
+                InputAPI["A_Key"] = 65;
+                InputAPI["B_Key"] = 66;
+                InputAPI["C_Key"] = 67;
+                InputAPI["D_Key"] = 68;
+                InputAPI["E_Key"] = 69;
+                InputAPI["F_Key"] = 70;
+                InputAPI["G_Key"] = 71;
+                InputAPI["H_Key"] = 72;
+                InputAPI["I_Key"] = 73;
+                InputAPI["J_Key"] = 74;
+                InputAPI["K_Key"] = 75;
+                InputAPI["L_Key"] = 76;
+                InputAPI["M_Key"] = 77;
+                InputAPI["N_Key"] = 78;
+                InputAPI["O_Key"] = 79;
+                InputAPI["P_Key"] = 80;
+                InputAPI["Q_Key"] = 81;
+                InputAPI["R_Key"] = 82;
+                InputAPI["S_Key"] = 83;
+                InputAPI["T_Key"] = 84;
+                InputAPI["U_Key"] = 85;
+                InputAPI["V_Key"] = 86;
+                InputAPI["W_Key"] = 87;
+                InputAPI["X_Key"] = 88;
+                InputAPI["Y_Key"] = 89;
+                InputAPI["Z_Key"] = 90;
+
+                InputAPI["Shift_Key"] = 340;
+
+                InputAPI["IsKeyPressed"] = [this](int keyCode){
+                    Utils::Input* input = this->application->GetResource<Utils::Input>();
+                    return input->IsKeyDown(keyCode);
+                };
+
             } catch(const sol::error& e){ 
                 Console::Log(Error, "An Error from Sol occured while binding c++ functions.");
             } catch(...){
@@ -136,8 +187,6 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
             assetManager->ClearTextures();
             scene->Clear();
 
-            Console::Log(Message, "Lua", Yellow, "Lua Script Loaded");
-
             lua.collect_garbage();
 
             // Restart Script
@@ -147,6 +196,8 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
                 init_api();
                 execute_start();
             }
+
+            Console::Log(Message, "Lua", Yellow, "Lua Script Loaded");
         });
 
         load_script();
@@ -159,7 +210,26 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
 
     application->SubscribeToUpdate([this](){ 
         if(!scriptInitilaized)
-            return;
+            return; 
+
+        sol::table InputTable = lua.get<sol::table>("Input");
+
+        Utils::Input* input = this->application->GetResource<Utils::Input>();
+        
+        double posX = 0;
+        double posY = 0;
+
+        double posDeltaX = 0;
+        double posDeltaY = 0;
+
+        input->GetMousePos(&posX, &posY);
+        input->GetMousePosDelta(&posDeltaX, &posDeltaY);
+
+        InputTable["CursorX"] = posX;
+        InputTable["CursorY"] = posY;
+
+        InputTable["CursorDeltaX"] = posDeltaX;
+        InputTable["CursorDeltaY"] = posDeltaY;
 
         sol::protected_function update = lua["Update"];
         if(update){
