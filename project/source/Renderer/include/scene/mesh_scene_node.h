@@ -13,7 +13,7 @@ namespace Renderer{
 
                 void OnRendered(IRenderQueue* renderer) override;
 
-                void SetMaterial(Material& material);
+                void UseUniqueMaterial();
 
                 Mesh& GetMesh();
                 Transform& GetTransform();
@@ -27,6 +27,9 @@ namespace Renderer{
 
                 bool uniqueMaterial{false};
                 bool uniqueMesh{false};
+
+                void CloneMaterial();
+                void CloneMesh();
         };
     }
 }

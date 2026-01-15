@@ -12,18 +12,23 @@ MeshSceneNode::MeshSceneNode(SceneNode* parent, Mesh* mesh, Material* material) 
 }
 
 MeshSceneNode::~MeshSceneNode(){
-    if(uniqueMaterial)
+    if(uniqueMaterial){
         delete material;
+    }
 
-    if(uniqueMesh)
+    if(uniqueMesh){
         delete mesh;
+    }
 };
 
 void MeshSceneNode::OnRendered(IRenderQueue* renderer){
     renderer->QueueDraw(mesh, &transform, material);
 }
 
-void MeshSceneNode::SetMaterial(Material& material){
+void MeshSceneNode::UseUniqueMaterial(){
+    uniqueMaterial = true;
+
+    CloneMaterial();
 }
 
 Mesh& MeshSceneNode::GetMesh(){
@@ -36,4 +41,12 @@ Transform& MeshSceneNode::GetTransform(){
 
 Material& MeshSceneNode::GetMaterial(){
     return *material;
+}
+
+void MeshSceneNode::CloneMaterial(){
+    material = new Material(*material);
+}
+
+void MeshSceneNode::CloneMesh(){
+    mesh = new Mesh(*mesh);
 }

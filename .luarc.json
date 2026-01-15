@@ -1,0 +1,5 @@
+{
+  "diagnostics": {
+    "globals": ["Cube", "Material", "Translate", "Rotate", "Scale"]
+  }
+}

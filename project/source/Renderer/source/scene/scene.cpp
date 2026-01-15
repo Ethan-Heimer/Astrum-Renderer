@@ -5,8 +5,6 @@ using namespace Renderer;
 
 Scene::SceneNode::SceneNode(SceneNode* parent){
     this->parent = parent;
-
-    std::cout << "Node Created" << std::endl;
 };
 
 Scene::SceneNode::~SceneNode(){
@@ -15,8 +13,6 @@ Scene::SceneNode::~SceneNode(){
     }
 
     children.clear();
-
-    cout<<"Deleted Node"<<endl;
 }
 
 Scene::RootSceneNode::RootSceneNode(SceneNode* parent) : SceneNode(parent){};

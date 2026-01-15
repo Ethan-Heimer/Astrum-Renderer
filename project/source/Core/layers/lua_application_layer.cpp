@@ -14,6 +14,7 @@
 #include "texture.h"
 
 using namespace Core;
+using namespace Renderer;
 
 Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application) 
     : ApplicationLayer(application), lua(){
@@ -53,35 +54,38 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
                     auto assetManager = this->application->GetResource<Renderer::AssetManager>();
                     auto scene = this->application->GetResource<Renderer::Scene::Scene>();
 
-                    Renderer::Mesh* mesh = assetManager->GetMesh("Cube");
-                    Renderer::Material* material = assetManager->GetMaterial("Default");
+                    Mesh* mesh = assetManager->GetMesh("Cube");
+                    Material* material = assetManager->GetMaterial("Default");
 
-                    Renderer::Scene::MeshSceneNode* node = 
+                    Scene::MeshSceneNode* node = 
                         scene->AddChildAtRoot<Renderer::Scene::MeshSceneNode>(mesh, material);
 
                     return node;
                 };
 
-                lua["Translate"] = [this](Renderer::Scene::MeshSceneNode* node, float x, float y, float z){
+                lua["Translate"] = [this](Scene::MeshSceneNode* node, float x, float y, float z){
                     node->GetTransform().SetPosition(x, y, z);
                 };
 
 
-                lua["Rotate"] = [this](Renderer::Scene::MeshSceneNode* node, float x, float y, float z){
+                lua["Rotate"] = [this](Scene::MeshSceneNode* node, float x, float y, float z){
                     node->GetTransform().SetRotation(x, y, z);
                 };
 
-                lua["Scale"] = [this](Renderer::Scene::MeshSceneNode* node, float x, float y, float z){
+                lua["Scale"] = [this](Scene::MeshSceneNode* node, float x, float y, float z){
                     node->GetTransform().SetScale(x, y, z);
                 };
 
-                /*
                 sol::table materialAPI = lua.create_named_table("Material");
-                materialAPI["GetFrom"] = [this](Renderer::Object* object){
-                    return &object->GetMaterial();
+                materialAPI["Of"] = [this](Scene::MeshSceneNode* node){
+                    // -- This assumes there will be a change in the cubes material, therefore
+                    // this clones the node's material
+                    
+                    node->UseUniqueMaterial(); 
+                    return &node->GetMaterial();
                 };
 
-                materialAPI["SetColor"] = [this](Renderer::Material* material, float r, float g, float b, float a){
+                materialAPI["SetColor"] = [this](Material* material, float r, float g, float b){
                     r = r/255;
                     g = g/255;
                     b = b/255;
@@ -89,13 +93,23 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
                     material->Ambient = glm::vec3(r, g, b);
                 };
 
-                materialAPI["SetTexture"] = [this](Renderer::Material* material, std::string texturePath){
-                    Renderer::AssetManager* assetManager = this->application->GetResource<Renderer::AssetManager>();
-                    Renderer::Texture* texture = assetManager->CreateTexture(texturePath);
+                materialAPI["SetDiffuse"] = [this](Material* material, float r, float g, float b){
+                    material->Diffuse = glm::vec3(r, g, b);
+                };
+                materialAPI["SetSpecular"] = [this](Material* material, float r, float g, float b){
+                    material->Specular = glm::vec3(r, g, b);
+                };
+                
+                materialAPI["SetShine"] = [this](Material* material, float shine){
+                    material->Shininess = shine;
+                };
+
+                materialAPI["SetTexture"] = [this](Material* material, std::string texturePath){
+                    AssetManager* assetManager = this->application->GetResource<Renderer::AssetManager>();
+                    Texture* texture = assetManager->CreateTexture(texturePath);
 
                     material->SetTexture(texture);
                 };
-                */
             } catch(const sol::error& e){ 
                 Console::Log(Error, "An Error from Sol occured while binding c++ functions.");
             } catch(...){
@@ -108,8 +122,10 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
             // Delete Old Assets
             Renderer::AssetManager* assetManager = this->application->
                 GetResource<Renderer::AssetManager>();
+            Renderer::Scene::Scene* scene = this->application->GetResource<Scene::Scene>();
 
             assetManager->ClearTextures();
+            scene->Clear();
 
             Console::Log(Message, "Lua", Yellow, "Lua Script Loaded");
 
@@ -139,6 +155,10 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
         else {
             Console::Log(Message, "Lua", Yellow, "Update Not Found");
         }
+    });
+
+    application->SubscribeToShutdown([this](){
+        lua.collect_garbage();
     });
 }
 
