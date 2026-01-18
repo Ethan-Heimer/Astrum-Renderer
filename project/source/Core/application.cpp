@@ -79,19 +79,19 @@ void GetWindowSize(GLFWwindow* window, int* width, int* height){
     glfwGetWindowSize(window, width, height);
 }
 
-void Core::Application::SubscribeToInitialize(function<void()> callback){
+void Core::Application::SubscribeToInitialize(std::function<void()> callback){
     SubscribeTo(&initializeEvent, callback);
 }
 
-void Core::Application::SubscribeToStart(function<void()> callback){
+void Core::Application::SubscribeToStart(std::function<void()> callback){
     SubscribeTo(&startEvent, callback);
 }
 
-void Core::Application::SubscribeToUpdate(function<void()> callback){
+void Core::Application::SubscribeToUpdate(std::function<void()> callback){
     SubscribeTo(&updateEvent, callback);
 }
 
-void Core::Application::SubscribeToShutdown(function<void()> callback){
+void Core::Application::SubscribeToShutdown(std::function<void()> callback){
     SubscribeTo(&shutdownEvent, callback);
 }
 
@@ -142,6 +142,6 @@ void Core::Application::ExecuteDelegate(Delegate* delegate){
     }
 }
 
-void Core::Application::SubscribeTo(Delegate* delegate, function<void()> callback){
+void Core::Application::SubscribeTo(Delegate* delegate, std::function<void()> callback){
     delegate->push_back(callback);
 }

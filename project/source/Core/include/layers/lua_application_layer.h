@@ -3,6 +3,7 @@
 
 #include "application.h"
 #include "application_layer.h"
+#include "lua/lua_api.h"
 
 #include "sol/sol.hpp"
 
@@ -11,9 +12,7 @@ namespace Core{
         public:
             LuaApplicationLayer(Application* application);
         private: 
-            sol::state lua;
-            bool scriptInitilaized{false};
-
+            Lua::API api;
     };
 }
 
