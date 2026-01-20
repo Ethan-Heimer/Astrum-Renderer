@@ -10,12 +10,13 @@ namespace Core{
     class RendererApplicationLayer : ApplicationLayer{
         public:
             RendererApplicationLayer(Application* application);
+            ~RendererApplicationLayer();
 
         private:
             Renderer::AssetManager assetManager;
             Renderer::Scene::Scene scene;
 
-            std::unique_ptr<Renderer::IRenderer> renderer;
+            Renderer::IRenderer* renderer;
     };
 }
 

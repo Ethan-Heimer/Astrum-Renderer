@@ -120,8 +120,8 @@ namespace Renderer{
                 glfwSwapBuffers(window);
             }
 
-            Camera* GetCamera() override{ 
-                return &camera;
+            Camera& GetCamera() override{ 
+                return camera;
             }
     };
 }

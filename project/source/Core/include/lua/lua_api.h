@@ -30,10 +30,10 @@ namespace Core{
                 Application* GetApplication() const;
 
                 void LoadScript();
-
                 void StartScript();
-                void UpdateAPI();
+                void StartScriptWatcher();
 
+                void UpdateAPI();
                 void ShutDown();
 
             private:

@@ -8,6 +8,9 @@
 #include "lua/mesh_lua_api_layer.h"
 #include "lua/material_lua_api_layer.h"
 #include "lua/input_lua_api_layer.h"
+#include "lua/camera_lua_api_layer.h"
+#include "renderer/standard_renderer.h"
+#include "renderer/standard_renderer_queue.h"
 
 using namespace Core;
 using namespace Renderer;
@@ -18,33 +21,14 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
     api.AddLayer<Lua::MeshAPI>();
     api.AddLayer<Lua::MaterialAPI>("Material");
     api.AddLayer<Lua::InputAPI>("Input");
+    api.AddLayer<Lua::CameraAPI>("Camera");
 
     application->SubscribeToInitialize([this](){
         // -- Initialize Sol and Load Script
         api.LoadScript(); 
         api.StartScript();
+        api.StartScriptWatcher();
 
-        string filePath = this->application->GetArgument("s");
-        auto fileWatcher = this->application->GetResource<Utils::FileWatcher>();
-
-        fileWatcher->WatchFile(filePath, [this](){
-            // Delete Old Assets
-            Renderer::AssetManager* assetManager = this->application->
-                GetResource<Renderer::AssetManager>();
-            Renderer::Scene::Scene* scene = this->application->
-                GetResource<Scene::Scene>();
-
-            assetManager->ClearTextures();
-            scene->Clear();
-
-            api.ShutDown();
-
-            // Restart Script
-            api.LoadScript(); 
-            api.StartScript();
-
-            Console::Log(Message, "Lua", Yellow, "Lua Script Loaded");
-        });
     });
 
     application->SubscribeToUpdate([this](){ 

@@ -11,7 +11,6 @@
 
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
-#include <type_traits>
 
 namespace Renderer{
 
@@ -37,15 +36,16 @@ namespace Renderer{
     class IRenderer{
         public:
             IRenderer(GLFWwindow* window);
+            virtual ~IRenderer();
 
             IRenderQueue* GetQueue() const;
 
             virtual void Initalize() = 0;
             virtual void Draw() = 0; 
-            virtual Camera* GetCamera() = 0;
+            virtual Camera& GetCamera() = 0;
 
         protected:
-            Camera camera;
+            Camera camera{};
 
             std::unique_ptr<IRenderQueue> queue; 
             GLFWwindow* window;

@@ -23,14 +23,12 @@ using namespace Scene;
 Core::RendererApplicationLayer::RendererApplicationLayer(Application* application)
     : ApplicationLayer(application), assetManager(), scene(){
 
-    std::unique_ptr<StandardRenderer<StandardRenderQueue>> rendererRef =
-        std::make_unique<StandardRenderer<StandardRenderQueue>>(application->GetWindow());
+    renderer = new StandardRenderer<StandardRenderQueue>(application->GetWindow());
 
-    renderer = std::move(rendererRef);
-
-    application->RegisterResource<Renderer::IRenderer>(&renderer);
+    application->RegisterResource<Renderer::IRenderer>(renderer);
     application->RegisterResource<Renderer::AssetManager>(&assetManager);
     application->RegisterResource<Renderer::Scene::Scene>(&scene);
+
 
     application->SubscribeToInitialize([this](){
             this->renderer->Initalize();
@@ -51,23 +49,11 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
         });
 
     application->SubscribeToUpdate([this](){
-            auto input = this->application->GetResource<Utils::Input>();
-            auto camera = this->renderer->GetCamera();
-
-            float pitch = 0, yaw = 0;
-            double deltaX = 0, deltaY = 0;
-
-            const float sensitivity = .05f;
-
-            camera->GetRotation(&pitch, &yaw);
-            input->GetMousePosDelta(&deltaX, &deltaY);
-
-            pitch += deltaY * sensitivity;
-            yaw += -deltaX * sensitivity;
-
-            camera->SetRotation(pitch, yaw);
-
             scene.Render(this->renderer->GetQueue());
             this->renderer->Draw();
         });
+}
+
+Core::RendererApplicationLayer::~RendererApplicationLayer(){
+    delete renderer;
 }
