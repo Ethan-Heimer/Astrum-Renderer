@@ -116,6 +116,8 @@ function Start()
 end
 ```
 
+<br>
+
 ### -- Translate --
 
 **Description:** Moves a Mesh.
@@ -141,3 +143,5 @@ function Start()
     Translate(cube, 10, 0, 1)
 end
 ```
+
+<br>
