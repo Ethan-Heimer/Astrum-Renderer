@@ -50,6 +50,10 @@ Starting the renderer is very simple:
 Astrum will execute the script inputted.
 
 # API
+
+There's a lot that renderer's can do, therefore, Astrum's API is split into multiple 
+**Sub-API's**.
+
 ## Getting Started
 
 When a script is ran with Astrum, it will first seek out 2 special user-defined
@@ -85,11 +89,6 @@ objects.
 These are **Anchors**, and Astrum's way of interacting with the provided lua
 script. All code that uses any of Asrtum's api should be placed in these functions.
 
-## Rendering
-
-There's a lot that renderer's can do, therefore, Astrum's API is split into multiple 
-**Sub-API's**.
-
 ## Mesh Sub-API
 
 | Sub-API Table | Description |
@@ -98,9 +97,15 @@ There's a lot that renderer's can do, therefore, Astrum's API is split into mult
 
 ### Cube
 
-| Description    | Arguments | Returns                         |
-| -------------- | --------- | ------------------------------- |
-| Creates a Cube | None      | A reference to the created cube |
+**Description:** Creates A Cube Mesh.
+
+**Arguments:** None.
+
+**Returns:**
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| A reference to the created cube | Address |
 
 **Example**
 
@@ -112,3 +117,18 @@ end
 ```
 
 ### Translate
+
+| Description    | Arguments     | Returns |
+| -------------- | ------------- | ------- |
+| Moves a mesh   | Mesh, X, Y, Z | nil     |
+
+**Example**
+
+``` lua
+local cube = nil
+function Start()
+    cube = Cube()
+
+    Translate(cube, 10, 0, 1)
+end
+```
