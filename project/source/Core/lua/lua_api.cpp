@@ -104,6 +104,8 @@ void API::UpdateAPI(){
     else {
         Console::Log(Message, "", Yellow, "Update Not Found");
     }
+
+    lua.collect_garbage();
 }
 
 void API::ShutDown(){

@@ -11,6 +11,8 @@ namespace Renderer{
             Camera(); 
 
             const glm::vec3 GetPos() const;
+
+            void SetPos(float forward, float straif, float up);
             void Move(float forward, float straif, float up);
 
             void GetRotation(float* pitch, float* yaw) const;

@@ -1,9 +1,5 @@
-# A Simple OpenGL Template for C++
+# Astrum Renderer 
+## A 3D Renderer Scriptable in Lua.
 
-## Install
+![A Wave Rendered with Astrum](wave.png)
 
-- `git clone https://github.com/Ethan-Heimer/OpenGLTemplate`
-- `cd OpenGLTemplate`
-- `mkdir build && cd build`
-- `cmake ..`
-- `make`

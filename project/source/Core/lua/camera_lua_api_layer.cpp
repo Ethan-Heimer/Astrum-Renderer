@@ -12,6 +12,8 @@ using namespace std;
 
 void CameraAPI::OnInit(){
     Function("Move", [this](float forward, float straif, float up){this->Move(forward, straif, up);});
+
+    Function("Position", [this](float forward, float straif, float up){this->Position(forward, straif, up);});
     Function("Rotate", [this](float pitch, float yaw){this->Rotate(pitch, yaw);});
     Function("Zoom", [this](float zoom){this->Zoom(zoom);});
  
@@ -23,6 +25,13 @@ void CameraAPI::Move(float forward, float straif, float up){
     Camera& camera = r->GetCamera();
 
     camera.Move(forward, straif, up);
+};
+
+void CameraAPI::Position(float forward, float straif, float up){
+    auto r = this->application->GetResource<Renderer::IRenderer>();
+    Camera& camera = r->GetCamera();
+
+    camera.SetPos(forward, straif, up);
 };
 
 void CameraAPI::Rotate(float pitch, float yaw){

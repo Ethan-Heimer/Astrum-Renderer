@@ -14,6 +14,8 @@ namespace Core{
             void OnInit() override;
 
             void Move(float forward, float straif, float up);
+
+            void Position(float forward, float straif, float up);
             void Rotate(float pitch, float yaw);
             void Zoom(float zoom);
 

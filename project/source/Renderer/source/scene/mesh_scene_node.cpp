@@ -26,8 +26,10 @@ void MeshSceneNode::OnRendered(IRenderQueue* renderer){
 }
 
 void MeshSceneNode::UseUniqueMaterial(){
-    uniqueMaterial = true;
+    if(uniqueMaterial)
+        return;
 
+    uniqueMaterial = true;
     CloneMaterial();
 }
 

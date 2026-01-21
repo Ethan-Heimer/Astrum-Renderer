@@ -12,6 +12,19 @@ const glm::vec3 Renderer::Camera::GetPos() const{
     return cameraPos; 
 }
 
+void Renderer::Camera::SetPos(float forward, float straif, float up){ 
+    auto cameraRight = glm::normalize(glm::cross(cameraFront, cameraUp));
+
+    glm::vec3 position;
+
+    position += forward * cameraFront;
+    position += cameraRight * straif;
+
+    position += glm::normalize(glm::cross(cameraFront, cameraRight)) * up;
+
+    cameraPos = position;
+}
+
 void Renderer::Camera::Move(float forward, float straif, float up){
     auto cameraRight = glm::normalize(glm::cross(cameraFront, cameraUp));
 
@@ -19,7 +32,6 @@ void Renderer::Camera::Move(float forward, float straif, float up){
     cameraPos += cameraRight * straif;
 
     cameraPos += glm::normalize(glm::cross(cameraFront, cameraRight)) * up;
-
 }
 
 void Renderer::Camera::GetRotation(float* pitch, float* yaw) const{
