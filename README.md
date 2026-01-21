@@ -5,6 +5,10 @@
 Astrum is a basic 3D renderer scriptable with lua. It takes in an input script
 That defines the behavior of the renderer.
 
+One of the biggest goals with Astrum is to provide a very basic and intuitive 3D
+rendering interface that anyone with any skill level can use. Because of this, Lua
+scripts are used to provide a high level interface to Astrum's rendering capabilities.
+
 ## Install
 
 ### Dependendicies
@@ -47,12 +51,10 @@ Astrum will execute the script inputted.
 
 ## API
 
-One of the biggest goals with Astrum is to provide a very basic and intuitive 3D
-rendering interface that anyone with any skill level can use. Because of this, Lua
-scripts are used to provide a high level interface to Astrum's rendering capabilities.
-
 <details>
-  <summary>Script Sections</summary>
+    <summary><bold>Script Sections</bold></summary>
+    
+
   
 </details>
 
