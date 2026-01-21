@@ -239,7 +239,7 @@ end
 
 ### -- SetColor --
 
-**Description:** Changes a materials color.
+**Description:** Changes a material's color.
 
 **Arguments:** 
 
@@ -247,8 +247,8 @@ end
 | ------------------------------- | ------- |
 | Mesh Reference                  | Address |
 | Red Color (0 - 255)             | Number  |
-| Blue Color (0 - 255)             | Number  |
-| Green Color (0 - 255)             | Number  |
+| Blue Color (0 - 255)            | Number  |
+| Green Color (0 - 255)           | Number  |
 
 **Returns:** None.
 
@@ -261,6 +261,118 @@ function Start()
 
     local material = Material.Of(cube)
     Material.SetColor(material, 255, 20, 120)
+end
+```
+
+<br>
+
+### -- SetTexture --
+
+**Description:** Changes a material's texture.
+
+**Arguments:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| Mesh Reference                  | Address |
+| Texture Path                    | String  |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+local cube = nil
+function Start()
+    cube = Cube()
+
+    local material = Material.Of(cube)
+    Material.SetTexture(material, "Path")
+end
+```
+
+<br>
+
+### -- SetDiffuse --
+
+**Description:** Changes the diffuse attribute of the material.
+
+**Arguments:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| Mesh Reference                  | Address |
+| Red Color (0 - 255)             | Number  |
+| Blue Color (0 - 255)            | Number  |
+| Green Color (0 - 255)           | Number  |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+local cube = nil
+function Start()
+    cube = Cube()
+
+    local material = Material.Of(cube)
+    Material.SetDiffuse(material, 255, 20, 120)
+end
+```
+
+<br>
+
+### -- SetSpecular --
+
+**Description:** Changes the specular attribute of the material.
+
+**Arguments:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| Mesh Reference                  | Address |
+| Red Color (0 - 255)             | Number  |
+| Blue Color (0 - 255)            | Number  |
+| Green Color (0 - 255)           | Number  |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+local cube = nil
+function Start()
+    cube = Cube()
+
+    local material = Material.Of(cube)
+    Material.SetSpecular(material, 255, 20, 120)
+end
+```
+
+<br>
+
+### -- SetShine --
+
+**Description:** Changes the shininess attribute of the material.
+
+**Arguments:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| Mesh Reference                  | Address |
+| Shine                           | Number  |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+local cube = nil
+function Start()
+    cube = Cube()
+
+    local material = Material.Of(cube)
+    Material.SetShine(material, 255, 20, 120)
 end
 ```
 
