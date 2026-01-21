@@ -145,3 +145,59 @@ end
 ```
 
 <br>
+
+### -- Rotate --
+
+**Description:** Rotates a Mesh.
+
+**Arguments:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| Mesh Reference                  | Address |
+| X Angle                         | Number  |
+| Y Angle                         | Number  |
+| Z Angle                         | Number  |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+local cube = nil
+function Start()
+    cube = Cube()
+
+    Rotate(cube, 45, 20, 1)
+end
+```
+
+<br>
+
+### -- Scale --
+
+**Description:** Scales a Mesh.
+
+**Arguments:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| Mesh Reference                  | Address |
+| X Scale                         | Number  |
+| Y Scale                         | Number  |
+| Z Scale                         | Number  |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+local cube = nil
+function Start()
+    cube = Cube()
+
+    Scale(cube, .5, 10, 1)
+end
+```
+
+<br>
