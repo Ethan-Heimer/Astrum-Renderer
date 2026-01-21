@@ -91,9 +91,9 @@ script. All code that uses any of Asrtum's api should be placed in these functio
 
 ## Mesh Sub-API
 
-| Sub-API Table | Description |
-| ------------ | ----------- |
-| None         | Create and Mutate Mesh's |
+| Sub-API Table | Description              |
+| ------------- | ------------------------ |
+| None          | Create and Mutate Mesh's |
 
 ### -- Cube --
 
@@ -197,6 +197,70 @@ function Start()
     cube = Cube()
 
     Scale(cube, .5, 10, 1)
+end
+```
+
+<br>
+
+## Material Sub-API
+
+| Sub-API Table | Description              |
+| ------------- | ------------------------ |
+| Material      | Mutate a Mesh's Material |
+
+### -- Of --
+
+**Description:** Gets the material of a mesh.
+
+**Arguments:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| Mesh Reference                  | Address |
+
+**Returns:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| Material Reference              | Address |
+
+**Example**
+
+``` lua
+local cube = nil
+function Start()
+    cube = Cube()
+
+    local material = Material.Of(cube)
+end
+```
+
+<br>
+
+### -- SetColor --
+
+**Description:** Changes a materials color.
+
+**Arguments:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| Mesh Reference                  | Address |
+| Red Color (0 - 255)             | Number  |
+| Blue Color (0 - 255)             | Number  |
+| Green Color (0 - 255)             | Number  |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+local cube = nil
+function Start()
+    cube = Cube()
+
+    local material = Material.Of(cube)
+    Material.SetColor(material, 255, 20, 120)
 end
 ```
 
