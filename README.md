@@ -13,7 +13,7 @@ That defines the behavior of the renderer.
 - GLFW
 - Lua
 
-(I plan on eventually handling these dependicies throught cmake)
+(I plan on eventually handling these dependicies through cmake)
 
 ### Building
 
@@ -34,3 +34,13 @@ mkdir build
 ./build.sh
 ```
 The binary can be found in `./build/bin/`
+
+## Use
+
+Starting the renderer is very simple:
+
+```
+./Astrum -s {script-name}.lua
+```
+
+Astrum will execute the script inputted.
