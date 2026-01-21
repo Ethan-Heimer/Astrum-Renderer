@@ -55,6 +55,7 @@ Astrum will execute the script inputted.
 When a script is ran with Astrum, it will first seek out 2 special user-defined
 functons: `Start` and `Update`
 
+#### Start
 ``` lua
 function Start()
 
