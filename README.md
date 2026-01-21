@@ -96,6 +96,5 @@ There's a lot that renderer's can do, therefore, Astrum's API is split into mult
 | ------------ | ----------- |
 | None         | Create and Mutate Mesh's |
 
-`Cube()`
-
+#### Cube
 
