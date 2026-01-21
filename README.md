@@ -98,3 +98,17 @@ There's a lot that renderer's can do, therefore, Astrum's API is split into mult
 
 ### Cube
 
+| Description    | Arguments | Returns                         |
+| -------------- | --------- | ------------------------------- |
+| Creates a Cube | None      | A reference to the created cube |
+
+**Example**
+
+``` lua
+function Start()
+    local cube = nil
+    cube = Cube()
+end
+```
+
+### Translate
