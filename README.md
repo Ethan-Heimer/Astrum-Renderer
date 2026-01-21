@@ -44,3 +44,6 @@ Starting the renderer is very simple:
 ```
 
 Astrum will execute the script inputted.
+
+## API
+### The Basics

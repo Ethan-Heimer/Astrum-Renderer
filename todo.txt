@@ -1,2 +1,1 @@
 -- Reorganize Rendering Interface - Decouple Camera Class From Renderer
--- Create "Lua Layers" to better develop the Lua API
