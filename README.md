@@ -50,12 +50,10 @@ Starting the renderer is very simple:
 Astrum will execute the script inputted.
 
 ## API
-### The Basics
+### Getting Started
 
 When a script is ran with Astrum, it will first seek out 2 special user-defined
-functons: `Start` and `Update`. These are **Anchors**, and where code that uses
-the Astrum's API Should live.
-
+functons: `Start` and `Update`. 
 #### -- Start --
 ``` lua
 function Start()
@@ -78,10 +76,13 @@ function Update()
 end
 ```
 
-**`Update` runs foever.**
+**`Update` Runs Continuously.**
 
-`Update` is called continuously throughout the life span of Astrum. `Update`'s
+`Update` is called throughout the life span of Astrum. `Update`'s
 pourpose is to **Change** the state of the script, gloabl variables, and Astrum
 objects. 
 
+These are **Anchors**, and Astrum's way of interacting with the provided lua
+script. All code that uses any of Asrtum's api should be placed in these functions.
 
+### Rendering
