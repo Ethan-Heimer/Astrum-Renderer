@@ -50,11 +50,21 @@ Starting the renderer is very simple:
 Astrum will execute the script inputted.
 
 ## API
+### Script Sections
 
-<details>
-    <summary><bold>Script Sections</bold></summary>
-    
+When a script is ran with Astrum, it will first seek out 2 special user-defined
+functons: `Start` and `Update`
 
-  
-</details>
+``` lua
+function Start()
+
+end
+```
+
+``` lua 
+function Update()
+
+end
+```
+
 
