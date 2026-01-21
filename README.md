@@ -55,13 +55,19 @@ Astrum will execute the script inputted.
 When a script is ran with Astrum, it will first seek out 2 special user-defined
 functons: `Start` and `Update`
 
-#### Start
+#### -- Start --
 ``` lua
 function Start()
 
 end
 ```
 
+`Start` is called only once when a script is **Loaded** or **Reloaded (Saved)**.
+`Start` is intened to be used to initialize Astrum's initial state, i.e. define
+global variable's values and create objects that will be persistant through Astrum's 
+lifespan.
+
+#### -- Update --
 ``` lua 
 function Update()
 
