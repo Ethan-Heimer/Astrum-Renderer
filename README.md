@@ -86,3 +86,6 @@ These are **Anchors**, and Astrum's way of interacting with the provided lua
 script. All code that uses any of Asrtum's api should be placed in these functions.
 
 ### Rendering
+
+There's a lot that renderer's can do, therefore, Astrum's API is split into multiple 
+**SubAPI's**
