@@ -63,10 +63,13 @@ function Start()
 end
 ```
 
+**`Start` Runs once when the script is loaded.**
+
 `Start` is called only once when a script is **Loaded** or **Reloaded (Saved)**.
 `Start` is intened to be used to initialize Astrum's initial state, i.e. define
 global variable's values and create objects that will be persistant through Astrum's 
 lifespan.
+
 
 #### -- Update --
 ``` lua 
@@ -74,6 +77,9 @@ function Update()
 
 end
 ```
+
+**`Update` runs foever.**
+
 `Update` is called continuously throughout the life span of Astrum. `Update`'s
 pourpose is to **Change** the state of the script, gloabl variables, and Astrum
 objects. 
