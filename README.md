@@ -95,7 +95,7 @@ script. All code that uses any of Asrtum's api should be placed in these functio
 | ------------ | ----------- |
 | None         | Create and Mutate Mesh's |
 
-### Cube
+### -- Cube --
 
 **Description:** Creates A Cube Mesh.
 
@@ -116,11 +116,20 @@ function Start()
 end
 ```
 
-### Translate
+### -- Translate --
 
-| Description    | Arguments     | Returns |
-| -------------- | ------------- | ------- |
-| Moves a mesh   | Mesh, X, Y, Z | nil     |
+**Description:** Moves a Mesh.
+
+**Arguments:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| Mesh Reference                  | Address |
+| X Position                      | Number  |
+| Y Position                      | Number  |
+| Z Position                      | Number  |
+
+**Returns:** None.
 
 **Example**
 
