@@ -88,12 +88,14 @@ script. All code that uses any of Asrtum's api should be placed in these functio
 ## Rendering
 
 There's a lot that renderer's can do, therefore, Astrum's API is split into multiple 
-**SubAPI's**.
+**Sub-API's**.
 
-### Mesh SubAPI
+### Mesh Sub-API
 
-| SubAPI Table | Description |
+| Sub-API Table | Description |
 | ------------ | ----------- |
 | None         | Create and Mutate Mesh's |
+
+`Cube()`
 
 
