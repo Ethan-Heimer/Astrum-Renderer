@@ -1,7 +1,7 @@
 # Astrum Renderer 
 ![A Wave Rendered with Astrum](wave.png)
 
-## Introduction
+# Introduction
 Astrum is a basic 3D renderer scriptable with lua. It takes in an input script
 That defines the behavior of the renderer.
 
@@ -9,9 +9,9 @@ One of the biggest goals with Astrum is to provide a very basic and intuitive 3D
 rendering interface that anyone with any skill level can use. Because of this, Lua
 scripts are used to provide a high level interface to Astrum's rendering capabilities.
 
-## Install
+# Install
 
-### Dependendicies
+## Dependendicies
 
 - OpenGL
 - GLFW
@@ -19,7 +19,7 @@ scripts are used to provide a high level interface to Astrum's rendering capabil
 
 (I plan on eventually handling these dependicies through cmake)
 
-### Building
+## Building
 
 ```
 git clone https://github.com/Ethan-Heimer/Astrum-Renderer
@@ -39,7 +39,7 @@ mkdir build
 ```
 The binary can be found in `./build/bin/`
 
-## Use
+# Use
 
 Starting the renderer is very simple:
 
@@ -49,12 +49,12 @@ Starting the renderer is very simple:
 
 Astrum will execute the script inputted.
 
-## API
-### Getting Started
+# API
+## Getting Started
 
 When a script is ran with Astrum, it will first seek out 2 special user-defined
 functons: `Start` and `Update`. 
-#### -- Start --
+### -- Start --
 ``` lua
 function Start()
 
@@ -69,7 +69,7 @@ global variable's values and create objects that will be persistant through Astr
 lifespan.
 
 
-#### -- Update --
+### -- Update --
 ``` lua 
 function Update()
 
@@ -85,27 +85,10 @@ objects.
 These are **Anchors**, and Astrum's way of interacting with the provided lua
 script. All code that uses any of Asrtum's api should be placed in these functions.
 
-### Rendering
+## Rendering
 
 There's a lot that renderer's can do, therefore, Astrum's API is split into multiple 
 **SubAPI's**.
 
-<details>
-    <summary>Mesh API</summary>
-  
-</details>
 
-<details>
-    <summary>Material API</summary>
-  
-</details>
 
-<details>
-    <summary>Input API</summary>
-  
-</details>
-
-<details>
-    <summary>Camera API</summary>
-  
-</details>
