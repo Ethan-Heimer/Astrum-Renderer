@@ -92,6 +92,7 @@ There's a lot that renderer's can do, therefore, Astrum's API is split into mult
 
 <details>
     <summary>Mesh API</summary>
+
     **Description:** Create and Mutate Mesh's.
     **SubTable: none**.
 
