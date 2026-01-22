@@ -480,9 +480,9 @@ end
 
 | Description                     | Type              |
 | ------------------------------- | ----------------- |
-| forward position                | Number (Key Code) |
-| straif position                 | Number (Key Code) |
-| up position                     | Number (Key Code) |
+| forward position                | Number            |
+| straif position                 | Number            |
+| up position                     | Number            |
 
 **Returns:** None.
 
@@ -504,9 +504,9 @@ end
 
 | Description                     | Type              |
 | ------------------------------- | ----------------- |
-| forward position                | Number (Key Code) |
-| straif position                 | Number (Key Code) |
-| up position                     | Number (Key Code) |
+| forward position                | Number            |
+| straif position                 | Number            |
+| up position                     | Number            |
 
 **Returns:** None.
 
@@ -528,8 +528,8 @@ end
 
 | Description                     | Type              |
 | ------------------------------- | ----------------- |
-| pitch                           | Number (Key Code) |
-| yaw                             | Number (Key Code) |
+| pitch                           | Number            |
+| yaw                             | Number            |
 
 **Returns:** None.
 
@@ -551,7 +551,7 @@ end
 
 | Description                     | Type              |
 | ------------------------------- | ----------------- |
-| zoom                            | Number (Key Code) |
+| zoom                            | Number            |
 
 **Returns:** None.
 
@@ -575,8 +575,8 @@ end
 
 | Description                     | Type              |
 | ------------------------------- | ----------------- |
-| Pitch Rotation                  | Number (Key Code) |
-| Yaw Rotation                    | Number (Key Code) |
+| Pitch Rotation                  | Number            |
+| Yaw Rotation                    | Number            |
 
 
 **Example**
