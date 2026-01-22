@@ -89,9 +89,9 @@ objects.
 These are **Anchors**, and Astrum's way of interacting with the provided lua
 script. All code that uses any of Asrtum's api should be placed in these functions.
 
-## Mesh Sub-API
+## Mesh
 
-| Sub-API Table | Description              |
+| Sub-API Name  | Description              |
 | ------------- | ------------------------ |
 | None          | Create and Mutate Mesh's |
 
@@ -202,9 +202,9 @@ end
 
 <br>
 
-## Material Sub-API
+## Material
 
-| Sub-API Table | Description              |
+| Sub-API Name  | Description              |
 | ------------- | ------------------------ |
 | Material      | Mutate a Mesh's Material |
 
@@ -373,6 +373,94 @@ function Start()
 
     local material = Material.Of(cube)
     Material.SetShine(material, 255, 20, 120)
+end
+```
+
+<br>
+
+## Input
+
+| Sub-API Name  | Description                  |
+| ------------- | ---------------------------- |
+| Input         | Get Keyboard and Mouse Input |
+
+### Globals
+
+**Key Codes**
+
+| Name          | Value |
+| ------------- | ----: |
+| Space_Key     | 32    |
+| 0_Key         | 48    |
+| 1_Key         | 49    |
+| 2_Key         | 50    |
+| 3_Key         | 51    |
+| 4_Key         | 52    |
+| 5_Key         | 53    |
+| 6_Key         | 54    |
+| 7_Key         | 55    |
+| 8_Key         | 56    |
+| 9_Key         | 57    |
+| A_Key         | 65    |
+| B_Key         | 66    |
+| C_Key         | 67    |
+| D_Key         | 68    |
+| E_Key         | 69    |
+| F_Key         | 70    |
+| G_Key         | 71    |
+| H_Key         | 72    |
+| I_Key         | 73    |
+| J_Key         | 74    |
+| K_Key         | 75    |
+| L_Key         | 76    |
+| M_Key         | 77    |
+| N_Key         | 78    |
+| O_Key         | 79    |
+| P_Key         | 80    |
+| Q_Key         | 81    |
+| R_Key         | 82    |
+| S_Key         | 83    |
+| T_Key         | 84    |
+| U_Key         | 85    |
+| V_Key         | 86    |
+| W_Key         | 87    |
+| X_Key         | 88    |
+| Y_Key         | 89    |
+| Z_Key         | 90    |
+| Shift_Key     | 340   |
+
+**Cursor Values**
+
+| Name           | Description                                    |
+| -------------- | ---------------------------------------------: |
+| CursorX        | The Cursor's X Position                        |
+| CursorY        | The Cursor's Y Position                        |
+| CursorDeltaX   | The Change in the Cursor's X Position          |
+| CursorDeltaY   | The Change in the Cursor's Y Position          |
+
+### -- IsKeyPressed --
+
+**Description:** Checks if a keycode is pressed.
+
+**Arguments:** 
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| Key Code                        | Number (Key Code) |
+
+**Returns:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
+| If The Key is Pressed           | Bool    |
+
+**Example**
+
+``` lua
+function Update()
+    if(Input.IsKeyPressed(Input.A_Key)) then
+        Print("Key is Pressed")
+    end
 end
 ```
 
