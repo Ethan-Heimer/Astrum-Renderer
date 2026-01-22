@@ -465,3 +465,126 @@ end
 ```
 
 <br>
+
+## Camera
+
+| Sub-API Name  | Description                   |
+| ------------- | ----------------------------- |
+| Camera        | Mutates the Camera's Potition |
+
+### -- Position --
+
+**Description:** Sets the camera's position.
+
+**Arguments:** 
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| forward position                | Number (Key Code) |
+| straif position                 | Number (Key Code) |
+| up position                     | Number (Key Code) |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    Camera.Position(10, 0, 0)
+end
+```
+
+<br>
+
+### -- Move --
+
+**Description:** Increments the camera's position.
+
+**Arguments:** 
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| forward position                | Number (Key Code) |
+| straif position                 | Number (Key Code) |
+| up position                     | Number (Key Code) |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    Camera.Move(10, 0, 0)
+end
+```
+
+<br>
+
+### -- Rotate --
+
+**Description:** Rotates the camera.
+
+**Arguments:** 
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| pitch                           | Number (Key Code) |
+| yaw                             | Number (Key Code) |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    Camera.Rotate(45, 10)
+end
+```
+
+<br>
+
+### -- Zoom --
+
+**Description:** Changed the camera's FOV.
+
+**Arguments:** 
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| zoom                            | Number (Key Code) |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    Camera.Zoom(90)
+end
+```
+
+<br>
+
+### -- GetRotation --
+
+**Description:** Returns the current rotation of the camera.
+
+**Arguments:** None.
+
+**Returns:** 
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| Pitch Rotation                  | Number (Key Code) |
+| Yaw Rotation                    | Number (Key Code) |
+
+
+**Example**
+
+``` lua
+function Start()
+    local pitch, yaw = Camera.GetRotation()
+end
+```
+
+<br>
