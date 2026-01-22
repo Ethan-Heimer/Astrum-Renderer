@@ -3,7 +3,7 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-set(NAME Renderer)
+set(NAME Astrum)
 project(${NAME} VERSION 1.0.0 LANGUAGES CXX)
 
 # Set C++ standard (e.g., C++17, C++20)
