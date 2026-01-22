@@ -432,7 +432,7 @@ end
 **Cursor Values**
 
 | Name           | Description                                    |
-| -------------- | ---------------------------------------------: |
+| -------------- | ---------------------------------------------- |
 | CursorX        | The Cursor's X Position                        |
 | CursorY        | The Cursor's Y Position                        |
 | CursorDeltaX   | The Change in the Cursor's X Position          |
