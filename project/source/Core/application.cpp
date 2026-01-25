@@ -75,6 +75,10 @@ void Core::Application::Exit(){
     exit = true;
 }
 
+unsigned int Core::Application::GetDeltaTime(){
+    return deltaTime;
+}
+
 void GetWindowSize(GLFWwindow* window, int* width, int* height){
     glfwGetWindowSize(window, width, height);
 }
@@ -103,8 +107,15 @@ void Core::Application::Run(){
     ExecuteDelegate(&startEvent);
 
     while(!exit){ 
+        // Get the current time point from the system clock
         glfwPollEvents();
+        
+        auto start_ms = TimeStamp();
+
         ExecuteDelegate(&updateEvent);
+        
+        auto end_ms = TimeStamp();
+        deltaTime = end_ms - start_ms;
     }
 }
 
@@ -144,4 +155,10 @@ void Core::Application::ExecuteDelegate(Delegate* delegate){
 
 void Core::Application::SubscribeTo(Delegate* delegate, std::function<void()> callback){
     delegate->push_back(callback);
+}
+
+unsigned long Core::Application::TimeStamp(){
+    std::chrono::system_clock::time_point now = std::chrono::system_clock::now(); 
+    std::chrono::milliseconds duration = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()); 
+    return duration.count();
 }

@@ -13,6 +13,8 @@ namespace Core{
                 void StartTimer();
                 unsigned long EndTimer();
 
+                unsigned int GetFPS();
+
             private:
                 unsigned long StartTimestamp;
         };

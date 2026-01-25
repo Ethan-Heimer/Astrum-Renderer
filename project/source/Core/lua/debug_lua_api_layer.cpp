@@ -8,6 +8,7 @@ using namespace Lua;
 void DebugAPI::OnInit(){
    Function("StartTimer", [this](){StartTimer();});
    Function("EndTimer", [this](){return EndTimer();});
+   Function("GetFPS", [this](){return GetFPS();});
 }
 
 void DebugAPI::StartTimer(){
@@ -25,4 +26,11 @@ unsigned long DebugAPI::EndTimer(){
 
     return milliseconds_since_epoch.count() - StartTimestamp;
 
+}
+
+unsigned int DebugAPI::GetFPS(){
+    if(application->GetDeltaTime() == 0)
+        return 0;
+
+    return 1000/application->GetDeltaTime();
 }

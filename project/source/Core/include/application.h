@@ -29,6 +29,8 @@ namespace Core{
             void GetWindowSize(GLFWwindow* window, int* width, int* height);
             std::string GetArgument(const std::string& name);
 
+            unsigned int GetDeltaTime();
+
             template<typename T>
             void RegisterResource(void* resource){ 
                 std::string key = typeid(T).name();
@@ -57,6 +59,8 @@ namespace Core{
 
             GLFWwindow* window;
 
+            unsigned int deltaTime;
+
             bool exit;
 
             void CreateWindow();
@@ -71,6 +75,8 @@ namespace Core{
             void ExecuteDelegate(Delegate* delegate);
 
             void SubscribeTo(Delegate* delegate, function<void()> callback);
+
+            unsigned long TimeStamp();
     };
 }
 
