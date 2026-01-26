@@ -106,16 +106,29 @@ void Core::Application::Initialize(){
 void Core::Application::Run(){
     ExecuteDelegate(&startEvent);
 
-    while(!exit){ 
-        // Get the current time point from the system clock
-        glfwPollEvents();
-        
-        auto start_ms = TimeStamp();
+    unsigned long startTime = TimeStamp();
+    unsigned long currentTime = TimeStamp();
 
-        ExecuteDelegate(&updateEvent);
-        
-        auto end_ms = TimeStamp();
-        deltaTime = end_ms - start_ms;
+    unsigned long diff = 0;
+
+    while(!exit){ 
+        glfwPollEvents(); 
+
+
+        if(diff >= 1000/60){
+            unsigned long deltaTimeStampStart = TimeStamp();
+            ExecuteDelegate(&updateEvent); 
+
+            startTime = currentTime;
+            diff = 0;
+
+            unsigned long deltaTimeStampEnd = TimeStamp();
+            deltaTime = deltaTimeStampEnd - deltaTimeStampStart;
+        }
+
+        currentTime = TimeStamp();
+        diff = currentTime - startTime;
+            
     }
 }
 
