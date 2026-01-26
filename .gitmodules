@@ -4,6 +4,3 @@
 [submodule "project/libs/sol"]
 	path = project/libs/sol
 	url = https://github.com/ThePhD/sol2
-[submodule "project/libs/luajit"]
-	path = project/libs/luajit
-	url = https://github.com/zhaozg/luajit-cmake
