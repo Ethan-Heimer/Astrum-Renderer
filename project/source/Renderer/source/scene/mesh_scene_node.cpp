@@ -1,4 +1,5 @@
 #include "scene/mesh_scene_node.h"
+#include "renderer/renderer.h"
 
 using namespace Renderer;
 using namespace Command;
