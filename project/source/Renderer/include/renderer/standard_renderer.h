@@ -21,6 +21,8 @@ namespace Renderer{
             void Draw(ICommandQueue* queue) override;
 
             void DrawMesh(const Mesh* mesh, const Transform* transform, Material* material) override;
+            void SetClearColor
+                (const unsigned char& r, const unsigned char& g, const unsigned char& b) override;
 
             Camera& GetCamera() override;
 
@@ -30,6 +32,8 @@ namespace Renderer{
 
             mat4 viewMatrix{1};
             mat4 projection{1};
+
+            vec3 clearColor;
     };
 }
 

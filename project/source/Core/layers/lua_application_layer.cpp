@@ -7,7 +7,7 @@
 #include "lua/input_lua_api_layer.h"
 #include "lua/camera_lua_api_layer.h"
 #include "lua/debug_lua_api_layer.h"
-
+#include "lua/scene_lua_api_layer.h"
 
 using namespace Core;
 using namespace Renderer;
@@ -20,6 +20,7 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
     api.AddLayer<Lua::InputAPI>("Input");
     api.AddLayer<Lua::CameraAPI>("Camera");
     api.AddLayer<Lua::DebugAPI>("Debug");
+    api.AddLayer<Lua::SceneAPI>("Scene");
 
     application->SubscribeToInitialize([this](){
         // -- Initialize Sol and Load Script

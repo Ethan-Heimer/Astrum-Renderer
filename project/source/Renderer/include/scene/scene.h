@@ -45,6 +45,8 @@ namespace Renderer{
                 RootSceneNode(SceneNode* parent);
 
                 void OnRendered(ICommandQueue* commandQueue) override;
+                void SetSkyColor(const unsigned char r, const unsigned char g, const unsigned char b);
+
             private:
                 glm::vec3 skyColor;  
 
@@ -57,6 +59,8 @@ namespace Renderer{
 
                 void Render(ICommandQueue* renderer);
                 void Clear();
+
+                RootSceneNode* GetRootNode();
 
                 template<class T, class... U>
                 T* AddChildAtRoot(U... args){

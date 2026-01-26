@@ -34,7 +34,7 @@ void StandardRenderer::Draw(ICommandQueue* queue){
     float perspectiveRatio = (float)width/(float)height;
     projection = perspective(radians(camera.GetZoom()), perspectiveRatio, .1f, 100.0f);
 
-    glClearColor(0.2, 0.2, 0.2, 1.0f);
+    glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     dirLight.Ambient = {.8, .8, .8};
@@ -102,6 +102,11 @@ void StandardRenderer::DrawMesh(const Mesh* mesh, const Transform* transform, Ma
 
     glDrawElements(GL_TRIANGLES, mesh->GetIndiciesCount(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+}
+
+void StandardRenderer::SetClearColor
+        (const unsigned char& r, const unsigned char& g, const unsigned char& b){
+    clearColor = {r/255.0, g/255.0, b/255.0};
 }
 
 Camera& StandardRenderer::GetCamera(){ 

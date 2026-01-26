@@ -7,9 +7,6 @@
 #include "transform.h"
 #include "material.h"
 
-#include <queue>
-#include <memory>
-
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
@@ -27,8 +24,11 @@ namespace Renderer{
             virtual Camera& GetCamera() = 0;
 
             virtual void DrawMesh(const Mesh* mesh, const Transform* transform, Material* material) = 0; 
+            virtual void SetClearColor
+                (const unsigned char& r, const unsigned char& g, const unsigned char& b) = 0;
 
             virtual void Draw(ICommandQueue* queue) = 0;
+
         protected:
             Camera camera{};
             GLFWwindow* window;

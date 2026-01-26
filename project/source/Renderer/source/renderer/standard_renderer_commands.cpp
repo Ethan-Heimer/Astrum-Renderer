@@ -12,3 +12,11 @@ DrawMesh::DrawMesh(const Mesh* mesh, const Transform* transform, Material* mater
 void DrawMesh::Execute(IRenderer* renderer){
     renderer->DrawMesh(this->mesh, this->transform, this->material);
 }
+
+SetClearColor::SetClearColor(const unsigned char r, const unsigned char g, const unsigned char b) :
+    r(r), g(g), b(b){};
+
+void SetClearColor::Execute(IRenderer* renderer){
+    renderer->SetClearColor(r, g, b);
+}
+
