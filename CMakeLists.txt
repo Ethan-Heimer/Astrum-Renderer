@@ -21,6 +21,12 @@ set(GLFW_INSTALL OFF CACHE INTERNAL "Generate installation target")
 
 # Set LuaJit Dir
 set(LUAJIT_DIR "/usr/include/luajit-2.1")
+set(LUAJIT_LIB "luajit-5.1")
+
+if(NOT IS_DIRECTORY ${LUAJIT_DIR})
+    message("LUA Jit Directiory not found! Please install LuaJIT or place luajit-2.1
+    into /usr/include/. Expecting ${LUAJIT_DIR}")
+endif()
 
 # Set Use Modern OpenGL
 if(POLICY CMP0072)
@@ -63,7 +69,7 @@ target_include_directories(${NAME} PRIVATE ${LUAJIT_DIR})
 # Found Libs Targets Packages
 target_link_libraries(${NAME} PRIVATE OpenGL::OpenGL)
 target_link_libraries(${NAME} PRIVATE glfw)
-target_link_libraries(${NAME} PRIVATE luajit-5.1)
+target_link_libraries(${NAME} PRIVATE ${LUAJIT_LIB})
 
 target_compile_definitions(${NAME} PRIVATE SOL_LUAJIT=1)
 
