@@ -20,7 +20,7 @@ set(GLFW_BUILD_DOCS OFF CACHE INTERNAL "Build the GLFW documentation")
 set(GLFW_INSTALL OFF CACHE INTERNAL "Generate installation target")
 
 # Set LuaJit Dir
-set(LUAJIT_DIR "/usr/share/luajit-2.1")
+set(LUAJIT_DIR "/usr/include/luajit-2.1")
 
 # Set Use Modern OpenGL
 if(POLICY CMP0072)
@@ -58,12 +58,12 @@ target_include_directories(${NAME} PUBLIC
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/sol/include)
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/include)
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/glfw/include)
-target_include_directories(${NAME} PRIVATE ${LUAJIT_INCLUDE_DIRS})
+target_include_directories(${NAME} PRIVATE ${LUAJIT_DIR})
 
 # Found Libs Targets Packages
 target_link_libraries(${NAME} PRIVATE OpenGL::OpenGL)
 target_link_libraries(${NAME} PRIVATE glfw)
-target_link_libraries(${NAME} PRIVATE ${LUAJIT_LIBRARIES})
+target_link_libraries(${NAME} PRIVATE luajit-5.1)
 
 target_compile_definitions(${NAME} PRIVATE SOL_LUAJIT=1)
 
