@@ -1,6 +1,7 @@
 #ifndef RENDERER_COMMANDS_H
 #define RENDERER_COMMANDS_H
 
+#include <functional>
 #include <memory>
 #include <queue>
 
@@ -10,9 +11,13 @@ namespace Renderer{
     class IRenderer; 
 
     namespace Command{
-        class ICommand{
+        class Command{
             public: 
-                virtual void Execute(IRenderer* renderer) = 0;
+                Command(std::function<void(IRenderer*)> function) : function(function){};
+                void Execute(IRenderer* renderer);
+
+            private:
+                std::function<void(IRenderer*)> function;
         };
 
         class ICommandQueue{
@@ -20,19 +25,14 @@ namespace Renderer{
                 ICommandQueue(){};
                 virtual ~ICommandQueue(){};
 
-                template<typename T, typename... U>
-                void Queue(U... args){
-                    unique_ptr<T> commandRef = make_unique<T>(args...); 
-                    Queue(std::move(commandRef));
-                }
-                virtual std::unique_ptr<ICommand> Dequeue() = 0; 
+                virtual void Queue(std::function<void(IRenderer*)> function) = 0;
+                virtual std::unique_ptr<Command> Dequeue() = 0; 
 
                 virtual bool IsEmpty() const = 0;
 
             protected:
-                std::queue<std::unique_ptr<ICommand>> renderQueue;
+                std::queue<std::unique_ptr<Command>> renderQueue;
 
-                virtual void Queue(std::unique_ptr<ICommand> command) = 0;
         };
     }
 }

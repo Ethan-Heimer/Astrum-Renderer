@@ -50,7 +50,7 @@ void StandardRenderer::Draw(ICommandQueue* queue){
     pointLight.KQuadratic = .1;
  
     while(!queue->IsEmpty()){
-        std::unique_ptr<ICommand> command = queue->Dequeue();
+        std::unique_ptr<Command::Command> command = queue->Dequeue();
         command->Execute(this);
     }
 

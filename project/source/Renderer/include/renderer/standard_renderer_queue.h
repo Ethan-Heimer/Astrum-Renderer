@@ -10,12 +10,12 @@ namespace Renderer{
     namespace Command{
         class StandardRenderQueue : public ICommandQueue{
             public: 
-                std::unique_ptr<ICommand> Dequeue() override; 
+                void Queue(function<void(IRenderer*)> command) override;
+                std::unique_ptr<Command> Dequeue() override; 
         
                 bool IsEmpty() const override; 
 
             private:
-                void Queue(unique_ptr<ICommand> command) override;
         };
 
     }
