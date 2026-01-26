@@ -26,7 +26,6 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
         api.LoadScript(); 
         api.StartScript();
         api.StartScriptWatcher();
-
     });
 
     application->SubscribeToUpdate([this](){ 

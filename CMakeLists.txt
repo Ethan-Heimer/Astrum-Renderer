@@ -13,7 +13,25 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-# Grab All  Source Files
+# Set GLFW Build features off
+set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
+set(GLFW_BUILD_TESTS OFF CACHE INTERNAL "Build the GLFW test programs")
+set(GLFW_BUILD_DOCS OFF CACHE INTERNAL "Build the GLFW documentation")
+set(GLFW_INSTALL OFF CACHE INTERNAL "Generate installation target")
+
+# Set LuaJit Dir
+set(LUAJIT_DIR "/usr/share/luajit-2.1")
+
+# Set Use Modern OpenGL
+if(POLICY CMP0072)
+  cmake_policy(SET CMP0072 NEW)
+endif()
+
+#find packages
+find_package(OpenGL REQUIRED)
+find_package(Lua51 REQUIRED)
+
+# Grab All Source Files
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_SOURCE_DIR}/project/source/*.cpp")
 
 # Add source files for the executable
@@ -22,26 +40,8 @@ add_executable(${NAME}
     ${SOURCE_FILES}
 )
 
-# message("Ensuring Json Parser is installed")
-# include(FetchContent)
-# FetchContent_Declare(
-#   Json
-#   GIT_REPOSITORY "https://github.com/nlohmann/json"
-#   GIT_TAG "origin/master"
-#   SOURCE_DIR "${CMAKE_SOURCE_DIR}/project/libs/external/json"
-# )
-# FetchContent_MakeAvailable(Json)
-if(NOT IS_DIRECTORY ${CMAKE_SOURCE_DIR}/project/libs/external/sol) 
-    message("Ensuring Sol is installed")
-    include(FetchContent)
-    FetchContent_Declare(
-        Sol2 
-        GIT_REPOSITORY "https://github.com/ThePhD/sol2"
-        GIT_TAG "origin/main"
-        SOURCE_DIR "${CMAKE_SOURCE_DIR}/project/libs/external/sol"
-    )
-    FetchContent_MakeAvailable(Sol2)
-endif()
+add_subdirectory(./project/libs/glfw)
+add_subdirectory(./project/libs/sol)
 
 target_include_directories(${NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/project/source/Renderer/include
@@ -55,23 +55,17 @@ target_include_directories(${NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/project/source/Core/include
 )
 
-target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/external/sol/include)
+target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/sol/include)
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/include)
+target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/glfw/include)
+target_include_directories(${NAME} PRIVATE ${LUAJIT_INCLUDE_DIRS})
 
-# Lua and GLFW are libs that need to be installed. 
+# Found Libs Targets Packages
+target_link_libraries(${NAME} PRIVATE OpenGL::OpenGL)
+target_link_libraries(${NAME} PRIVATE glfw)
+target_link_libraries(${NAME} PRIVATE ${LUAJIT_LIBRARIES})
 
-target_link_libraries(${NAME} glfw)
-target_link_libraries(${NAME} GLU)
-target_link_libraries(${NAME} GL)
-target_link_libraries(${NAME} Xrandr)
-target_link_libraries(${NAME} Xxf86vm)
-target_link_libraries(${NAME} Xi)
-target_link_libraries(${NAME} Xinerama)
-target_link_libraries(${NAME} X11)
-target_link_libraries(${NAME} rt)
-target_link_libraries(${NAME} dl)
-target_link_libraries(${NAME} lua)
-
+target_compile_definitions(${NAME} PRIVATE SOL_LUAJIT=1)
 
 file(COPY "${CMAKE_SOURCE_DIR}/project/source/assets/"
      DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets"

@@ -3,7 +3,7 @@
 #include "console/console.h"
 #include "file_watcher.h"
 #include "input.h"
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 #include <iostream>
 
 Core::UtilsApplicationLayer::UtilsApplicationLayer(Application* application)

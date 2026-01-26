@@ -19,7 +19,7 @@ Application* API::GetApplication() const{
 }
 
 void API::LoadScript(){ 
-    lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::io, sol::lib::math, sol::lib::table);
+    lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::io, sol::lib::math, sol::lib::table, sol::lib::jit);
     try{
         std::string file = this->application->GetArgument("s");
         if(file.empty())
