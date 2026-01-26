@@ -33,7 +33,7 @@ namespace Renderer{
                     return child;
                 }
 
-                virtual void OnRendered(IRenderQueue* renderer) = 0; 
+                virtual void OnRendered(ICommandQueue* commandQueue) = 0; 
 
             protected:
                 vector<SceneNode*> children;
@@ -44,7 +44,7 @@ namespace Renderer{
             public:
                 RootSceneNode(SceneNode* parent);
 
-                void OnRendered(IRenderQueue* renderer) override;
+                void OnRendered(ICommandQueue* commandQueue) override;
             private:
                 glm::vec3 skyColor;  
 
@@ -55,7 +55,7 @@ namespace Renderer{
                 Scene();
                 ~Scene();
 
-                void Render(IRenderQueue* renderer);
+                void Render(ICommandQueue* renderer);
                 void Clear();
 
                 template<class T, class... U>
@@ -67,7 +67,7 @@ namespace Renderer{
             private:
                 RootSceneNode* root;
                 
-                void RenderNode(IRenderQueue* renderer, SceneNode& node);
+                void RenderNode(ICommandQueue* renderer, SceneNode& node);
                 void ClearNode(SceneNode& node);
         };
     }

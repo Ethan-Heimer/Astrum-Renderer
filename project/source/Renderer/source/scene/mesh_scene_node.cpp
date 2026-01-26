@@ -1,8 +1,10 @@
 #include "scene/mesh_scene_node.h"
+#include "renderer/standard_renderer_commands.h"
 #include <memory>
 #include <iostream>
 
 using namespace Renderer;
+using namespace Command;
 using namespace Scene;
 using namespace std;
 
@@ -21,8 +23,8 @@ MeshSceneNode::~MeshSceneNode(){
     }
 };
 
-void MeshSceneNode::OnRendered(IRenderQueue* renderer){
-    renderer->QueueDraw(mesh, &transform, material);
+void MeshSceneNode::OnRendered(ICommandQueue* renderer){
+    renderer->Queue<DrawMesh>(mesh, &transform, material);
 }
 
 void MeshSceneNode::UseUniqueMaterial(){

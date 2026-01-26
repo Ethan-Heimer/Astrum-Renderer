@@ -3,6 +3,7 @@
 
 #include "camera.h"
 #include "mesh.h"
+#include "renderer/render_commands.h"
 #include "transform.h"
 #include "material.h"
 
@@ -12,42 +13,24 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
+using namespace Renderer::Command;
+
 namespace Renderer{
-
-    class RenderData{
-        public:
-            RenderData(const Mesh* mesh, const Transform* transform, Material* material);
-
-            const Renderer::Mesh* mesh;
-            const Renderer::Transform* transform;
-            Renderer::Material* material;
-    };
-
-    class IRenderQueue{
-        public:
-            virtual void QueueDraw(const Mesh* mesh, const Transform* transform, Material* material) = 0;
-            virtual std::unique_ptr<RenderData> DequeueData() = 0; 
-
-            virtual bool IsEmpty() const = 0;
-        protected:
-            std::queue<std::unique_ptr<RenderData>> renderQueue;
-    };
+    class IRenderer;
 
     class IRenderer{
         public:
             IRenderer(GLFWwindow* window);
             virtual ~IRenderer();
 
-            IRenderQueue* GetQueue() const;
-
             virtual void Initalize() = 0;
-            virtual void Draw() = 0; 
             virtual Camera& GetCamera() = 0;
 
+            virtual void DrawMesh(const Mesh* mesh, const Transform* transform, Material* material) = 0; 
+
+            virtual void Draw(ICommandQueue* queue) = 0;
         protected:
             Camera camera{};
-
-            std::unique_ptr<IRenderQueue> queue; 
             GLFWwindow* window;
     };
 

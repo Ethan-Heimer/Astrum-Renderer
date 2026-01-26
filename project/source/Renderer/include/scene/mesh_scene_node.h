@@ -11,7 +11,7 @@ namespace Renderer{
                 MeshSceneNode(SceneNode* parent, Mesh* mesh, Material* material);
                 ~MeshSceneNode() override;
 
-                void OnRendered(IRenderQueue* renderer) override;
+                void OnRendered(ICommandQueue* renderer) override;
 
                 void UseUniqueMaterial();
 

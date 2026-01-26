@@ -1,19 +1,20 @@
 #include "renderer/standard_renderer_queue.h"
+#include "renderer/render_commands.h"
 #include <memory>
 
 using namespace Renderer;
 using namespace std;
+using namespace Command;
 
-void StandardRenderQueue::QueueDraw(const Mesh* mesh, const Transform* transform, Material* material){
-    unique_ptr<RenderData> data = make_unique<RenderData>(mesh, transform, material);
-    this->renderQueue.push(std::move(data));
+void StandardRenderQueue::Queue(unique_ptr<ICommand> command){
+    this->renderQueue.push(std::move(command));
 }
 
-unique_ptr<RenderData> StandardRenderQueue::DequeueData(){
-    unique_ptr<RenderData> data = std::move(renderQueue.front());
+unique_ptr<ICommand> StandardRenderQueue::Dequeue(){
+    unique_ptr<ICommand> command = std::move(renderQueue.front());
     renderQueue.pop();
 
-    return std::move(data);
+    return std::move(command);
 }
 
 bool StandardRenderQueue::IsEmpty() const{

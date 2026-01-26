@@ -3,6 +3,7 @@
 
 #include "application_layer.h"
 #include "asset_manager.h"
+#include "renderer/render_commands.h"
 #include "renderer/renderer.h"
 #include "scene/scene.h"
 
@@ -16,6 +17,7 @@ namespace Core{
             Renderer::AssetManager assetManager;
             Renderer::Scene::Scene scene;
 
+            Renderer::Command::ICommandQueue* commandQueue;
             Renderer::IRenderer* renderer;
     };
 }

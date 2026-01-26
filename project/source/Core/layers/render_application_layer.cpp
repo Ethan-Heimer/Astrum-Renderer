@@ -23,7 +23,8 @@ using namespace Scene;
 Core::RendererApplicationLayer::RendererApplicationLayer(Application* application)
     : ApplicationLayer(application), assetManager(), scene(){
 
-    renderer = new StandardRenderer<StandardRenderQueue>(application->GetWindow());
+    renderer = new StandardRenderer(application->GetWindow());
+    commandQueue = new StandardRenderQueue();
 
     application->RegisterResource<Renderer::IRenderer>(renderer);
     application->RegisterResource<Renderer::AssetManager>(&assetManager);
@@ -49,11 +50,12 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
         });
 
     application->SubscribeToUpdate([this](){
-            scene.Render(this->renderer->GetQueue());
-            this->renderer->Draw();
+            scene.Render(commandQueue);
+            this->renderer->Draw(commandQueue);
         });
 }
 
 Core::RendererApplicationLayer::~RendererApplicationLayer(){
+    delete commandQueue;
     delete renderer;
 }
