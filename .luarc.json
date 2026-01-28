@@ -1,6 +1,6 @@
 {
   "diagnostics": {
     "globals": ["Cube", "Material", "Translate", "Rotate", "Scale", "Input",
-                "Camera"]
+                "Camera", "Scene"]
   }
 }

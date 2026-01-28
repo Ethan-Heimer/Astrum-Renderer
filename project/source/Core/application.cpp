@@ -1,9 +1,4 @@
 #include "application.h"
-#include <getopt.h>
-#include <iostream>
-#include <algorithm>
-#include <iterator>
-#include <typeinfo>
 
 #include "console/console.h"
 #include "layers/lua_application_layer.h"

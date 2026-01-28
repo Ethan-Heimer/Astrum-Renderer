@@ -20,6 +20,11 @@ namespace Core{
 
                 void SetBackgroundColor(const unsigned char r, const unsigned char g, 
                         const unsigned char b);
+
+                void SetDirectionalLightDirection(float x, float y, float z);
+                void SetDirectionalLightAmbient(const unsigned char r, const unsigned char g, const unsigned char b);
+                void SetDirectionalLightSpecular(const unsigned char r, const unsigned char g, const unsigned char b);
+                void SetDirectionalLightDiffuse(const unsigned char r, const unsigned char g, const unsigned char b);
         };
     }
 }

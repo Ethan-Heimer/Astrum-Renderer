@@ -1,4 +1,5 @@
 #include "renderer/standard_renderer.h"
+#include "glm/geometric.hpp"
 
 using namespace Renderer;
 using namespace Command;
@@ -23,6 +24,19 @@ void StandardRenderer::Initalize(){
     glEnable(GL_BLEND);
     glEnable(GL_MULTISAMPLE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Init Lights
+    dirLight.Ambient = {1, 1, 1};
+    dirLight.Diffuse = {1, 1, 1};
+    dirLight.Specular = {1, 1, 0};
+    dirLight.Direction = {1, 0, 0};
+
+    pointLight.Ambient = {1, 1, 1};
+    pointLight.Diffuse = {0, 0, 0};
+    pointLight.Specular = {0, 0, 0};
+
+    pointLight.Position = {0, 0, 0};
+    pointLight.KQuadratic = .1;
 }
 
 void StandardRenderer::Draw(ICommandQueue* queue){
@@ -37,17 +51,6 @@ void StandardRenderer::Draw(ICommandQueue* queue){
     glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    dirLight.Ambient = {.8, .8, .8};
-    dirLight.Diffuse = {1, 1, 1};
-    dirLight.Specular = {1, 1, 1};
-    dirLight.Direction = {1, 1, 0};
-
-    pointLight.Ambient = {1, 1, 1};
-    pointLight.Diffuse = {0, 0, 0};
-    pointLight.Specular = {0, 0, 0};
-
-    pointLight.Position = {0, 0, 0};
-    pointLight.KQuadratic = .1;
  
     while(!queue->IsEmpty()){
         std::unique_ptr<Command::Command> command = queue->Dequeue();
@@ -100,6 +103,10 @@ void StandardRenderer::DrawMesh(const Mesh* mesh, const Transform* transform, Ma
     shader->SetMatrix4x4("view", value_ptr(viewMatrix));
     shader->SetMatrix4x4("projection", value_ptr(projection));
 
+    cout << dirLight.Ambient.r << endl;
+    cout << dirLight.Ambient.g << endl;
+    cout << dirLight.Ambient.b << endl;
+
     glDrawElements(GL_TRIANGLES, mesh->GetIndiciesCount(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
@@ -107,6 +114,25 @@ void StandardRenderer::DrawMesh(const Mesh* mesh, const Transform* transform, Ma
 void StandardRenderer::SetClearColor
         (const unsigned char& r, const unsigned char& g, const unsigned char& b){
     clearColor = {r/255.0, g/255.0, b/255.0};
+}
+
+void StandardRenderer::SetDirectionalLightDirection(float x, float y, float z){
+    vec3 dir = {x, y, z};    
+    dir = normalize(dir);
+
+    dirLight.Direction = dir;
+}
+
+void StandardRenderer::SetDirectionalLightAmbient(unsigned char r, unsigned char g, unsigned char b){
+    dirLight.Ambient = {r/255.0, g/255.0, b/255.0};
+}
+
+void StandardRenderer::SetDirectionalLightDiffuse(unsigned char r, unsigned char g, unsigned char b){
+    dirLight.Diffuse = {r/255.0, g/255.0, b/255.0};
+}
+
+void StandardRenderer::SetDirectionalLightSpecular(unsigned char r, unsigned char g, unsigned char b){
+    dirLight.Specular = {r/255.0, g/255.0, b/255.0};
 }
 
 Camera& StandardRenderer::GetCamera(){ 

@@ -24,6 +24,11 @@ namespace Renderer{
             void SetClearColor
                 (const unsigned char& r, const unsigned char& g, const unsigned char& b) override;
 
+            void SetDirectionalLightDirection(float x, float y, float z) override;
+            void SetDirectionalLightAmbient(unsigned char r, unsigned char g, unsigned char b) override;
+            void SetDirectionalLightDiffuse(unsigned char r, unsigned char g, unsigned char b) override;
+            void SetDirectionalLightSpecular(unsigned char r, unsigned char g, unsigned char b) override;
+
             Camera& GetCamera() override;
 
         private:

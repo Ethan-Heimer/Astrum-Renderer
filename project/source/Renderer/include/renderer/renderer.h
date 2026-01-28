@@ -27,6 +27,11 @@ namespace Renderer{
             virtual void SetClearColor
                 (const unsigned char& r, const unsigned char& g, const unsigned char& b) = 0;
 
+            virtual void SetDirectionalLightDirection(float x, float y, float z) = 0;
+            virtual void SetDirectionalLightAmbient(unsigned char r, unsigned char g, unsigned char b) = 0;
+            virtual void SetDirectionalLightDiffuse(unsigned char r, unsigned char g, unsigned char b) = 0;
+            virtual void SetDirectionalLightSpecular(unsigned char r, unsigned char g, unsigned char b) = 0;
+
             virtual void Draw(ICommandQueue* queue) = 0;
 
         protected:
