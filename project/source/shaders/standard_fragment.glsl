@@ -34,7 +34,10 @@ struct PointLight {
     float linear;
     float quadratic;
 };
-uniform PointLight pointLight;
+
+#define MAX_LIGHTS 8
+uniform int lightCount;
+uniform PointLight[MAX_LIGHTS] pointLights;
 
 uniform vec3 viewPos;
 
@@ -49,7 +52,8 @@ void main(){
     vec3 viewDir = normalize(viewPos - FragPos);
 
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
-    result += CalcPointLight(pointLight, norm, FragPos, viewDir);
+    for(int i = 0; i < lightCount; i++)
+        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
 
     result *= dirLight.ambient;
 

@@ -8,6 +8,7 @@
 #include "transform.h"
 
 #include <iostream>
+#include <memory>
 
 using namespace Renderer::Command;
 using namespace glm;
@@ -33,7 +34,9 @@ namespace Renderer{
 
         private:
             DirectionalLight dirLight{};
-            PointLight pointLight{};
+            //PointLight pointLight{};
+
+            vector<unique_ptr<PointLight>> lights;
 
             mat4 viewMatrix{1};
             mat4 projection{1};

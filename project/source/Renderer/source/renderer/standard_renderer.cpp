@@ -1,5 +1,7 @@
 #include "renderer/standard_renderer.h"
 #include "glm/geometric.hpp"
+#include <memory>
+#include <format>
 
 using namespace Renderer;
 using namespace Command;
@@ -25,18 +27,15 @@ void StandardRenderer::Initalize(){
     glEnable(GL_MULTISAMPLE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Init Lights
-    dirLight.Ambient = {1, 1, 1};
-    dirLight.Diffuse = {1, 1, 1};
-    dirLight.Specular = {1, 1, 0};
-    dirLight.Direction = {1, 0, 0};
+    //point lights testing
+    lights.push_back(std::move(make_unique<PointLight>()));
 
-    pointLight.Ambient = {1, 1, 1};
-    pointLight.Diffuse = {0, 0, 0};
-    pointLight.Specular = {0, 0, 0};
+    auto redlight = make_unique<PointLight>();
+    redlight->Ambient = {1, 0, 0};
+    redlight->Position = {0, 0, 2};
+    redlight->Specular = {1, .5, 0};
 
-    pointLight.Position = {0, 0, 0};
-    pointLight.KQuadratic = .1;
+    lights.push_back(std::move(redlight));
 }
 
 void StandardRenderer::Draw(ICommandQueue* queue){
@@ -50,7 +49,6 @@ void StandardRenderer::Draw(ICommandQueue* queue){
 
     glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
  
     while(!queue->IsEmpty()){
         std::unique_ptr<Command::Command> command = queue->Dequeue();
@@ -87,14 +85,20 @@ void StandardRenderer::DrawMesh(const Mesh* mesh, const Transform* transform, Ma
     shader->SetVector3("dirLight.specular", dirLight.Specular.x, dirLight.Specular.y, dirLight.Specular.z);
 
     //point Light
-    shader->SetVector3("pointLight.position", pointLight.Position.x, pointLight.Position.y, pointLight.Position.z);
-    shader->SetVector3("pointLight.ambient", pointLight.Ambient.x, pointLight.Ambient.y, pointLight.Ambient.z);
-    shader->SetVector3("pointLight.diffuse", pointLight.Diffuse.x, pointLight.Diffuse.y, pointLight.Diffuse.z);
-    shader->SetVector3("pointLight.specular", pointLight.Specular.x, pointLight.Specular.y, pointLight.Specular.z);
+    shader->SetInt("lightCount", lights.size());
+    for(int i = 0; i < lights.size(); i++){
+        auto& pointLight = *lights[i];
+        auto index = std::format("pointLights[{}]", i);
+ 
+        shader->SetVector3(index+".position", pointLight.Position.x, pointLight.Position.y, pointLight.Position.z);
+        shader->SetVector3(index+".ambient", pointLight.Ambient.x, pointLight.Ambient.y, pointLight.Ambient.z);
+        shader->SetVector3(index+".diffuse", pointLight.Diffuse.x, pointLight.Diffuse.y, pointLight.Diffuse.z);
+        shader->SetVector3(index+".specular", pointLight.Specular.x, pointLight.Specular.y, pointLight.Specular.z);
 
-    shader->SetFloat("pointLight.constant", pointLight.KConstant);
-    shader->SetFloat("pointLight.linear", pointLight.KLinear);
-    shader->SetFloat("pointLight.quadratic", pointLight.KQuadratic);
+        shader->SetFloat(index+".constant", pointLight.KConstant);
+        shader->SetFloat(index+".linear", pointLight.KLinear);
+        shader->SetFloat(index+".quadratic", pointLight.KQuadratic);
+    }
 
     shader->SetVector3("viewPos", camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
 

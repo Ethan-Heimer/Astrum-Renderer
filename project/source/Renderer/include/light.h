@@ -14,7 +14,7 @@ namespace Renderer{
 
     class DirectionalLight : public Light{
         public: 
-            glm::vec3 Direction;
+            glm::vec3 Direction{1, 0, 0};
         private:
     };
 
