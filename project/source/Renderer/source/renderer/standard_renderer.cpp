@@ -103,10 +103,6 @@ void StandardRenderer::DrawMesh(const Mesh* mesh, const Transform* transform, Ma
     shader->SetMatrix4x4("view", value_ptr(viewMatrix));
     shader->SetMatrix4x4("projection", value_ptr(projection));
 
-    cout << dirLight.Ambient.r << endl;
-    cout << dirLight.Ambient.g << endl;
-    cout << dirLight.Ambient.b << endl;
-
     glDrawElements(GL_TRIANGLES, mesh->GetIndiciesCount(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
