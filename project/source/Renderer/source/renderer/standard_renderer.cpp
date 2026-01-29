@@ -1,7 +1,9 @@
 #include "renderer/standard_renderer.h"
 #include "glm/geometric.hpp"
+#include "renderer/render_commands.h"
 #include <memory>
 #include <format>
+#include <iostream>
 
 using namespace Renderer;
 using namespace Command;
@@ -9,7 +11,7 @@ using namespace std;
 using namespace glm;
 
 void StandardRenderer::Initalize(){
-    cout << "Renderer Initialized" << endl;
+    std::cout << "Renderer Initialized" << std::endl;
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -28,6 +30,7 @@ void StandardRenderer::Initalize(){
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //point lights testing
+    /*
     lights.push_back(std::move(make_unique<PointLight>()));
 
     auto redlight = make_unique<PointLight>();
@@ -36,6 +39,7 @@ void StandardRenderer::Initalize(){
     redlight->Specular = {1, .5, 0};
 
     lights.push_back(std::move(redlight));
+    */
 }
 
 void StandardRenderer::Draw(ICommandQueue* queue){
@@ -49,11 +53,18 @@ void StandardRenderer::Draw(ICommandQueue* queue){
 
     glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
- 
-    while(!queue->IsEmpty()){
-        std::unique_ptr<Command::Command> command = queue->Dequeue();
+
+    while(!queue->IsEmpty(Command::Light)){
+        std::unique_ptr<Command::Command> command = queue->Dequeue(Command::Light);
         command->Execute(this);
     }
+ 
+    while(!queue->IsEmpty(Command::Standard)){
+        std::unique_ptr<Command::Command> command = queue->Dequeue(Command::Standard);
+        command->Execute(this);
+    }
+
+    lights.clear();
 
     glfwSwapBuffers(window);
 }
@@ -109,6 +120,10 @@ void StandardRenderer::DrawMesh(const Mesh* mesh, const Transform* transform, Ma
 
     glDrawElements(GL_TRIANGLES, mesh->GetIndiciesCount(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+}
+
+void StandardRenderer::AddPointLight(PointLight* light){
+    lights.push_back(light);
 }
 
 void StandardRenderer::SetClearColor

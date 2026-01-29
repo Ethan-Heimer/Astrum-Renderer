@@ -11,6 +11,11 @@ namespace Renderer{
     class IRenderer; 
 
     namespace Command{
+        enum Type{
+            Light,
+            Standard
+        };
+
         class Command{
             public: 
                 Command(std::function<void(IRenderer*)> function) : function(function){};
@@ -25,13 +30,14 @@ namespace Renderer{
                 ICommandQueue(){};
                 virtual ~ICommandQueue(){};
 
-                virtual void Queue(std::function<void(IRenderer*)> function) = 0;
-                virtual std::unique_ptr<Command> Dequeue() = 0; 
+                virtual void Queue(Type type, std::function<void(IRenderer*)> function) = 0;
+                virtual std::unique_ptr<Command> Dequeue(Type type) = 0; 
 
-                virtual bool IsEmpty() const = 0;
+                virtual bool IsEmpty(Type typ) const = 0;
 
             protected:
                 std::queue<std::unique_ptr<Command>> renderQueue;
+                std::queue<std::unique_ptr<Command>> lightQueue;
 
         };
     }

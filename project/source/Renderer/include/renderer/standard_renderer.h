@@ -7,9 +7,6 @@
 #include "light.h"
 #include "transform.h"
 
-#include <iostream>
-#include <memory>
-
 using namespace Renderer::Command;
 using namespace glm;
 
@@ -30,13 +27,14 @@ namespace Renderer{
             void SetDirectionalLightDiffuse(unsigned char r, unsigned char g, unsigned char b) override;
             void SetDirectionalLightSpecular(unsigned char r, unsigned char g, unsigned char b) override;
 
+            void AddPointLight(PointLight* light) override;
+
             Camera& GetCamera() override;
 
         private:
             DirectionalLight dirLight{};
-            //PointLight pointLight{};
 
-            vector<unique_ptr<PointLight>> lights;
+            vector<PointLight*> lights;
 
             mat4 viewMatrix{1};
             mat4 projection{1};

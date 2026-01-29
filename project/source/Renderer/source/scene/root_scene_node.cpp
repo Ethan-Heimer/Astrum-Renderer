@@ -7,7 +7,7 @@ using namespace Scene;
 RootSceneNode::RootSceneNode(SceneNode* parent) : SceneNode(parent){};
 
 void RootSceneNode::OnRendered(ICommandQueue* queue){
-    queue->Queue([this](IRenderer* renderer)
+    queue->Queue(Standard, [this](IRenderer* renderer)
             {
                 renderer->SetClearColor(skyColor.r, skyColor.g, skyColor.b);
 

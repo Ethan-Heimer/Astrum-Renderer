@@ -1,10 +1,7 @@
 #ifndef MESH_SCENE_NODE_H
 #define MESH_SCENE_NODE_H
 
-#include <memory>
-
-#include "scene/scene.h"
-
+#include "scene/scene_node.h"
 #include "mesh.h"
 #include "transform.h"
 #include "material.h"

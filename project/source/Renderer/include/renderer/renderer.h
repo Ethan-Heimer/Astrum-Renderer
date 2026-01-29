@@ -6,6 +6,7 @@
 #include "renderer/render_commands.h"
 #include "transform.h"
 #include "material.h"
+#include "light.h"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -22,6 +23,8 @@ namespace Renderer{
 
             virtual void Initalize() = 0;
             virtual Camera& GetCamera() = 0;
+
+            virtual void AddPointLight(PointLight* light) = 0;
 
             virtual void DrawMesh(const Mesh* mesh, const Transform* transform, Material* material) = 0; 
             virtual void SetClearColor

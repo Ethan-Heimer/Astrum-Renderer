@@ -1,10 +1,8 @@
 #ifndef MESH_LUA_API_LAYER_H
 #define MESH_LUA_API_LAYER_H
 
-#include "application.h"
 #include "lua/lua_api_layer.h"
 #include "scene/mesh_scene_node.h"
-#include "sol/sol.hpp"
 
 using namespace sol;
 using namespace Renderer;

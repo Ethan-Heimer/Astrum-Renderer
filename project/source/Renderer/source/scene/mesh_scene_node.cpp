@@ -1,4 +1,5 @@
 #include "scene/mesh_scene_node.h"
+#include "renderer/render_commands.h"
 #include "renderer/renderer.h"
 
 using namespace Renderer;
@@ -22,7 +23,7 @@ MeshSceneNode::~MeshSceneNode(){
 };
 
 void MeshSceneNode::OnRendered(ICommandQueue* renderer){
-    renderer->Queue([this](IRenderer* renderer)
+    renderer->Queue(Standard, [this](IRenderer* renderer)
             {renderer->DrawMesh(mesh, &transform, material);});
 }
 

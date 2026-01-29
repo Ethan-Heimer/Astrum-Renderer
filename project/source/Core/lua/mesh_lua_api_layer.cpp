@@ -1,7 +1,6 @@
 #include "application.h"
 
 #include "lua/mesh_lua_api_layer.h"
-#include "sol/sol.hpp"
 
 #include "asset_manager.h"
 #include "scene/scene.h"
