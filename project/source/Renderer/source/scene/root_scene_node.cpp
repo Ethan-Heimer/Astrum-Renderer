@@ -1,8 +1,10 @@
 #include "scene/root_scene_node.h"
 #include "renderer/renderer.h"
+#include <iostream>
 
 using namespace Renderer;
 using namespace Scene;
+using namespace std;
 
 RootSceneNode::RootSceneNode(SceneNode* parent) : SceneNode(parent){};
 
@@ -11,7 +13,7 @@ void RootSceneNode::OnRendered(ICommandQueue* queue){
             {
                 renderer->SetClearColor(skyColor.r, skyColor.g, skyColor.b);
 
-                renderer->SetDirectionalLightDirection(dirLightDirection.x, dirLightDirection.x, dirLightDirection.z);
+                renderer->SetDirectionalLightDirection(dirLightDirection.x, dirLightDirection.y, dirLightDirection.z);
                 renderer->SetDirectionalLightAmbient(dirLightAmbient.r, dirLightAmbient.g, dirLightAmbient.b);
                 renderer->SetDirectionalLightSpecular(dirLightSpecular.r, dirLightSpecular.g, dirLightSpecular.b);
                 renderer->SetDirectionalLightDiffuse(dirLightDiffuse.r, dirLightDiffuse.g, dirLightDiffuse.b);

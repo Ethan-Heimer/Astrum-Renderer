@@ -55,8 +55,6 @@ void main(){
     for(int i = 0; i < lightCount; i++)
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
 
-    result *= dirLight.ambient;
-
     vec4 finalColor = vec4(result, 1.0);
 
     if(useTexture){
@@ -98,8 +96,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir){
 
     // results
     vec3 ambient = light.ambient * material.ambient;
-    vec3 diffuse = light.diffuse * diff * material.diffuse;
-    vec3 specular = light.specular * spec * material.specular;
+    vec3 diffuse = light.diffuse * diff * material.diffuse * light.ambient;
+    vec3 specular = light.specular * spec * material.specular * light.ambient;
 
     ambient *= attenuation;
     diffuse *= attenuation;

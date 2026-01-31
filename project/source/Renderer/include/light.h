@@ -24,7 +24,7 @@ namespace Renderer{
 
             float KConstant = 1;
             float KLinear = 0.09;
-            float KQuadratic = 0.032;
+            float KQuadratic = .44;
         private:
     };
 

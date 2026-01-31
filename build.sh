@@ -13,7 +13,7 @@ while getopts "vs" opt; do
             valgrind --leak-check=full --suppressions=../../opengl.supp ./Astrum
             ;;
         s)
-            ./Astrum -s "./test.lua"
+            ./Astrum -s "./light.lua"
             ;;
     esac
 done

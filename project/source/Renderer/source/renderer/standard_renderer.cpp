@@ -28,18 +28,6 @@ void StandardRenderer::Initalize(){
     glEnable(GL_BLEND);
     glEnable(GL_MULTISAMPLE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    //point lights testing
-    /*
-    lights.push_back(std::move(make_unique<PointLight>()));
-
-    auto redlight = make_unique<PointLight>();
-    redlight->Ambient = {1, 0, 0};
-    redlight->Position = {0, 0, 2};
-    redlight->Specular = {1, .5, 0};
-
-    lights.push_back(std::move(redlight));
-    */
 }
 
 void StandardRenderer::Draw(ICommandQueue* queue){
@@ -134,6 +122,12 @@ void StandardRenderer::SetClearColor
 void StandardRenderer::SetDirectionalLightDirection(float x, float y, float z){
     vec3 dir = {x, y, z};    
     dir = normalize(dir);
+
+    /*
+    cout << dir.x << endl;
+    cout << dir.y << endl;
+    cout << dir.z << endl;
+    */
 
     dirLight.Direction = dir;
 }
