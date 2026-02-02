@@ -41,13 +41,13 @@ namespace Renderer{
             map<string, shared_ptr<Mesh>> meshs;
             map<string, shared_ptr<Model>> models;
 
-            void ProcessAssimpNode(aiNode* node, const aiScene* scene, 
+            void ProcessAssimpNode(const string& path, aiNode* node, const aiScene* scene, 
                     vector<Mesh>& meshes, vector<Material>& materials);
 
             Material ProcessAssimpMaterial(aiMaterial* material, Renderer::Shader* shader);
 
             Mesh ProcessAssimpMesh(aiMesh* mesh, const aiScene* scene);
-            Texture ProcessAssimpTexture(aiMaterial* material, aiTextureType type, int index);
+            void ProcessAssimpTexture(const string& path, const aiMaterial* material, Material& meshMaterial, aiTextureType type, int index);
     };
 }
 
