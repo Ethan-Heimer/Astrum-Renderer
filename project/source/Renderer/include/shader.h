@@ -10,6 +10,8 @@ namespace Renderer{
 
             void Delete();
 
+            void Use() const;
+
             unsigned int GetId() const;
 
             void SetBool(const std::string& name, bool value);

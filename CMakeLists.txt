@@ -48,6 +48,7 @@ add_executable(${NAME}
 
 add_subdirectory(./project/libs/glfw)
 add_subdirectory(./project/libs/sol)
+add_subdirectory(./project/libs/assimp)
 
 target_include_directories(${NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/project/source/Renderer/include
@@ -65,11 +66,13 @@ target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/sol/
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/include)
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/glfw/include)
 target_include_directories(${NAME} PRIVATE ${LUAJIT_DIR})
+target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/assimp/include)
 
 # Found Libs Targets Packages
 target_link_libraries(${NAME} PRIVATE OpenGL::OpenGL)
 target_link_libraries(${NAME} PRIVATE glfw)
 target_link_libraries(${NAME} PRIVATE ${LUAJIT_LIB})
+target_link_libraries(${NAME} PRIVATE assimp::assimp)
 
 target_compile_definitions(${NAME} PRIVATE SOL_LUAJIT=1)
 

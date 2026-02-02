@@ -1,4 +1,5 @@
 #include "renderer/standard_renderer.h"
+#include "asset_manager.h"
 #include "glm/geometric.hpp"
 #include "renderer/render_commands.h"
 #include <memory>
@@ -59,23 +60,7 @@ void StandardRenderer::Draw(ICommandQueue* queue){
 
 void StandardRenderer::DrawMesh(const Mesh* mesh, const Transform* transform, Material* material){
     Shader* shader = material->GetShader();
-
-    glUseProgram(shader->GetId());
-    glBindVertexArray(mesh->GetVertexArrayObject());
-
-    //-- Set Color / Texture     
-    if(material->HasTexture()){
-        glBindTexture(GL_TEXTURE_2D, material->GetTexture()->GetTextureID());
-        shader->SetBool("useTexture", true);
-    }
-    else{
-        shader->SetBool("useTexture", false);
-    }
-
-    shader->SetVector3("material.ambient", material->Ambient.x, material->Ambient.y, material->Ambient.z);
-    shader->SetVector3("material.diffuse", material->Diffuse.x, material->Diffuse.y, material->Diffuse.z);
-    shader->SetVector3("material.specular", material->Specular.x, material->Specular.y, material->Specular.z);
-    shader->SetFloat("material.shininess", material->Shininess);
+    material->Use();
 
     //Directional Light
     shader->SetVector3("dirLight.direction", dirLight.Direction.x, dirLight.Direction.y, dirLight.Direction.z);
@@ -106,8 +91,7 @@ void StandardRenderer::DrawMesh(const Mesh* mesh, const Transform* transform, Ma
     shader->SetMatrix4x4("view", value_ptr(viewMatrix));
     shader->SetMatrix4x4("projection", value_ptr(projection));
 
-    glDrawElements(GL_TRIANGLES, mesh->GetIndiciesCount(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+    mesh->Draw();
 }
 
 void StandardRenderer::AddPointLight(PointLight* light){
@@ -122,12 +106,6 @@ void StandardRenderer::SetClearColor
 void StandardRenderer::SetDirectionalLightDirection(float x, float y, float z){
     vec3 dir = {x, y, z};    
     dir = normalize(dir);
-
-    /*
-    cout << dir.x << endl;
-    cout << dir.y << endl;
-    cout << dir.z << endl;
-    */
 
     dirLight.Direction = dir;
 }

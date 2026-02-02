@@ -1,1 +1,4 @@
 -- Reorganize Rendering Interface - Decouple Camera Class From Renderer
+-- Model Class
+-- Import Models with Asset Manager
+-- Model Node?

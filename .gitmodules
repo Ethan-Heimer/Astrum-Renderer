@@ -4,3 +4,6 @@
 [submodule "project/libs/sol"]
 	path = project/libs/sol
 	url = https://github.com/ThePhD/sol2
+[submodule "project/libs/assimp"]
+	path = project/libs/assimp
+	url = https://github.com/assimp/assimp.git

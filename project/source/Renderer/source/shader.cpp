@@ -82,6 +82,10 @@ Renderer::Shader::~Shader(){
     Delete();
 }
 
+void Renderer::Shader::Use() const{
+    glUseProgram(shaderProgramID);
+}
+
 void Renderer::Shader::Delete(){
     glDeleteProgram(shaderProgramID);
 }

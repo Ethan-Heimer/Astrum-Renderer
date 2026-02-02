@@ -19,6 +19,8 @@ namespace Renderer{
             Material(const Material& src);
             Material(Material&& src);
 
+            void Use() const;
+
             void SetShader(Shader* shader);
             void SetTexture(Texture* texture);
 

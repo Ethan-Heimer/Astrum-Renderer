@@ -4,6 +4,7 @@
 #include <vector>
 #include "glm/ext/vector_float3.hpp"
 #include "glm/glm.hpp"
+#include "material.h"
 
 namespace Renderer{
     class Vertex{
@@ -28,7 +29,8 @@ namespace Renderer{
 
             unsigned int GetIndiciesCount() const;
             unsigned int GetVertexCount() const;
-            unsigned int GetUVCount() const;
+
+            void Draw() const;
     
         private:
             unsigned int VAO;

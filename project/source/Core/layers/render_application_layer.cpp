@@ -4,18 +4,13 @@
 #include "input.h"
 #include "mesh.h"
 #include "mesh_builder.h"
+#include "renderer/render_commands.h"
 #include "renderer/renderer.h"
 
 #include "renderer/standard_renderer_queue.h"
 #include "renderer/standard_renderer.h"
 
 #include "shader.h"
-
-#include "scene/scene.h"
-#include "scene/mesh_scene_node.h"
-
-#include <iostream>
-#include <memory>
 
 using namespace Renderer;
 using namespace Scene;
@@ -47,11 +42,35 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
             this->assetManager.CreateMesh("Cube", verticies, indicies);
 
             Console::Log(Message, "Renderer", Green, "Renderer Initialized!");
+
+            //Test Models 
+            Model* model = this->assetManager.LoadModel("./assets/Car-Model/Car.obj");
         });
 
     application->SubscribeToUpdate([this](){
             scene.Render(commandQueue);
+            commandQueue->Queue(Renderer::Command::Standard, [this](IRenderer* renderer){
+                /*
+                 * This Simulates Creating a Draw Model Command for testing
+                 */
+        
+                Model* model = this->assetManager.LoadModel("./assets/Car-Model/Car.obj");
+                Material* material = this->assetManager.GetMaterial("Default");
+
+                Transform transform{};
+                transform.SetScale(1, 1, 1);
+                transform.SetRotation(45, 45, 45);
+
+                int count = model->GetMeshCount();
+
+                for(int i = 0; i < count; i++){
+                    Mesh* mesh = model->GetMesh(i);
+                    renderer->DrawMesh(mesh, &transform, material);
+                }
+            });
             this->renderer->Draw(commandQueue);
+
+
         });
 }
 

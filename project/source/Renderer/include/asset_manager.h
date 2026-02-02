@@ -9,6 +9,10 @@
 #include "texture.h"
 #include "material.h"
 #include "mesh.h"
+#include "model.h"
+
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
 
 using namespace std;
 
@@ -20,6 +24,8 @@ namespace Renderer{
             Material* CreateMaterial(const string& name, Shader* shader);
             Texture* CreateTexture(string texturePath);
             Mesh* CreateMesh(const string& name, std::vector<Vertex>& verticies, std::vector<unsigned int>& indicies);
+
+            Model* LoadModel(const string& path); 
 
             Shader* GetShader(const string& name);
             Material* GetMaterial(const string& name);
@@ -33,6 +39,12 @@ namespace Renderer{
             map<string, shared_ptr<Material>> materials;
             map<string, shared_ptr<Texture>> textures; 
             map<string, shared_ptr<Mesh>> meshs;
+            map<string, shared_ptr<Model>> models;
+
+            void ProcessAssimpNode(aiNode* node, const aiScene* scene, 
+                    vector<Mesh>& meshes, vector<Texture>& textures);
+            Mesh ProcessAssimpMesh(aiMesh* mesh, const aiScene* scene);
+            Texture ProcessAssimpTexture(aiMaterial* material, aiTextureType type, int index);
     };
 }
 

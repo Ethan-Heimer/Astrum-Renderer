@@ -6,6 +6,7 @@
 #include "glm/ext/vector_float3.hpp"
 
 #include <complex>
+#include <format>
 #include <vector>
 #include <iostream>
 
@@ -20,17 +21,11 @@ Renderer::Mesh::~Mesh(){
 
 Renderer::Mesh::Mesh(const Mesh& src) 
     : verticies(src.verticies), indicies(src.indicies){
-    this->VAO = src.VAO;
-    this->VBO = src.VBO;
-    this->EBO = src.EBO;
+    CreateBuffers();
 }
 
 Renderer::Mesh::Mesh(Mesh&& src) 
     : verticies(std::move(src.verticies)), indicies(std::move(src.indicies)){ 
-    
-    this->VAO = src.VAO;
-    this->VBO = src.VBO;
-    this->EBO = src.EBO;
 
     src.VAO = 0;
     src.VBO = 0;
@@ -38,6 +33,21 @@ Renderer::Mesh::Mesh(Mesh&& src)
     
     src.verticies.clear();
     src.indicies.clear();
+
+    src.Delete();
+
+    CreateBuffers();
+}
+
+void Renderer::Mesh::Draw() const{
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, indicies.size(), GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+
+    GLenum error;
+    while ((error = glGetError()) != GL_NO_ERROR) {
+        std::cout << "OpenGL Error: " << error << std::endl; 
+    }
 }
 
 unsigned int Renderer::Mesh::GetVertexCount() const{
@@ -77,15 +87,14 @@ void Renderer::Mesh::CreateBuffers(){
         data.push_back(verticies[i].Position.y);
         data.push_back(verticies[i].Position.z);
 
-        data.push_back(verticies[i].Uv.x);
-        data.push_back(verticies[i].Uv.y);
-
         data.push_back(verticies[i].Normal.x);
         data.push_back(verticies[i].Normal.y);
         data.push_back(verticies[i].Normal.z);
+        
+        data.push_back(verticies[i].Uv.x);
+        data.push_back(verticies[i].Uv.y);
     }
     
-
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -95,19 +104,21 @@ void Renderer::Mesh::CreateBuffers(){
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies.size() * sizeof(int), indicies.data(), GL_STATIC_DRAW);
 
     const size_t vertexOffset = 0;
-    const size_t UVOffset = 3 * sizeof(float);
-    const size_t normalOffset = 5 * sizeof(float);
+    const size_t normalOffset = 3 * sizeof(float);
+    const size_t UVOffset = 6 * sizeof(float);
 
     size_t stride = 8 * sizeof(float);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)vertexOffset);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*)UVOffset);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)normalOffset);
     glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*)normalOffset);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)UVOffset);
     glEnableVertexAttribArray(2);
+
+    glBindVertexArray(0);
 }
 
 void Renderer::Mesh::CalculateVertexNormals(){
@@ -134,10 +145,6 @@ void Renderer::Mesh::CalculateVertexNormals(){
         vertex_1.Normal += faceNormal;
         vertex_2.Normal += faceNormal;
         vertex_3.Normal += faceNormal;
-
-        std::cout << vertex_1.Normal.x << vertex_1.Normal.y << vertex_1.Normal.z << std::endl;
-
-        std::cout << std::endl;
     }
     
     for(auto& vertex : verticies){
