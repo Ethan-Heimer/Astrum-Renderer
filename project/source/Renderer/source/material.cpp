@@ -9,10 +9,20 @@ Material::Material(Shader* shader) : shader(shader), texture(nullptr){}
 
 Material::Material(const Material& src) : shader(src.shader){
     this->texture = src.texture;
+
+    this->Ambient = src.Ambient;
+    this->Specular = src.Specular;
+    this->Diffuse = src.Diffuse;
+    this->Shininess = src.Shininess;
 }
 
 Material::Material(Material&& src) : shader(src.shader){
     this->texture = std::move(src.texture);
+
+    this->Ambient = src.Ambient;
+    this->Specular = src.Specular;
+    this->Diffuse = src.Diffuse;
+    this->Shininess = src.Shininess;
 
     src.texture = nullptr;
 }

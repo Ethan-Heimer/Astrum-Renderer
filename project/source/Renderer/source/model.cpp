@@ -4,9 +4,17 @@
 using namespace Renderer;
 using namespace std;
 
-Model::Model(vector<Mesh>& meshs, vector<Texture>& textures, Material* material) :
-    mesh(meshs), texture(textures), material(material)
+Model::Model(vector<Mesh>& meshs, vector<Material>& materials, Material* material) :
+    mesh(meshs), materials(materials), material(material)
 {}
+
+int Model::GetMaterialCount() const{
+    return materials.size();
+}
+
+Material* Model::GetMaterial(int index){
+    return &materials[index];
+}
 
 int Model::GetMeshCount() const{
     return mesh.size();

@@ -1,4 +1,5 @@
 #include "asset_manager.h"
+#include "assimp/color4.h"
 #include "assimp/material.h"
 #include "assimp/types.h"
 #include "glm/fwd.hpp"
@@ -65,10 +66,13 @@ Model* AssetManager::LoadModel(const string& path){
 
     std::cout << path << " ";
     vector<Mesh> meshs;
-    vector<Texture> textures;
-    ProcessAssimpNode(scene->mRootNode, scene, meshs, textures);
+    vector<Material> materials;
+    ProcessAssimpNode(scene->mRootNode, scene, meshs, materials);
 
-    shared_ptr<Model> newModel = make_shared<Model>(meshs, textures, nullptr);
+    shared_ptr<Model> newModel = make_shared<Model>(meshs, materials, nullptr);
+    std::cout << meshs.size() << std::endl;
+    std::cout << materials.size() << std::endl;
+
     models[path] = std::move(newModel);
 
     return models[path].get();
@@ -97,7 +101,11 @@ void Renderer::AssetManager::ClearTextures(){
 }
 
 void AssetManager::ProcessAssimpNode(aiNode* node, const aiScene* scene,
-        vector<Mesh>& meshs, vector<Texture>& textures){
+        vector<Mesh>& meshs, vector<Material>& materials){
+
+    //this shoudnt be here but whatever
+    Shader* shader = GetShader("Default");
+    
     for(int i = 0; i < node->mNumMeshes; i++){
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 
@@ -107,16 +115,22 @@ void AssetManager::ProcessAssimpNode(aiNode* node, const aiScene* scene,
         //fill mesh's texture
         if(mesh->mMaterialIndex >= 0){
             aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+
+            Material meshMaterial = ProcessAssimpMaterial(material, shader);
+            materials.push_back(meshMaterial);
+
+            /*
             for(int j = 0; j < material->GetTextureCount(aiTextureType_DIFFUSE); j++){
                 textures.push_back(ProcessAssimpTexture(material, 
                         aiTextureType_DIFFUSE, j));
             }
+            */
 
         }
     }
 
     for(unsigned int i = 0; i < node->mNumChildren; i++){
-        ProcessAssimpNode(node->mChildren[i], scene, meshs, textures);
+        ProcessAssimpNode(node->mChildren[i], scene, meshs, materials);
     }
 }
 
@@ -164,8 +178,40 @@ Mesh AssetManager::ProcessAssimpMesh(aiMesh* mesh, const aiScene* scene){
     return Mesh(verticies, indicies);
 }
 
+Material AssetManager::ProcessAssimpMaterial(aiMaterial* material, Renderer::Shader* shader){
+    aiColor4D ambient;
+    aiColor4D diffuse;
+    aiColor4D specular;
+    float shine;
+    
+    Material meshMaterial{shader};
+
+    if(AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuse)){
+        meshMaterial.Diffuse = {diffuse.r, diffuse.g, diffuse.b};
+        std::cout << diffuse.r << " " << diffuse.g << " " << diffuse.b << std::endl;
+    }
+
+    if(AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &specular)){
+        meshMaterial.Specular = {specular.r, specular.g, specular.b};
+        std::cout << specular.r << " " << specular.g << " " << specular.b << std::endl;
+    }
+    
+    if(AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambient)){
+        meshMaterial.Ambient = {ambient.r, ambient.g, ambient.b};
+        std::cout << ambient.r << " " << ambient.g << " " << ambient.b << std::endl;
+    }
+
+    if(AI_SUCCESS == material->Get(AI_MATKEY_SHININESS, shine)){
+        meshMaterial.Shininess = shine;
+        std::cout << shine << std::endl;
+    }
+
+    return meshMaterial;
+}
+
 Texture AssetManager::ProcessAssimpTexture(aiMaterial* material, aiTextureType type, int index){
     aiString path;
+    
     material->GetTexture(type, index, &path);
     std::cout << path.C_Str() << std::endl;
     return Texture{path.C_Str()};
