@@ -45,7 +45,7 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
             Console::Log(Message, "Renderer", Green, "Renderer Initialized!");
 
             //Test Models 
-            Model* model = this->assetManager.LoadModel("./assets/Cat/12221_Cat_v1_l3.obj");
+            Model* model = this->assetManager.LoadModel("./assets/horse.obj");
         });
 
     application->SubscribeToUpdate([this](){
@@ -55,12 +55,10 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
                  * This Simulates Creating a Draw Model Command for testing
                  */
         
-                Model* model = this->assetManager.LoadModel("./assets/Cat/12221_Cat_v1_l3.obj");
+                Model* model = this->assetManager.LoadModel("./assets/horse.obj");
 
                 Transform transform{};
-                transform.SetScale(.25, .25, .25);
-                transform.SetPosition(0, -10, -3);
-                transform.SetRotation(-90, 0, 0);
+                transform.SetScale(1, 1, 1);
 
                 int count = model->GetMeshCount();
 
@@ -68,12 +66,10 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
                     Mesh* mesh = model->GetMesh(i);
                     Material* material = model->GetMaterial(i);
 
-                    /*
                     std::cout << "Ambient" << material->Ambient.r << material->Ambient.g << material->Ambient.b << std::endl;
                     std::cout << "Specular" << material->Specular.r << material->Specular.g << material->Specular.b << std::endl;
                     std::cout << "Diffuse" << material->Diffuse.r << material->Diffuse.g << material->Diffuse.b << std::endl;
                     std::cout << std::endl;
-                    */
 
                     renderer->DrawMesh(mesh, &transform, material);
                 }

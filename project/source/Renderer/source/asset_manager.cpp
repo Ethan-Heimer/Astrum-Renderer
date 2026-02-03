@@ -4,7 +4,6 @@
 #include "assimp/types.h"
 #include "glm/fwd.hpp"
 #include "material.h"
-#include <filesystem>
 #include <format>
 #include <memory>
 
@@ -65,14 +64,10 @@ Model* AssetManager::LoadModel(const string& path){
         return nullptr;
     }
 
+    std::cout << path << " ";
     vector<Mesh> meshs;
     vector<Material> materials;
-
-    // -- Get Parent Directory
-    std::filesystem::path p{path};
-    std::filesystem::path dir = p.parent_path();
-
-    ProcessAssimpNode(dir, scene->mRootNode, scene, meshs, materials);
+    ProcessAssimpNode(scene->mRootNode, scene, meshs, materials);
 
     shared_ptr<Model> newModel = make_shared<Model>(meshs, materials, nullptr);
     std::cout << meshs.size() << std::endl;
@@ -105,7 +100,7 @@ void Renderer::AssetManager::ClearTextures(){
     textures.clear();
 }
 
-void AssetManager::ProcessAssimpNode(const string& path, aiNode* node, const aiScene* scene,
+void AssetManager::ProcessAssimpNode(aiNode* node, const aiScene* scene,
         vector<Mesh>& meshs, vector<Material>& materials){
 
     //this shoudnt be here but whatever
@@ -122,17 +117,20 @@ void AssetManager::ProcessAssimpNode(const string& path, aiNode* node, const aiS
             aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
             Material meshMaterial = ProcessAssimpMaterial(material, shader);
-
-            for(int j = 0; j < material->GetTextureCount(aiTextureType_DIFFUSE); j++){
-                ProcessAssimpTexture(path, material, meshMaterial, aiTextureType_DIFFUSE, j);
-            }
-
             materials.push_back(meshMaterial);
+
+            /*
+            for(int j = 0; j < material->GetTextureCount(aiTextureType_DIFFUSE); j++){
+                textures.push_back(ProcessAssimpTexture(material, 
+                        aiTextureType_DIFFUSE, j));
+            }
+            */
+
         }
     }
 
     for(unsigned int i = 0; i < node->mNumChildren; i++){
-        ProcessAssimpNode(path, node->mChildren[i], scene, meshs, materials);
+        ProcessAssimpNode(node->mChildren[i], scene, meshs, materials);
     }
 }
 
@@ -211,13 +209,10 @@ Material AssetManager::ProcessAssimpMaterial(aiMaterial* material, Renderer::Sha
     return meshMaterial;
 }
 
-void AssetManager::ProcessAssimpTexture
-    (const string& path, const aiMaterial* material, Material& meshMaterial, aiTextureType type, int index){
-    aiString aiPath;    
-    material->GetTexture(type, index, &aiPath);
-
-    std::cout << path + "/" + aiPath.C_Str() << std::endl;
-
-    Texture* texture = CreateTexture(path+"/"+aiPath.C_Str());
-    meshMaterial.SetTexture(texture);
+Texture AssetManager::ProcessAssimpTexture(aiMaterial* material, aiTextureType type, int index){
+    aiString path;
+    
+    material->GetTexture(type, index, &path);
+    std::cout << path.C_Str() << std::endl;
+    return Texture{path.C_Str()};
 }
