@@ -3,18 +3,17 @@
 #include <string>
 #include <vector>
 
-#include "shader.h"
 #include "material.h"
 #include "mesh.h"
 
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/material.h"
-#include "assimp/postprocess.h"
 
 using namespace std;
+using namespace Renderer;
 
-namespace Renderer{
+namespace Assets{
     namespace AssetImporter{
             void ProcessAssimpNode(aiNode* node, const aiScene* scene, 
                     vector<aiMesh*>& meshes);

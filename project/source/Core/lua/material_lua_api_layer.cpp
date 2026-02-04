@@ -1,6 +1,6 @@
 #include "lua/material_lua_api_layer.h"
-#include "asset_manager.h"
-#include "glm/exponential.hpp"
+#include "assetmanager/asset_manager.h"
+
 #include "glm/fwd.hpp"
 #include "scene/mesh_scene_node.h"
 
@@ -8,6 +8,7 @@ using namespace Core;
 using namespace Renderer;
 using namespace std;
 using namespace Lua;
+using namespace Assets;
 
 void MaterialAPI::OnInit(){
     Function("Of",[this](Scene::MeshSceneNode* node){return GetMaterialOf(node);});
@@ -49,7 +50,7 @@ void MaterialAPI::SetShine(Material* material, float shine){
 }
 
 void MaterialAPI::SetTexture(Material* material, string path){
-    AssetManager* assetManager = application->GetResource<Renderer::AssetManager>();
+    AssetManager* assetManager = application->GetResource<AssetManager>();
     Texture* texture = assetManager->CreateTexture(path);    
 
     material->SetTexture(texture);

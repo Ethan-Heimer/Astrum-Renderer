@@ -1,6 +1,7 @@
 #include "application.h"
 
 #include "console/console.h"
+#include "layers/assetmanager_application_layer.h"
 #include "layers/lua_application_layer.h"
 #include "layers/render_application_layer.h"
 #include "layers/utils_application_layer.h"
@@ -23,6 +24,7 @@ Core::Application::Application(int argc, char* argv[]) : exit(false){
     */
 
     Core::RendererApplicationLayer rendererLayer{this}; 
+    Core::AssetManagerApplicationLayer assetManagerLayer{this};
     Core::UtilsApplicationLayer utilsLayer{this};
     Core::LuaApplicationLayer luaLayer{this};
 

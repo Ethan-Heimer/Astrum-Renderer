@@ -1,22 +1,27 @@
-#include "asset_manager.h"
+#include "assetmanager/asset_manager.h"
+#include "assetmanager/asset_importer.h"
+
 #include "assimp/material.h"
+#include "assimp/postprocess.h"
 
 #include "material.h"
 #include <filesystem>
 #include <memory>
 
-#include "asset_importer.h"
 
 #include <iostream>
 
-Renderer::Shader* Renderer::AssetManager::CreateShader(const string& name, const string& vertexPath, const string& fragmentPath){
+using namespace Assets;
+using namespace Renderer;
+
+Shader* AssetManager::CreateShader(const string& name, const string& vertexPath, const string& fragmentPath){
     shared_ptr<Shader> newShader = make_shared<Shader>(vertexPath, fragmentPath);
     shaders[name] = std::move(newShader);
 
     return shaders[name].get();
 }
 
-Renderer::Material* Renderer::AssetManager::CreateMaterial(const string& name, Shader* shader){ 
+Material* AssetManager::CreateMaterial(const string& name, Shader* shader){ 
     if(materials.contains(name))
         return materials[name].get();
 
@@ -26,7 +31,7 @@ Renderer::Material* Renderer::AssetManager::CreateMaterial(const string& name, S
     return materials[name].get();
 }
 
-Renderer::Material* Renderer::AssetManager::CreateMaterial(const string& name, Material&& material){ 
+Material* AssetManager::CreateMaterial(const string& name, Material&& material){ 
     if(materials.contains(name))
         return materials[name].get();
 
@@ -36,7 +41,7 @@ Renderer::Material* Renderer::AssetManager::CreateMaterial(const string& name, M
     return materials[name].get();
 }
 
-Renderer::Texture* Renderer::AssetManager::CreateTexture(string texturePath){
+Texture* AssetManager::CreateTexture(string texturePath){
     if(textures.contains(texturePath))
         return textures[texturePath].get();
 
@@ -46,7 +51,7 @@ Renderer::Texture* Renderer::AssetManager::CreateTexture(string texturePath){
     return textures[texturePath].get();
 }
 
-Renderer::Mesh* Renderer::AssetManager::CreateMesh(const string& name,
+Mesh* AssetManager::CreateMesh(const string& name,
     std::vector<Vertex>& verticies, std::vector<unsigned int>& indicies){
 
     if(meshs.contains(name))
@@ -58,7 +63,7 @@ Renderer::Mesh* Renderer::AssetManager::CreateMesh(const string& name,
     return meshs[name].get();
 }
 
-Renderer::Mesh* Renderer::AssetManager::CreateMesh(const string& name,
+Mesh* AssetManager::CreateMesh(const string& name,
     Mesh&& mesh){
 
     if(meshs.contains(name))
@@ -136,22 +141,22 @@ Model* AssetManager::LoadModel(const string& path){
 };
 
 
-Renderer::Shader* Renderer::AssetManager::GetShader(const string& name){
+Shader* AssetManager::GetShader(const string& name){
     return shaders[name].get();
 }
 
-Renderer::Material* Renderer::AssetManager::GetMaterial(const string& name){
+Material* AssetManager::GetMaterial(const string& name){
     return materials[name].get();
 }
 
-Renderer::Texture* Renderer::AssetManager::GetTexture(const string& name){ 
+Texture* AssetManager::GetTexture(const string& name){ 
     return textures[name].get();
 }
 
-Renderer::Mesh* Renderer::AssetManager::GetMesh(const string& name){
+Mesh* AssetManager::GetMesh(const string& name){
     return meshs[name].get();
 }
 
-void Renderer::AssetManager::ClearTextures(){
+void AssetManager::ClearTextures(){
     textures.clear();
 }

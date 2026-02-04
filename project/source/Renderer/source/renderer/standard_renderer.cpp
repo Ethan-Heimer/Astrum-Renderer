@@ -1,5 +1,4 @@
 #include "renderer/standard_renderer.h"
-#include "asset_manager.h"
 #include "glm/geometric.hpp"
 #include "renderer/render_commands.h"
 #include <memory>

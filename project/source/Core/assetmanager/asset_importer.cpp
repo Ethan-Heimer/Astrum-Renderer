@@ -1,9 +1,8 @@
-#include "asset_importer.h"
+#include "assetmanager/asset_importer.h"
 #include "assimp/mesh.h"
 
-#include <iostream>
-
 using namespace Renderer;
+using namespace Assets;
 
 void AssetImporter::ProcessAssimpNode(aiNode* node, const aiScene* scene,
         vector<aiMesh*>& aiMeshs){

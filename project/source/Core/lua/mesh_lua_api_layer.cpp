@@ -2,7 +2,7 @@
 
 #include "lua/mesh_lua_api_layer.h"
 
-#include "asset_manager.h"
+#include "assetmanager/asset_manager.h"
 #include "console/console.h"
 #include "scene/scene.h"
 #include "mesh.h"
@@ -11,6 +11,8 @@
 using namespace Core;
 using namespace Renderer;
 using namespace Lua;
+using namespace Assets;
+using namespace Scene;
 
 void MeshAPI::OnInit(){
     Function("Cube", [this](){return Cube();});
@@ -27,7 +29,7 @@ void MeshAPI::OnInit(){
 }
 
 Renderer::Scene::MeshSceneNode* MeshAPI::Cube(){
-        auto assetManager = application->GetResource<Renderer::AssetManager>();
+        auto assetManager = application->GetResource<AssetManager>();
         auto scene = application->GetResource<Renderer::Scene::Scene>();
 
         Mesh* mesh = assetManager->GetMesh("Cube");
@@ -40,7 +42,7 @@ Renderer::Scene::MeshSceneNode* MeshAPI::Cube(){
 }
 
 EmptyNode* MeshAPI::Model(const string& path){
-    auto assetManager = application->GetResource<Renderer::AssetManager>();
+    auto assetManager = application->GetResource<AssetManager>();
     auto scene = application->GetResource<Renderer::Scene::Scene>();
 
     class Model* model = assetManager->LoadModel(path);

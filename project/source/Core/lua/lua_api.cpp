@@ -5,7 +5,6 @@
 #include "console/console.h"
 
 #include "file_watcher.h"
-#include "asset_manager.h"
 #include "scene/scene.h"
 
 using namespace Core;
@@ -66,8 +65,6 @@ void API::StartScriptWatcher(){
 
     fileWatcher->WatchFile(filePath, [this](){
         // Delete Old Assets
-        Renderer::AssetManager* assetManager = this->application->
-            GetResource<Renderer::AssetManager>();
         Renderer::Scene::Scene* scene = this->application->
             GetResource<Scene::Scene>();
 

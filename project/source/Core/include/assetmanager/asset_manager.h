@@ -16,7 +16,7 @@
 
 using namespace std;
 
-namespace Renderer{
+namespace Assets{
     class AssetManager{
         public:
             Shader* CreateShader
