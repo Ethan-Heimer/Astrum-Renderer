@@ -46,24 +46,6 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
             //---
 
             Console::Log(Message, "Renderer", Green, "Renderer Initialized!");
-
-            //Test Models 
-            
-            // This loads a model
-            Model* model = this->assetManager.LoadModel("./assets/Car-Model/Car.obj");
-            int count = model->GetMeshCount();
-
-            SceneNode* parentNode = scene.AddChildAtRoot<EmptyNode>();
-
-            for(int i = 0; i < count; i++){
-                auto modelData = model->GetMeshMaterialPair(i);
-                Mesh* mesh = std::get<0>(modelData);
-                Material* material = std::get<1>(modelData);
-
-                parentNode->AddChild<MeshSceneNode>(mesh, material);
-            }
-
-            parentNode->GetLocalTransform().SetRotation(0, -45, 0);
         });
 
     application->SubscribeToUpdate([this](){

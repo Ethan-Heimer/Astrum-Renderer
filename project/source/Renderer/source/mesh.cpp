@@ -149,8 +149,5 @@ void Renderer::Mesh::CalculateVertexNormals(){
     
     for(auto& vertex : verticies){
         vertex.Normal = glm::normalize(vertex.Normal);
-        std::cout << vertex.Normal.x << vertex.Normal.y << vertex.Normal.z << std::endl;
     }
-
-    std::cout << std::endl;
 }

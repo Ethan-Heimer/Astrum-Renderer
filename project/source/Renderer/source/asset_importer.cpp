@@ -106,7 +106,5 @@ string AssetImporter::ProcessAssimpTexture
     if(aiPath.Empty())
         return "";
 
-    std::cout << path + aiPath.C_Str() << std::endl;
-
     return (path+aiPath.C_Str());
 }

@@ -38,6 +38,7 @@ namespace Renderer{
             Mesh* GetMesh(const string& name);
 
             void ClearTextures();
+            void ClearModels();
 
         private:
             map<string, shared_ptr<Shader>> shaders;

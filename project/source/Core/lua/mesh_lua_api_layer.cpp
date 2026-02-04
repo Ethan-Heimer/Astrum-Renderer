@@ -3,6 +3,7 @@
 #include "lua/mesh_lua_api_layer.h"
 
 #include "asset_manager.h"
+#include "console/console.h"
 #include "scene/scene.h"
 #include "mesh.h"
 #include "scene/mesh_scene_node.h"
@@ -13,14 +14,15 @@ using namespace Lua;
 
 void MeshAPI::OnInit(){
     Function("Cube", [this](){return Cube();});
+    Function("Model", [this](const string& path){return Model(path);});
 
-    Function("Translate", [this](Scene::MeshSceneNode* node, 
+    Function("Translate", [this](MeshSceneNode* node, 
             float x, float y, float z){Translate(node, x, y, z);});
 
-    Function("Rotate", [this](Scene::MeshSceneNode* node, 
+    Function("Rotate", [this](MeshSceneNode* node, 
             float x, float y, float z){Rotate(node, x, y, z);});
 
-    Function("Scale", [this](Scene::MeshSceneNode* node, 
+    Function("Scale", [this](MeshSceneNode* node, 
             float x, float y, float z){Scale(node, x, y, z);});
 }
 
@@ -31,20 +33,44 @@ Renderer::Scene::MeshSceneNode* MeshAPI::Cube(){
         Mesh* mesh = assetManager->GetMesh("Cube");
         Material* material = assetManager->GetMaterial("Default");
 
-        Scene::MeshSceneNode* node = 
+        MeshSceneNode* node = 
             scene->AddChildAtRoot<Renderer::Scene::MeshSceneNode>(mesh, material);
 
         return node;
 }
 
-void MeshAPI::Translate(Scene::MeshSceneNode* node, float x, float y, float z){ 
+EmptyNode* MeshAPI::Model(const string& path){
+    auto assetManager = application->GetResource<Renderer::AssetManager>();
+    auto scene = application->GetResource<Renderer::Scene::Scene>();
+
+    class Model* model = assetManager->LoadModel(path);
+
+    if(!model){
+        Console::Log(Error, "Model " + path + " Not Found");
+        return nullptr;
+    }
+
+    int count = model->GetMeshCount();
+    EmptyNode* parentNode = scene->AddChildAtRoot<EmptyNode>();
+    for(int i = 0; i < count; i++){
+        auto modelData = model->GetMeshMaterialPair(i);
+        Mesh* mesh = std::get<0>(modelData);
+        Material* material = std::get<1>(modelData);
+
+        parentNode->AddChild<MeshSceneNode>(mesh, material);
+    }
+
+    return parentNode;
+}
+
+void MeshAPI::Translate(SceneNode* node, float x, float y, float z){ 
     node->GetLocalTransform().SetPosition(x, y, z);
 }
 
-void MeshAPI::Rotate(Scene::MeshSceneNode* node, float x, float y, float z){ 
+void MeshAPI::Rotate(SceneNode* node, float x, float y, float z){ 
     node->GetLocalTransform().SetRotation(x, y, z);
 }
 
-void MeshAPI::Scale(Scene::MeshSceneNode* node, float x, float y, float z){ 
+void MeshAPI::Scale(SceneNode* node, float x, float y, float z){ 
     node->GetLocalTransform().SetScale(x, y, z);
 }

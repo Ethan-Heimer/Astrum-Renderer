@@ -28,7 +28,7 @@ void API::LoadScript(){
         lua.safe_script_file(file);
         this->scriptInitialized = true;
 
-        Console::Log(Message, "", Green, "Lua File Found!");
+        Console::Log(Message, "Lua", Green, "Lua File Found!");
     } catch(const sol::error& e){ 
         Console::Log(Error, " File Not Found.");
 
@@ -49,14 +49,14 @@ void API::StartScript(){
     if(start){
         auto result = start();
         if(result.valid()){
-            Console::Log(Message, "", Green, "Start Executed Correctly");
+            Console::Log(Message, "Lua", Green, "Start Executed Correctly");
         } else {
-            Console::Log(Error, "", Red, "Errors In Start");
+            Console::Log(Error, "Lua", Red, "Errors In Start");
             sol::error e = result;
             Console::Log(Error, e.what());
         } 
     } else {
-        Console::Log(Message, "", Yellow, "Start Not Found");
+        Console::Log(Message, "Lua", Yellow, "Start Not Found");
     }
 }
 
@@ -71,7 +71,6 @@ void API::StartScriptWatcher(){
         Renderer::Scene::Scene* scene = this->application->
             GetResource<Scene::Scene>();
 
-        assetManager->ClearTextures();
         scene->Clear();
 
         ShutDown();
@@ -96,13 +95,13 @@ void API::UpdateAPI(){
     if(update){
         auto result = update();
         if(!result.valid()){
-            Console::Log(Error, "", Red, "Errors In Start");
+            Console::Log(Error, "Lua", Red, "Errors In Start");
             sol::error e = result;
             Console::Log(Error, e.what());
         } 
     } 
     else {
-        Console::Log(Message, "", Yellow, "Update Not Found");
+        Console::Log(Message, "Lua", Yellow, "Update Not Found");
     }
 
     lua.collect_garbage();

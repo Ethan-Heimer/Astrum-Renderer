@@ -120,8 +120,6 @@ Model* AssetManager::LoadModel(const string& path){
 
                 if(texture)
                     material.SetTexture(texture);
-
-                std::cout << "Path: " << texturePath << std::endl;
             }
         }
 
@@ -139,7 +137,6 @@ Model* AssetManager::LoadModel(const string& path){
 
 
 Renderer::Shader* Renderer::AssetManager::GetShader(const string& name){
-    std::cout << name;
     return shaders[name].get();
 }
 
