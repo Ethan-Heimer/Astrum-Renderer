@@ -38,13 +38,13 @@ Renderer::Scene::MeshSceneNode* MeshAPI::Cube(){
 }
 
 void MeshAPI::Translate(Scene::MeshSceneNode* node, float x, float y, float z){ 
-    node->GetTransform().SetPosition(x, y, z);
+    node->GetLocalTransform().SetPosition(x, y, z);
 }
 
 void MeshAPI::Rotate(Scene::MeshSceneNode* node, float x, float y, float z){ 
-    node->GetTransform().SetRotation(x, y, z);
+    node->GetLocalTransform().SetRotation(x, y, z);
 }
 
 void MeshAPI::Scale(Scene::MeshSceneNode* node, float x, float y, float z){ 
-    node->GetTransform().SetScale(x, y, z);
+    node->GetLocalTransform().SetScale(x, y, z);
 }

@@ -18,12 +18,9 @@ namespace Renderer{
                 void UseUniqueMaterial();
 
                 Mesh& GetMesh();
-                Transform& GetTransform();
                 Material& GetMaterial();
 
-            protected:
-                Transform transform{};
-                
+            protected: 
                 Material* material;
                 Mesh* mesh;
 

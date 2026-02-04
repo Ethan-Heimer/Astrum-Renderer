@@ -58,7 +58,7 @@ void StandardRenderer::Draw(ICommandQueue* queue){
     glfwSwapBuffers(window);
 }
 
-void StandardRenderer::DrawMesh(const Mesh* mesh, const Transform* transform, Material* material){
+void StandardRenderer::DrawMesh(const Mesh* mesh, mat4x4 transform, Material* material){
     Shader* shader = material->GetShader();
     material->Use();
 
@@ -87,7 +87,7 @@ void StandardRenderer::DrawMesh(const Mesh* mesh, const Transform* transform, Ma
     shader->SetVector3("viewPos", camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
 
     // Use a UBO for Model and View to save memory allocations on GPU 
-    shader->SetMatrix4x4("model", value_ptr(transform->GetTransfromMatrix()));
+    shader->SetMatrix4x4("model", value_ptr(transform));
     shader->SetMatrix4x4("view", value_ptr(viewMatrix));
     shader->SetMatrix4x4("projection", value_ptr(projection));
 

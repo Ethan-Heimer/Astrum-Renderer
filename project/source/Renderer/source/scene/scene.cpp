@@ -1,4 +1,5 @@
 #include "scene/scene.h"
+#include <algorithm>
 
 using namespace Renderer;
 
@@ -12,6 +13,18 @@ Scene::SceneNode::~SceneNode(){
     }
 
     children.clear();
+}
+
+Transform& Scene::SceneNode::GetLocalTransform(){
+    return transform;
+}
+
+glm::mat4x4 Scene::SceneNode::GetTransformMatrix(){
+    mat4x4 parentMatrix{1};
+    if(this->parent != nullptr)
+        parentMatrix = this->parent->GetTransformMatrix();
+
+    return parentMatrix * this->transform.GetTransfromMatrix();
 }
 
 Scene::Scene::Scene(){

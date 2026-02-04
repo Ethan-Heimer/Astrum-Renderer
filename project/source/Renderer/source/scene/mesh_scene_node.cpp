@@ -24,7 +24,7 @@ MeshSceneNode::~MeshSceneNode(){
 
 void MeshSceneNode::OnRendered(ICommandQueue* renderer){
     renderer->Queue(Standard, [this](IRenderer* renderer)
-            {renderer->DrawMesh(mesh, &transform, material);});
+            {renderer->DrawMesh(mesh, GetTransformMatrix(), material);});
 }
 
 void MeshSceneNode::UseUniqueMaterial(){
@@ -37,10 +37,6 @@ void MeshSceneNode::UseUniqueMaterial(){
 
 Mesh& MeshSceneNode::GetMesh(){
     return *mesh;
-}
-
-Transform& MeshSceneNode::GetTransform(){
-    return transform;
 }
 
 Material& MeshSceneNode::GetMaterial(){

@@ -4,11 +4,15 @@
 #include <vector>
 #include <type_traits>
 
+#include "glm/fwd.hpp"
 #include "renderer/render_commands.h"
+#include "transform.h"
+#include "glm/glm.hpp"
 
 using namespace std;
 using namespace Renderer;
 using namespace Command;
+using namespace glm;
 
 namespace Renderer{
     namespace Scene{
@@ -18,6 +22,9 @@ namespace Renderer{
 
                 SceneNode(SceneNode* parent);
                 virtual ~SceneNode();
+
+                Transform& GetLocalTransform();
+                glm::mat4x4 GetTransformMatrix(); 
 
                 template<class T, class... U>
                 T* AddChild(U... args){
@@ -36,6 +43,8 @@ namespace Renderer{
             protected:
                 vector<SceneNode*> children;
                 SceneNode* parent;
+
+                Transform transform{};
         };
     }
 }

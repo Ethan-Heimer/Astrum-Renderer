@@ -18,7 +18,7 @@ namespace Renderer{
             void Initalize() override;
             void Draw(ICommandQueue* queue) override;
 
-            void DrawMesh(const Mesh* mesh, const Transform* transform, Material* material) override;
+            void DrawMesh(const Mesh* mesh, mat4x4 transform, Material* material) override;
             void SetClearColor
                 (const unsigned char& r, const unsigned char& g, const unsigned char& b) override;
 

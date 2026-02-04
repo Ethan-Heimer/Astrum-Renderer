@@ -12,6 +12,7 @@
 #include "GLFW/glfw3.h"
 
 using namespace Renderer::Command;
+using namespace glm;
 
 namespace Renderer{
     class IRenderer;
@@ -26,7 +27,7 @@ namespace Renderer{
 
             virtual void AddPointLight(PointLight* light) = 0;
 
-            virtual void DrawMesh(const Mesh* mesh, const Transform* transform, Material* material) = 0; 
+            virtual void DrawMesh(const Mesh* mesh, mat4x4 transform, Material* material) = 0; 
             virtual void SetClearColor
                 (const unsigned char& r, const unsigned char& g, const unsigned char& b) = 0;
 
