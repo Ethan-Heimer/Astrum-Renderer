@@ -1,8 +1,13 @@
 #pragma once
 
+/*
+ * Model: Collection of Materials and Meshs owned by the Asset Manager
+ */
+
 #include "material.h"
 #include "mesh.h"
-#include "texture.h"
+
+#include <tuple>
 #include <vector>
 
 using namespace Renderer;
@@ -11,7 +16,7 @@ using namespace std;
 namespace Renderer{
     class Model{
         public:
-            Model(vector<Mesh>& meshs, vector<Material>& materials, Material* material);
+            Model(vector<Mesh*>& meshs, vector<Material*>& materials);
 
             int GetMaterialCount() const;
             Material* GetMaterial(int index);
@@ -19,9 +24,10 @@ namespace Renderer{
             int GetMeshCount() const;
             Mesh* GetMesh(int index);
 
+            tuple<Mesh*, Material*> GetMeshMaterialPair(int index);
+
         private:
-            std::vector<Mesh> mesh;
-            std::vector<Material> materials;
-            Material* material;
+            vector<Mesh*> mesh;
+            vector<Material*> materials;
     };
 }

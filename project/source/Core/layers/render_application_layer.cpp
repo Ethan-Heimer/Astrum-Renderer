@@ -10,6 +10,7 @@
 #include "renderer/standard_renderer_queue.h"
 #include "renderer/standard_renderer.h"
 
+#include "scene/mesh_scene_node.h"
 #include "shader.h"
 #include <iostream>
 
@@ -30,6 +31,7 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
     application->SubscribeToInitialize([this](){
             this->renderer->Initalize();
 
+            //? automate ?
             Renderer::Shader* defaultShader = this->assetManager.CreateShader("Default", 
                 "./shaders/standard_vertex.glsl", "./shaders/standard_fragment.glsl");
 
@@ -41,36 +43,26 @@ Core::RendererApplicationLayer::RendererApplicationLayer(Application* applicatio
 
             Renderer::Primatives::Cube(verticies, indicies);
             this->assetManager.CreateMesh("Cube", verticies, indicies);
+            //---
 
             Console::Log(Message, "Renderer", Green, "Renderer Initialized!");
 
             //Test Models 
-            Model* model = this->assetManager.LoadModel("./assets/dog/dog.obj");
+            // This loads a model
+            Model* model = this->assetManager.LoadModel("./assets/Car-Model/Car.obj");
+            int count = model->GetMeshCount();
+
+            for(int i = 0; i < count; i++){
+                auto modelData = model->GetMeshMaterialPair(i);
+                Mesh* mesh = std::get<0>(modelData);
+                Material* material = std::get<1>(modelData);
+
+                scene.AddChildAtRoot<MeshSceneNode>(mesh, material);
+            }
         });
 
     application->SubscribeToUpdate([this](){
             scene.Render(commandQueue);
-            commandQueue->Queue(Renderer::Command::Standard, [this](IRenderer* renderer){
-                /*
-                 * This Simulates Creating a Draw Model Command for testing
-                 */
-        
-                Model* model = this->assetManager.LoadModel("./assets/Car-Model/Car.obj");
-
-                Transform transform{};
-                //transform.SetScale(.25, .25, .25);
-                //transform.SetPosition(0, -5, -5);
-                //transform.SetRotation(-90, 0, 0);
-
-                int count = model->GetMeshCount();
-
-                for(int i = 0; i < count; i++){
-                    Mesh* mesh = model->GetMesh(i);
-                    Material* material = model->GetMaterial(i);
-
-                    renderer->DrawMesh(mesh, &transform, material);
-                }
-            });
             this->renderer->Draw(commandQueue);
         });
 }

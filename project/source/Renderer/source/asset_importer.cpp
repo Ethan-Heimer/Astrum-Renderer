@@ -5,7 +5,7 @@
 
 using namespace Renderer;
 
-void AssetImporter::ProcessAssimpNode(const string& path, aiNode* node, const aiScene* scene,
+void AssetImporter::ProcessAssimpNode(aiNode* node, const aiScene* scene,
         vector<aiMesh*>& aiMeshs){
 
     for(int i = 0; i < node->mNumMeshes; i++){
@@ -14,7 +14,7 @@ void AssetImporter::ProcessAssimpNode(const string& path, aiNode* node, const ai
     }
 
      for(unsigned int i = 0; i < node->mNumChildren; i++){
-        AssetImporter::ProcessAssimpNode(path, node->mChildren[i], scene, aiMeshs);
+        AssetImporter::ProcessAssimpNode(node->mChildren[i], scene, aiMeshs);
     }
 }
 
@@ -26,7 +26,7 @@ aiMaterial* AssetImporter::GetAssimpMaterial(aiMesh* mesh, const aiScene* scene)
     return scene->mMaterials[mesh->mMaterialIndex];
 }
 
-void AssetImporter::ProcessAssimpMesh(aiMesh* mesh, const aiScene* scene, vector<Mesh>& modelMeshs){
+Mesh AssetImporter::ProcessAssimpMesh(aiMesh* mesh, const aiScene* scene){
     // -- get verticies and indicies from aiMesh
     // -- vertices
 
@@ -67,7 +67,7 @@ void AssetImporter::ProcessAssimpMesh(aiMesh* mesh, const aiScene* scene, vector
         }
     }
 
-    modelMeshs.push_back(Mesh(verticies, indicies));
+    return Mesh(verticies, indicies);
 }
 
 void AssetImporter::ProcessAssimpMaterial(aiMaterial* material, const aiScene* scene, Material& meshMaterial){
@@ -106,7 +106,7 @@ string AssetImporter::ProcessAssimpTexture
     if(aiPath.Empty())
         return "";
 
-    std::cout << path + "/" + aiPath.C_Str() << std::endl;
+    std::cout << path + aiPath.C_Str() << std::endl;
 
-    return (path+"/"+aiPath.C_Str());
+    return (path+aiPath.C_Str());
 }

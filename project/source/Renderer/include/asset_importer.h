@@ -16,13 +16,14 @@ using namespace std;
 
 namespace Renderer{
     namespace AssetImporter{
-            void ProcessAssimpNode(const string& path, aiNode* node, const aiScene* scene, 
+            void ProcessAssimpNode(aiNode* node, const aiScene* scene, 
                     vector<aiMesh*>& meshes);
 
-            aiMaterial* GetAssimpMaterial(aiMesh* mesh, const aiScene* scene);
-            void ProcessAssimpMesh(aiMesh* mesh, const aiScene* scene, vector<Mesh>& modelMeshs);
-
+            Mesh ProcessAssimpMesh(aiMesh* mesh, const aiScene* scene);
             void ProcessAssimpMaterial(aiMaterial* material, const aiScene* scene, Material& meshMaterial);
+
             string ProcessAssimpTexture(const string& path, const aiMaterial* material, aiTextureType type, int index);
+
+            aiMaterial* GetAssimpMaterial(aiMesh* mesh, const aiScene* scene);
     }
 }

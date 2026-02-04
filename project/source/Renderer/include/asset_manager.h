@@ -21,9 +21,14 @@ namespace Renderer{
         public:
             Shader* CreateShader
                 (const string& name, const string& vertexShader, const string& fragmentShader);
+
             Material* CreateMaterial(const string& name, Shader* shader);
-            Texture* CreateTexture(string texturePath);
+            Material* CreateMaterial(const string& name, Material&& material);
+            
             Mesh* CreateMesh(const string& name, std::vector<Vertex>& verticies, std::vector<unsigned int>& indicies);
+            Mesh* CreateMesh(const string& name, Mesh&& mesh);
+
+            Texture* CreateTexture(string texturePath);
 
             Model* LoadModel(const string& path); 
 

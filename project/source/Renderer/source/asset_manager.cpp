@@ -17,7 +17,20 @@ Renderer::Shader* Renderer::AssetManager::CreateShader(const string& name, const
 }
 
 Renderer::Material* Renderer::AssetManager::CreateMaterial(const string& name, Shader* shader){ 
+    if(materials.contains(name))
+        return materials[name].get();
+
     shared_ptr<Material> newShader = make_shared<Material>(shader);
+    materials[name] = std::move(newShader);
+
+    return materials[name].get();
+}
+
+Renderer::Material* Renderer::AssetManager::CreateMaterial(const string& name, Material&& material){ 
+    if(materials.contains(name))
+        return materials[name].get();
+
+    shared_ptr<Material> newShader = make_shared<Material>(material);
     materials[name] = std::move(newShader);
 
     return materials[name].get();
@@ -45,6 +58,18 @@ Renderer::Mesh* Renderer::AssetManager::CreateMesh(const string& name,
     return meshs[name].get();
 }
 
+Renderer::Mesh* Renderer::AssetManager::CreateMesh(const string& name,
+    Mesh&& mesh){
+
+    if(meshs.contains(name))
+        return meshs[name].get();
+
+    shared_ptr<Mesh> newMesh = make_shared<Mesh>(mesh);
+    meshs[name] = std::move(newMesh);
+
+    return meshs[name].get();
+}
+
 Model* AssetManager::LoadModel(const string& path){
     if(models.contains(path))
         return models[path].get();
@@ -61,24 +86,32 @@ Model* AssetManager::LoadModel(const string& path){
     }
 
     std::filesystem::path p{path};
-    std::filesystem::path directory = p.parent_path();
+    std::filesystem::path d = p.parent_path();
+
+    string directory = d.string() + "/";
 
     Shader* shader = GetShader("Default");
 
     vector<aiMesh*> aiMeshs;
 
-    vector<Mesh> meshs;
-    vector<Material> materials;
+    vector<Mesh*> meshs;
+    vector<Material*> materials;
 
-    AssetImporter::ProcessAssimpNode(directory, scene->mRootNode, scene, aiMeshs);
+    AssetImporter::ProcessAssimpNode(scene->mRootNode, scene, aiMeshs);
     
     for(auto m : aiMeshs){
-        AssetImporter::ProcessAssimpMesh(m, scene, meshs);
+        string meshName = m->mName.C_Str();
+
+        Mesh* meshReference = CreateMesh(directory+meshName,
+            AssetImporter::ProcessAssimpMesh(m, scene));
 
         Material material{shader};
-        aiMaterial* aiMaterial = AssetImporter::GetAssimpMaterial(m, scene);
+        string materialName = "Default";
 
+        aiMaterial* aiMaterial = AssetImporter::GetAssimpMaterial(m, scene);
         if(aiMaterial){
+            materialName = directory + aiMaterial->GetName().C_Str();
+
             AssetImporter::ProcessAssimpMaterial(aiMaterial, scene, material);
 
             string texturePath = AssetImporter::ProcessAssimpTexture(directory, aiMaterial, aiTextureType_DIFFUSE, 0);
@@ -92,11 +125,13 @@ Model* AssetManager::LoadModel(const string& path){
             }
         }
 
-        materials.push_back(material);
+        Material* matReference = CreateMaterial(materialName, std::move(material));
+
+        meshs.push_back(meshReference);
+        materials.push_back(matReference);
     }
 
-    shared_ptr<Model> newModel = make_shared<Model>(meshs, materials, nullptr);
-
+    shared_ptr<Model> newModel = make_shared<Model>(meshs, materials);
     models[path] = std::move(newModel);
 
     return models[path].get();
