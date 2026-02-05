@@ -29,8 +29,8 @@ void MeshAPI::OnInit(){
 }
 
 Renderer::Scene::MeshSceneNode* MeshAPI::Cube(){
-        auto assetManager = application->GetResource<AssetManager>();
-        auto scene = application->GetResource<Renderer::Scene::Scene>();
+        AppResource(AssetManager, assetManager);
+        AppResource(Renderer::Scene::Scene, scene);
 
         Mesh* mesh = assetManager->GetMesh("Cube");
         Material* material = assetManager->GetMaterial("Default");
@@ -42,8 +42,8 @@ Renderer::Scene::MeshSceneNode* MeshAPI::Cube(){
 }
 
 EmptyNode* MeshAPI::Model(const string& path){
-    auto assetManager = application->GetResource<AssetManager>();
-    auto scene = application->GetResource<Renderer::Scene::Scene>();
+    AppResource(AssetManager, assetManager);
+    AppResource(Renderer::Scene::Scene, scene);
 
     class Model* model = assetManager->LoadModel(path);
 

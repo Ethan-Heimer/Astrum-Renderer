@@ -61,12 +61,10 @@ void API::StartScript(){
 
 void API::StartScriptWatcher(){
     string filePath = application->GetArgument("s");
-    auto fileWatcher = application->GetResource<Utils::FileWatcher>();
+    AppResource(Utils::FileWatcher, fileWatcher);
 
     fileWatcher->WatchFile(filePath, [this](){
-        // Delete Old Assets
-        Renderer::Scene::Scene* scene = this->application->
-            GetResource<Scene::Scene>();
+        AppResource(Renderer::Scene::Scene, scene);
 
         scene->Clear();
 

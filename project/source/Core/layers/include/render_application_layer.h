@@ -1,5 +1,4 @@
-#ifndef RENDERER_APP_LAYER_H
-#define RENDERER_APP_LAYER_H
+#pragma once
 
 #include "application_layer.h"
 #include "renderer/render_commands.h"
@@ -19,5 +18,3 @@ namespace Core{
             Renderer::IRenderer* renderer;
     };
 }
-
-#endif

@@ -19,35 +19,35 @@ void CameraAPI::OnInit(){
 }
 
 void CameraAPI::Move(float forward, float straif, float up){
-    auto r = this->application->GetResource<Renderer::IRenderer>();
+    AppResource(Renderer::IRenderer, r);
     Camera& camera = r->GetCamera();
 
     camera.Move(forward, straif, up);
 };
 
 void CameraAPI::Position(float forward, float straif, float up){
-    auto r = this->application->GetResource<Renderer::IRenderer>();
+    AppResource(Renderer::IRenderer, r);
     Camera& camera = r->GetCamera();
 
     camera.SetPos(forward, straif, up);
 };
 
 void CameraAPI::Rotate(float pitch, float yaw){
-    auto r = this->application->GetResource<Renderer::IRenderer>();
+    AppResource(Renderer::IRenderer, r);
     Camera& camera = r->GetCamera();
 
     camera.SetRotation(pitch, yaw);
 }
 
 void CameraAPI::Zoom(float zoom){
-    auto r = this->application->GetResource<Renderer::IRenderer>();
+    AppResource(Renderer::IRenderer, r);
     Camera& camera = r->GetCamera();
 
     camera.SetZoom(zoom);
 }
 
 tuple<float, float> CameraAPI::GetRotation(){ 
-    auto r = this->application->GetResource<Renderer::IRenderer>();
+    AppResource(Renderer::IRenderer, r);
     Camera& camera = r->GetCamera();
 
     float pitch = 0, yaw = 0;

@@ -88,6 +88,10 @@ target_include_directories(${NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/project/source/Core/lua/include
 )
 
+target_include_directories(${NAME} PUBLIC
+    ${CMAKE_SOURCE_DIR}/project/source/Core/exeptions/include
+)
+
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/sol/include)
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/include)
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/glfw/include)

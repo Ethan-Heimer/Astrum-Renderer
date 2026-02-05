@@ -1,14 +1,22 @@
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#pragma once
 
-#include <cmath>
 #include <functional>
 
+#include "core_exeptions.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "console.h"
 
 #include <unordered_map>
 #include <string>
+
+#define AppResource(Type, Name)\
+    Type* Name; \
+    try{ \
+        Name = this->application->GetResource<Type>(); \
+    } catch(Exeptions::ResourceNotFound e){ \
+        Console::Log(Error, e.what()); \
+        application->Exit(); }\
 
 using namespace std;
 using Delegate = vector<function<void()>>;
@@ -27,19 +35,23 @@ namespace Core{
 
             GLFWwindow* GetWindow();
             void GetWindowSize(GLFWwindow* window, int* width, int* height);
-            std::string GetArgument(const std::string& name);
+            string GetArgument(const string& name);
 
             unsigned int GetDeltaTime();
 
             template<typename T>
             void RegisterResource(void* resource){ 
-                std::string key = typeid(T).name();
+                string key = typeid(T).name();
                 resourceMap[key] = resource;
             }
 
             template<typename T>
             T* GetResource(){
                 std::string key = typeid(T).name();
+
+                if(!resourceMap.contains(key)){
+                    throw Exeptions::ResourceNotFound(key);
+                }
 
                 if(resourceMap.find(key) != resourceMap.end()){
                     return (T*)resourceMap[key];
@@ -54,8 +66,8 @@ namespace Core{
             Delegate updateEvent;
             Delegate shutdownEvent;
 
-            std::unordered_map<std::string, void*> resourceMap;
-            std::unordered_map<std::string, std::string> arguments;
+            unordered_map<string, void*> resourceMap;
+            unordered_map<string, string> arguments;
 
             GLFWwindow* window;
 
@@ -79,5 +91,3 @@ namespace Core{
             unsigned long TimeStamp();
     };
 }
-
-#endif

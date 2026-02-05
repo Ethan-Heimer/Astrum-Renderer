@@ -51,7 +51,7 @@ void MaterialAPI::SetShine(Material* material, float shine){
 }
 
 void MaterialAPI::SetTexture(Material* material, string path){
-    AssetManager* assetManager = application->GetResource<AssetManager>();
+    AppResource(AssetManager, assetManager);
     Texture* texture = assetManager->CreateTexture(path);    
 
     material->SetTexture(texture);

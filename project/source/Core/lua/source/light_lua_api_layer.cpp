@@ -22,7 +22,7 @@ void LightAPI::OnInit(){
 }
 
 Scene::LightSceneNode* LightAPI::PointLight(){
-    auto scene = application->GetResource<Scene::Scene>();
+    AppResource(Scene::Scene, scene);
 
     Scene::LightSceneNode* node = 
         scene->AddChildAtRoot<Scene::LightSceneNode>();

@@ -1,6 +1,6 @@
 #include "input_lua_api_layer.h"
-
 #include "input.h"
+#include "mesh.h"
 
 using namespace Core;
 using namespace Utils;
@@ -50,8 +50,8 @@ void InputAPI::OnInit(){
 }
 
 void InputAPI::OnUpdate(){
-    Utils::Input* input = this->application->GetResource<Utils::Input>();
-        
+    AppResource(Utils::Input, input);
+ 
     double posX = 0;
     double posY = 0;
 
@@ -69,6 +69,6 @@ void InputAPI::OnUpdate(){
 }
 
 bool InputAPI::IsKeyPressed(unsigned int key){ 
-    Utils::Input* input = application->GetResource<Utils::Input>();
+    AppResource(Input, input);
     return input->IsKeyDown(key);
 }

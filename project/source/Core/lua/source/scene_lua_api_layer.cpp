@@ -26,35 +26,35 @@ void SceneAPI::OnInit(){
 }
 
 void SceneAPI::SetBackgroundColor(const unsigned char r, const unsigned char g, const unsigned char b){
-    Scene::Scene* scene = application->GetResource<Scene::Scene>();
+    AppResource(Scene::Scene, scene);
     auto* rootNode = scene->GetRootNode(); 
 
     rootNode->SetSkyColor(r, g, b);
 }
 
 void SceneAPI::SetDirectionalLightDirection(float x, float y, float z){
-    Scene::Scene* scene = application->GetResource<Scene::Scene>();
+    AppResource(Scene::Scene, scene);
     auto* rootNode = scene->GetRootNode(); 
 
     rootNode->SetDirectionalLightDirection(x, y, z);
 }
 
 void SceneAPI::SetDirectionalLightAmbient(const unsigned char r, const unsigned char g, const unsigned char b){
-    Scene::Scene* scene = application->GetResource<Scene::Scene>();
+    AppResource(Scene::Scene, scene);
     auto* rootNode = scene->GetRootNode(); 
 
     rootNode->SetDirectionalAmbientColor(r, g, b);
 }
 
 void SceneAPI::SetDirectionalLightSpecular(const unsigned char r, const unsigned char g, const unsigned char b){
-    Scene::Scene* scene = application->GetResource<Scene::Scene>();
+    AppResource(Scene::Scene, scene);
     auto* rootNode = scene->GetRootNode(); 
 
     rootNode->SetDirectionalSpecularColor(r, g, b);
 }
 
 void SceneAPI::SetDirectionalLightDiffuse(const unsigned char r, const unsigned char g, const unsigned char b){
-    Scene::Scene* scene = application->GetResource<Scene::Scene>();
+    AppResource(Scene::Scene, scene);
     auto* rootNode = scene->GetRootNode(); 
 
     rootNode->SetDirectionalDiffuseColor(r, g, b);
