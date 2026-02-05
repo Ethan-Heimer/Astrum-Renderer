@@ -1,0 +1,41 @@
+#include "lua_application_layer.h"
+
+#include "lua_api_layer.h"
+#include "mesh_lua_api_layer.h"
+#include "material_lua_api_layer.h"
+#include "input_lua_api_layer.h"
+#include "camera_lua_api_layer.h"
+#include "debug_lua_api_layer.h"
+#include "scene_lua_api_layer.h"
+#include "light_lua_api_layer.h"
+
+using namespace Core;
+using namespace Renderer;
+
+Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application) 
+    : ApplicationLayer(application), api(this->application){
+
+    api.AddLayer<Lua::MeshAPI>();
+    api.AddLayer<Lua::MaterialAPI>("Material");
+    api.AddLayer<Lua::InputAPI>("Input");
+    api.AddLayer<Lua::CameraAPI>("Camera");
+    api.AddLayer<Lua::DebugAPI>("Debug");
+    api.AddLayer<Lua::SceneAPI>("Scene");
+    api.AddLayer<Lua::LightAPI>("Light");
+
+    application->SubscribeToInitialize([this](){
+        // -- Initialize Sol and Load Script
+        api.LoadScript(); 
+        api.StartScript();
+        api.StartScriptWatcher();
+    });
+
+    application->SubscribeToUpdate([this](){ 
+        this->api.UpdateAPI();
+    });
+
+    application->SubscribeToShutdown([this](){
+        this->api.ShutDown();
+    });
+}
+

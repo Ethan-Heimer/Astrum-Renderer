@@ -59,7 +59,33 @@ target_include_directories(${NAME} PUBLIC
 )
 
 target_include_directories(${NAME} PUBLIC
+    ${CMAKE_SOURCE_DIR}/project/source/AssetManager/include
+)
+
+target_include_directories(${NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/project/source/Core/include
+)
+
+# Core Includes
+
+target_include_directories(${NAME} PUBLIC
+    ${CMAKE_SOURCE_DIR}/project/source/Core/application/include
+)
+
+target_include_directories(${NAME} PUBLIC
+    ${CMAKE_SOURCE_DIR}/project/source/Core/assetmanager/include
+)
+
+target_include_directories(${NAME} PUBLIC
+    ${CMAKE_SOURCE_DIR}/project/source/Core/console/include
+)
+
+target_include_directories(${NAME} PUBLIC
+    ${CMAKE_SOURCE_DIR}/project/source/Core/layers/include
+)
+
+target_include_directories(${NAME} PUBLIC
+    ${CMAKE_SOURCE_DIR}/project/source/Core/lua/include
 )
 
 target_include_directories(${NAME} PRIVATE ${CMAKE_SOURCE_DIR}/project/libs/sol/include)

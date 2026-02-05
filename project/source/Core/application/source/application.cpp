@@ -1,0 +1,174 @@
+#include "application.h"
+
+#include "console.h"
+#include "assetmanager_application_layer.h"
+#include "lua_application_layer.h"
+#include "render_application_layer.h"
+#include "utils_application_layer.h"
+
+Core::Application::Application(int argc, char* argv[]) : exit(false){
+    /*
+     * Parse Arguments
+     */
+    ParseArguments(argc, argv);
+
+    /*
+     * Initialize Window
+     */
+
+    glfwInit();
+    CreateWindow(); 
+    
+    /*
+    * Integrate Application Layers here
+    */
+
+    Core::RendererApplicationLayer rendererLayer{this}; 
+    Core::AssetManagerApplicationLayer assetManagerLayer{this};
+    Core::UtilsApplicationLayer utilsLayer{this};
+    Core::LuaApplicationLayer luaLayer{this};
+
+    /*
+     * Run Program Callbacks
+     */
+
+    Initialize();
+    Run();
+    Shutdown();
+
+    /*
+     * Free GLFW
+     */
+
+    glfwTerminate();
+}
+
+void Core::Application::CreateWindow(){
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_DECORATED, GL_TRUE);
+
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    //---------------------------------------------------------------------! <- monitor here for full screen
+    window = glfwCreateWindow(mode->width/2, mode->height/2, "Render Script", NULL, NULL);
+
+    if (window == NULL)
+    {
+        Console::Log(Error, "Failed to create GLFW window");
+        glfwTerminate();
+
+        return;
+    }
+    glfwMakeContextCurrent(window);
+}
+
+GLFWwindow* Core::Application::GetWindow(){
+    return window;
+}
+
+void Core::Application::Exit(){
+    exit = true;
+}
+
+unsigned int Core::Application::GetDeltaTime(){
+    return deltaTime;
+}
+
+void GetWindowSize(GLFWwindow* window, int* width, int* height){
+    glfwGetWindowSize(window, width, height);
+}
+
+void Core::Application::SubscribeToInitialize(std::function<void()> callback){
+    SubscribeTo(&initializeEvent, callback);
+}
+
+void Core::Application::SubscribeToStart(std::function<void()> callback){
+    SubscribeTo(&startEvent, callback);
+}
+
+void Core::Application::SubscribeToUpdate(std::function<void()> callback){
+    SubscribeTo(&updateEvent, callback);
+}
+
+void Core::Application::SubscribeToShutdown(std::function<void()> callback){
+    SubscribeTo(&shutdownEvent, callback);
+}
+
+void Core::Application::Initialize(){
+    ExecuteDelegate(&initializeEvent);
+}
+
+void Core::Application::Run(){
+    ExecuteDelegate(&startEvent);
+
+    unsigned long startTime = TimeStamp();
+    unsigned long currentTime = TimeStamp();
+
+    unsigned long diff = 0;
+
+    while(!exit){ 
+        glfwPollEvents(); 
+
+
+        if(diff >= 1000/60){
+            unsigned long deltaTimeStampStart = TimeStamp();
+            ExecuteDelegate(&updateEvent); 
+
+            startTime = currentTime;
+            diff = 0;
+
+            unsigned long deltaTimeStampEnd = TimeStamp();
+            deltaTime = deltaTimeStampEnd - deltaTimeStampStart;
+        }
+
+        currentTime = TimeStamp();
+        diff = currentTime - startTime;
+            
+    }
+}
+
+void Core::Application::Shutdown(){
+    ExecuteDelegate(&shutdownEvent);
+}
+
+void Core::Application::ParseArguments(int argc, char** argv){
+    int c = 0;
+    while((c = getopt(argc, argv, "s:")) != -1){
+        switch(c){
+            case 's': 
+                this->AddArgument("Script", optarg);
+                this->AddArgument("s", optarg);
+            break;
+
+            case '?':
+                Console::Log(Warning, "Program", Red, "Invalid Option");
+            break;
+        }
+    }
+}
+
+void Core::Application::AddArgument(std::string name, std::string value){
+    arguments[name] = value;     
+}
+
+std::string Core::Application::GetArgument(const std::string& name){
+    return arguments[name];
+};
+
+void Core::Application::ExecuteDelegate(Delegate* delegate){
+    for(auto o : *delegate){
+        o();
+    }
+}
+
+void Core::Application::SubscribeTo(Delegate* delegate, std::function<void()> callback){
+    delegate->push_back(callback);
+}
+
+unsigned long Core::Application::TimeStamp(){
+    std::chrono::system_clock::time_point now = std::chrono::system_clock::now(); 
+    std::chrono::milliseconds duration = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()); 
+    return duration.count();
+}
