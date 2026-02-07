@@ -15,9 +15,9 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
     : ApplicationLayer(application), api(this->application){
 
     api.AddLayer<Lua::MeshAPI>();
-
     api.AddLayer<Lua::InputAPI>("Input");
     api.AddLayer<Lua::CameraAPI>("Camera");
+
     api.AddLayer<Lua::DebugAPI>("Debug");
     api.AddLayer<Lua::SceneAPI>("Scene");
 

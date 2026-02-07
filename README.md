@@ -370,6 +370,215 @@ end
 
 <br>
 
+## Light
+
+| Sub-API Name  | Description                   |
+| ------------- | ----------------------------- |
+| Light         | Creates lights in the scene.  |
+
+### -- Point --
+
+**Description:** Creates a Point Light
+
+**Arguments:** None.
+
+**Returns:** 
+
+| Description                                   | Type     |
+| --------------------------------------------- | -------- |
+| A Table of Child Functions to Mutate The Mesh | Table    |
+
+**Children Functions**
+
+| Signurature        |
+| ------------------ |
+| Position(x, y, z)  |
+| Color(r, g, b)     |
+
+**Example**
+
+``` lua
+function Start()
+    local light = Light.Point();
+end
+```
+
+<br>
+
+### -- .Color --
+
+**Description:** Changes a point light's color.
+
+**Arguments:** 
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| Red (r)                         | Number [0-255]    |
+| Green (g)                       | Number [0-255]    |
+| Blue (b)                        | Number [0-255]    |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    local light = Light.Point();
+    light.Color(255, 0, 0)
+end
+```
+
+<br>
+
+### -- .Position --
+
+**Description:** Changes a point light's position.
+
+**Arguments:** 
+
+| Description             | Type              |
+| ------------------------| ----------------- |
+| x                       | Number            |
+| y                       | Number            |
+| z                       | Number            |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    local light = Light.Point();
+    light.Position(10, 0, 1);
+end
+```
+
+<br>
+
+## Scene
+
+| Sub-API Name  | Description                   |
+| ------------- | ----------------------------- |
+| Scene         | Edit Scene Attributes.        |
+
+### -- SetBackgroundColor --
+
+**Description:** Set The Background Color of The Scene.
+
+**Arguments:**
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| Red (r)                         | Number [0-255]    |
+| Green (g)                       | Number [0-255]    |
+| Blue (b)                        | Number [0-255]    |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    Scene.SetBackgroundColor(50, 50, 50);
+end
+```
+
+<br>
+
+### -- SetLightDirection --
+
+**Description:** Changes the Scene's Directional Light's Direction.
+
+**Arguments:** 
+
+| Description             | Type              |
+| ------------------------| ----------------- |
+| x                       | Number            |
+| y                       | Number            |
+| z                       | Number            |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    Scene.SetLightDirection(.9, .1, 0);
+end
+```
+
+<br>
+
+### -- SetLightColor --
+
+**Description:** Changes the Scene's Directional Light's Color.
+
+**Arguments:** 
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| Red (r)                         | Number [0-255]    |
+| Green (g)                       | Number [0-255]    |
+| Blue (b)                        | Number [0-255]    |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    Scene.SetLightColor(200, 100, 50);
+end
+```
+
+### -- SetLightSpecularColor --
+
+**Description:** Changes the Scene's Directional Light's Specular Color.
+
+**Arguments:** 
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| Red (r)                         | Number [0-255]    |
+| Green (g)                       | Number [0-255]    |
+| Blue (b)                        | Number [0-255]    |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    Scene.SetLightSpecularColor(200, 100, 50);
+end
+```
+
+<br>
+
+### -- SetLightDiffuseColor --
+
+**Description:** Changes the Scene's Directional Light's Diffuse Color.
+
+**Arguments:** 
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| Red (r)                         | Number [0-255]    |
+| Green (g)                       | Number [0-255]    |
+| Blue (b)                        | Number [0-255]    |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    Scene.SetLightDiffuseColor(200, 100, 50);
+end
+```
+
+<br>
+
 ## Input
 
 | Sub-API Name  | Description                  |
@@ -580,3 +789,80 @@ end
 ```
 
 <br>
+
+## Debug
+
+| Sub-API Name  | Description                           |
+| ------------- | ------------------------------------- |
+| Debug         | Provides Basic Debugging Information. |
+
+### -- GetFPS --
+
+**Description:** Returns the FPS of the Program.
+
+**Arguments:** None.
+
+**Returns:**
+
+| Description                     | Type              |
+| ------------------------------- | ----------------- |
+| FPS                             | Number            |
+
+**Example**
+
+``` lua
+function Update()
+    local fps = Debug.GetFPS();
+    print(fps);
+end
+```
+
+<br>
+
+### -- StartTimer --
+
+**Description:** Starts a timer for debugging how long something takes to execute.
+
+**Arguments:** None.
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    Debug.StartTimer();
+end
+```
+
+<br>
+
+### -- EndTimer --
+
+**Description:** Ends a debugging Timer and Returns the Result in Milliseconds.
+
+**Arguments:** None.
+
+**Returns:** 
+
+| Description                                             | Type              |
+| ------------------------------------------------------- | ----------------- |
+| Returns Time since a StartTimer() call in Milliseconds. | Number            |
+
+**Example**
+
+``` lua
+function Start()
+    Debug.StartTimer();
+
+    for i=0, 30 do
+        Cube();
+    end
+
+    local result = Debug.EndTimer();
+    print(result);
+end
+```
+
+<br>
+
