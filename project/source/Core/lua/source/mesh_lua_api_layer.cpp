@@ -48,6 +48,17 @@ void MeshAPI::OnInit(){
             node->GetMaterial().Shininess = shine;
         };
 
+        table["Texture"] = [this, node](const string& path){
+            node->UseUniqueMaterial();          
+
+            AppResource(Assets::AssetManager, assetManager);
+            Texture* texture = assetManager->CreateTexture(path);
+            if(texture == nullptr)
+                return;
+
+            node->GetMaterial().SetTexture(texture);
+        };
+
         return table;
     });
 

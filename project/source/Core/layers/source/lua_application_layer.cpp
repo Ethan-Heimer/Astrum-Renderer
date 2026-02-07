@@ -1,7 +1,3 @@
-#define SOL_ALL_SAFETIES_ON 1
-#define SOL_SAFE_FUNCTION_CALLS 1
-#define SOL_CHECK_ARGUMENTS 1
-
 #include "lua_application_layer.h"
 
 #include "lua_api_layer.h"
@@ -24,6 +20,7 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
     api.AddLayer<Lua::CameraAPI>("Camera");
     api.AddLayer<Lua::DebugAPI>("Debug");
     api.AddLayer<Lua::SceneAPI>("Scene");
+
     api.AddLayer<Lua::LightAPI>("Light");
 
     application->SubscribeToInitialize([this](){

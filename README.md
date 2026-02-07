@@ -17,8 +17,6 @@ scripts are used to provide a high level interface to Astrum's rendering capabil
 - GLFW
 - Lua
 
-(I plan on eventually handling these dependicies through cmake)
-
 ## Building
 
 ```
@@ -93,7 +91,7 @@ script. All code that uses any of Asrtum's api should be placed in these functio
 
 | Sub-API Name  | Description              |
 | ------------- | ------------------------ |
-| None          | Create and Mutate Mesh's |
+| None          | Create and Mutate Meshs  |
 
 ### -- Cube --
 
@@ -103,30 +101,75 @@ script. All code that uses any of Asrtum's api should be placed in these functio
 
 **Returns:**
 
-| Description                     | Type    |
-| ------------------------------- | ------- |
-| A reference to the created cube | Address |
+| Description                                   | Type     |
+| --------------------------------------------- | -------- |
+| A Table of Child Functions to Mutate The Mesh | Table    |
+
+**Children Functions**
+
+| Signurature        |
+-------------------- |
+| Translate(x, y, z) |
+| Scale(x, y, z)     |
+| Rotate(x, y, z)    |
+| Color(r, g, b)     |
+| Diffuse(r, g, b)   |
+| Specular(r, g, b)  |
+| Shine(value)       |
+| Texture(path)      |
 
 **Example**
 
 ``` lua
 function Start()
-    local cube = nil
-    cube = Cube()
+    local cube = Cube();
 end
 ```
 
 <br>
 
-### -- Translate --
+### -- Model --
 
-**Description:** Moves a Mesh.
+**Description:** Imports a 3d Model.
 
 **Arguments:** 
 
 | Description                     | Type    |
 | ------------------------------- | ------- |
-| Mesh Reference                  | Address |
+| The Path of the 3D Model        | String  |
+
+**Returns:**
+
+| Description                                    | Type     |
+| ---------------------------------------------- | -------- |
+| A Table of Child Functions to Mutate The Model | Table    |
+
+**Children Functions**
+
+| Signurature        |
+-------------------- |
+| Translate(x, y, z) |
+| Scale(x, y, z)     |
+| Rotate(x, y, z)    |
+
+**Example**
+
+``` lua
+function Start()
+    local model = Model("./assets/model.obj");
+end
+```
+
+<br>
+
+### -- .Translate --
+
+**Description:** Moves a Mesh Or Model.
+
+**Arguments:** 
+
+| Description                     | Type    |
+| ------------------------------- | ------- |
 | X Position                      | Number  |
 | Y Position                      | Number  |
 | Z Position                      | Number  |
@@ -136,25 +179,24 @@ end
 **Example**
 
 ``` lua
-local cube = nil
+local cube = {}
+
 function Start()
     cube = Cube()
-
-    Translate(cube, 10, 0, 1)
+    cube.Translate(10, 0, 1)
 end
 ```
 
 <br>
 
-### -- Rotate --
+### -- .Rotate --
 
-**Description:** Rotates a Mesh.
+**Description:** Rotates a Mesh Or Model.
 
 **Arguments:** 
 
 | Description                     | Type    |
 | ------------------------------- | ------- |
-| Mesh Reference                  | Address |
 | X Angle                         | Number  |
 | Y Angle                         | Number  |
 | Z Angle                         | Number  |
@@ -164,25 +206,24 @@ end
 **Example**
 
 ``` lua
-local cube = nil
+local cube = {}
+
 function Start()
     cube = Cube()
-
-    Rotate(cube, 45, 20, 1)
+    cube.Rotate(45, 20, 1)
 end
 ```
 
 <br>
 
-### -- Scale --
+### -- .Scale --
 
-**Description:** Scales a Mesh.
+**Description:** Scales a Mesh Or Model.
 
 **Arguments:** 
 
 | Description                     | Type    |
 | ------------------------------- | ------- |
-| Mesh Reference                  | Address |
 | X Scale                         | Number  |
 | Y Scale                         | Number  |
 | Z Scale                         | Number  |
@@ -192,60 +233,24 @@ end
 **Example**
 
 ``` lua
-local cube = nil
+local cube = {}
+
 function Start()
     cube = Cube()
-
-    Scale(cube, .5, 10, 1)
+    cube.Scale(.5, 10, 1)
 end
 ```
 
 <br>
 
-## Material
+### -- .Color --
 
-| Sub-API Name  | Description              |
-| ------------- | ------------------------ |
-| Material      | Mutate a Mesh's Material |
-
-### -- Of --
-
-**Description:** Gets the material of a mesh.
+**Description:** Changes the color of a mesh;
 
 **Arguments:** 
 
 | Description                     | Type    |
 | ------------------------------- | ------- |
-| Mesh Reference                  | Address |
-
-**Returns:** 
-
-| Description                     | Type    |
-| ------------------------------- | ------- |
-| Material Reference              | Address |
-
-**Example**
-
-``` lua
-local cube = nil
-function Start()
-    cube = Cube()
-
-    local material = Material.Of(cube)
-end
-```
-
-<br>
-
-### -- SetColor --
-
-**Description:** Changes a material's color.
-
-**Arguments:** 
-
-| Description                     | Type    |
-| ------------------------------- | ------- |
-| Mesh Reference                  | Address |
 | Red Color (0 - 255)             | Number  |
 | Blue Color (0 - 255)            | Number  |
 | Green Color (0 - 255)           | Number  |
@@ -255,26 +260,24 @@ end
 **Example**
 
 ``` lua
-local cube = nil
+local cube = {}
+
 function Start()
     cube = Cube()
-
-    local material = Material.Of(cube)
-    Material.SetColor(material, 255, 20, 120)
+    cube.Color(255, 20, 120);
 end
 ```
 
 <br>
 
-### -- SetTexture --
+### -- .Texture --
 
-**Description:** Changes a material's texture.
+**Description:** Changes a mesh's texture.
 
 **Arguments:** 
 
 | Description                     | Type    |
 | ------------------------------- | ------- |
-| Mesh Reference                  | Address |
 | Texture Path                    | String  |
 
 **Returns:** None.
@@ -282,26 +285,23 @@ end
 **Example**
 
 ``` lua
-local cube = nil
+local cube = {}
 function Start()
     cube = Cube()
-
-    local material = Material.Of(cube)
-    Material.SetTexture(material, "Path")
+    cube.Texture("Path")
 end
 ```
 
 <br>
 
-### -- SetDiffuse --
+### -- .Diffuse --
 
-**Description:** Changes the diffuse attribute of the material.
+**Description:** Changes the diffuse attribute of a mesh.
 
 **Arguments:** 
 
 | Description                     | Type    |
 | ------------------------------- | ------- |
-| Mesh Reference                  | Address |
 | Red Color (0 - 255)             | Number  |
 | Blue Color (0 - 255)            | Number  |
 | Green Color (0 - 255)           | Number  |
@@ -311,26 +311,23 @@ end
 **Example**
 
 ``` lua
-local cube = nil
+local cube = {}
 function Start()
     cube = Cube()
-
-    local material = Material.Of(cube)
-    Material.SetDiffuse(material, 255, 20, 120)
+    cube.Diffuse(255, 20, 120)
 end
 ```
 
 <br>
 
-### -- SetSpecular --
+### -- .Specular --
 
-**Description:** Changes the specular attribute of the material.
+**Description:** Changes the specular attribute of a mesh;
 
 **Arguments:** 
 
 | Description                     | Type    |
 | ------------------------------- | ------- |
-| Mesh Reference                  | Address |
 | Red Color (0 - 255)             | Number  |
 | Blue Color (0 - 255)            | Number  |
 | Green Color (0 - 255)           | Number  |
@@ -340,26 +337,23 @@ end
 **Example**
 
 ``` lua
-local cube = nil
+local cube = {}
 function Start()
     cube = Cube()
-
-    local material = Material.Of(cube)
-    Material.SetSpecular(material, 255, 20, 120)
+    cube.Specular(255, 20, 120)
 end
 ```
 
 <br>
 
-### -- SetShine --
+### -- .Shine --
 
-**Description:** Changes the shininess attribute of the material.
+**Description:** Changes the shininess attribute of the mesh.
 
 **Arguments:** 
 
 | Description                     | Type    |
 | ------------------------------- | ------- |
-| Mesh Reference                  | Address |
 | Shine                           | Number  |
 
 **Returns:** None.
@@ -367,12 +361,10 @@ end
 **Example**
 
 ``` lua
-local cube = nil
+local cube = {}
 function Start()
     cube = Cube()
-
-    local material = Material.Of(cube)
-    Material.SetShine(material, 255, 20, 120)
+    cube.Shine(32)
 end
 ```
 
