@@ -1,5 +1,7 @@
 #include "light_lua_api_layer.h"
+#include "scene/light_scene_node.h"
 #include "scene/scene.h"
+#include "sol/table.hpp"
 
 using namespace Core;
 using namespace Renderer;
@@ -7,17 +9,19 @@ using namespace Lua;
 
 void LightAPI::OnInit(){
     Function("Point", [this](){
-        return PointLight();
-    });
+        Scene::LightSceneNode* light = PointLight();
 
-    Function("SetColor", [this](Scene::LightSceneNode* node, unsigned char r, 
-                unsigned char g, unsigned char b){
-        SetColor(node, r, g, b);
-    });
+        sol::table table = lua.create_table();
 
-    Function("SetPosition", [this](Scene::LightSceneNode* node, 
-                float x, float y, float z){
-        SetPositon(node, x, y, z);
+        table["Color"] = [this, light](unsigned char r, unsigned char g, unsigned char b){
+            light->SetAmbient(r, g, b);
+        };
+
+        table["Position"] = [this, light](float x, float y, float z){
+            light->SetPosition(x, y, z);
+        };
+
+        return table;
     });
 }
 
@@ -28,13 +32,4 @@ Scene::LightSceneNode* LightAPI::PointLight(){
         scene->AddChildAtRoot<Scene::LightSceneNode>();
 
     return node;
-}
-
-void LightAPI::SetColor(Scene::LightSceneNode* node, unsigned char r,
-    unsigned char g, unsigned char b){
-    node->SetAmbient(r, g, b);
-}
-
-void LightAPI::SetPositon(Scene::LightSceneNode* node, float x, float y, float z){
-    node->SetPosition(x, y, z);
 }

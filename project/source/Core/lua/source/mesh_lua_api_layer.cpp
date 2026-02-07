@@ -8,6 +8,9 @@
 #include "scene/scene.h"
 #include "mesh.h"
 #include "scene/mesh_scene_node.h"
+#include "sol/state_view.hpp"
+#include "sol/table.hpp"
+#include "sol/types.hpp"
 
 using namespace Core;
 using namespace Renderer;
@@ -16,19 +19,43 @@ using namespace Assets;
 using namespace Scene;
 
 void MeshAPI::OnInit(){
-    Function("Cube", [this](){return Cube();});
-    Function("Model", [this](const string& path){return Model(path);});
+    Function("Cube", [this](){
+        MeshSceneNode* node = Cube();   
 
-    Function("Translate", [this](SceneNode* node, 
-            float x, float y, float z){Translate(node, x, y, z);});
+        sol::table table = CreateMeshTable(node);
 
-    Function("Rotate", [this](SceneNode* node, 
-            float x, float y, float z){
-                Rotate(node, x, y, z);
-            });
+        table["Color"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
+            node->UseUniqueMaterial();          
 
-    Function("Scale", [this](SceneNode* node, 
-            float x, float y, float z){Scale(node, x, y, z);});
+            node->GetMaterial().Ambient = {r/255.0, g/255.0, b/255.0};
+        };
+
+        table["Diffuse"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
+            node->UseUniqueMaterial();          
+
+            node->GetMaterial().Diffuse = {r/255.0, g/255.0, b/255.0};
+        };
+
+        table["Specular"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
+            node->UseUniqueMaterial();          
+
+            node->GetMaterial().Specular = {r/255.0, g/255.0, b/255.0};
+        };
+
+        table["Shine"] = [this, node](int shine){
+            node->UseUniqueMaterial();          
+
+            node->GetMaterial().Shininess = shine;
+        };
+
+        return table;
+    });
+
+    Function("Model", [this](const string& path){
+        SceneNode* node = Model(path);
+
+        return CreateMeshTable(node);
+    });
 }
 
 Renderer::Scene::MeshSceneNode* MeshAPI::Cube(){
@@ -68,17 +95,19 @@ EmptyNode* MeshAPI::Model(const string& path){
     return parentNode;
 }
 
-void MeshAPI::Translate(SceneNode* node, float x, float y, float z){ 
-    CheckLuaPointerArg(node, "Translate");
-    node->GetLocalTransform().SetPosition(x, y, z);
-}
+sol::table MeshAPI::CreateMeshTable(SceneNode* node){
+    sol::table table = lua.create_table();
+    table["Translate"] = [this, node](float x, float y, float z){
+        node->GetLocalTransform().SetPosition(x, y, z);
+    };
 
-void MeshAPI::Rotate(SceneNode* node, float x, float y, float z){ 
-    CheckLuaPointerArg(node, "Rotate");
-    node->GetLocalTransform().SetRotation(x, y, z);
-}
+    table["Rotate"] = [this, node](float x, float y, float z){
+        node->GetLocalTransform().SetRotation(x, y, z);
+    };
 
-void MeshAPI::Scale(SceneNode* node, float x, float y, float z){ 
-    CheckLuaPointerArg(node, "Scale");
-    node->GetLocalTransform().SetScale(x, y, z);
+    table["Scale"] = [this, node](float x, float y, float z){
+        node->GetLocalTransform().SetScale(x, y, z);
+    };
+
+    return table;
 }

@@ -17,12 +17,11 @@ namespace Core{
 
                 void OnInit() override;
 
-                MeshSceneNode* Cube();
+            private:
+                MeshSceneNode* Cube(); 
                 EmptyNode* Model(const string& path);
 
-                void Translate(SceneNode* node, float x, float y, float z);
-                void Rotate(SceneNode* node, float x, float y, float z);
-                void Scale(SceneNode* node, float x, float y, float z); 
+                sol::table CreateMeshTable(SceneNode* node);
         };
     }
 }

@@ -14,10 +14,6 @@ namespace Core{
                 void OnInit() override;
 
                 Scene::LightSceneNode* PointLight();
-                void SetColor(Scene::LightSceneNode* node, unsigned char r,
-                        unsigned char g, unsigned char b);
-
-                void SetPositon(Scene::LightSceneNode* node, float x, float y, float z);
         };
     }
 }
