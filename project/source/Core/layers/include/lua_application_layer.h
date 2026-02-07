@@ -5,8 +5,6 @@
 #include "application_layer.h"
 #include "lua_api.h"
 
-#include "sol/sol.hpp"
-
 namespace Core{
     class LuaApplicationLayer : ApplicationLayer{
         public:

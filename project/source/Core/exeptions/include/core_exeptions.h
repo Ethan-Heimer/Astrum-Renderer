@@ -9,5 +9,10 @@ namespace Core{
             public:
                 ResourceNotFound(const string& typeName);
         };
+
+        class LuaPointerArgNotProvided : public runtime_error{
+            public:
+                LuaPointerArgNotProvided(const string& functionName, const string& referenceTypeName);
+        };
     }
 }

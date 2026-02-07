@@ -1,6 +1,7 @@
 #include "application.h"
 
 #include "mesh_lua_api_layer.h"
+#include "lua_api.h"
 
 #include "asset_manager.h"
 #include "console.h"
@@ -18,13 +19,15 @@ void MeshAPI::OnInit(){
     Function("Cube", [this](){return Cube();});
     Function("Model", [this](const string& path){return Model(path);});
 
-    Function("Translate", [this](MeshSceneNode* node, 
+    Function("Translate", [this](SceneNode* node, 
             float x, float y, float z){Translate(node, x, y, z);});
 
-    Function("Rotate", [this](MeshSceneNode* node, 
-            float x, float y, float z){Rotate(node, x, y, z);});
+    Function("Rotate", [this](SceneNode* node, 
+            float x, float y, float z){
+                Rotate(node, x, y, z);
+            });
 
-    Function("Scale", [this](MeshSceneNode* node, 
+    Function("Scale", [this](SceneNode* node, 
             float x, float y, float z){Scale(node, x, y, z);});
 }
 
@@ -66,13 +69,16 @@ EmptyNode* MeshAPI::Model(const string& path){
 }
 
 void MeshAPI::Translate(SceneNode* node, float x, float y, float z){ 
+    CheckLuaPointerArg(node, "Translate");
     node->GetLocalTransform().SetPosition(x, y, z);
 }
 
 void MeshAPI::Rotate(SceneNode* node, float x, float y, float z){ 
+    CheckLuaPointerArg(node, "Rotate");
     node->GetLocalTransform().SetRotation(x, y, z);
 }
 
 void MeshAPI::Scale(SceneNode* node, float x, float y, float z){ 
+    CheckLuaPointerArg(node, "Scale");
     node->GetLocalTransform().SetScale(x, y, z);
 }

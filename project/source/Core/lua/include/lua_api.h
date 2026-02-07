@@ -7,6 +7,17 @@
 
 #include "lua_api_layer.h"
 
+#define CheckLuaPointerArg(pointer, functionName, ...)\
+    if(pointer == nullptr){\
+        string message;\
+        message = "A Reference to an Objetc is expected as an argument to the function '";\
+        message += functionName;\
+        message += "'";\
+        Console::Log(Warning, "Lua API Error", message);\
+        return __VA_ARGS__;\
+    }\
+    
+
 using namespace std;
 
 namespace Core{

@@ -1,3 +1,7 @@
+#define SOL_ALL_SAFETIES_ON 1
+#define SOL_SAFE_FUNCTION_CALLS 1
+#define SOL_CHECK_ARGUMENTS 1
+
 #include "lua_application_layer.h"
 
 #include "lua_api_layer.h"
