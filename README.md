@@ -15,12 +15,16 @@ scripts are used to provide a high level interface to Astrum's rendering capabil
 
 - OpenGL
 - GLFW
+- GLM
 - Lua
+- Assimp
+
+(The Initial Build Might Take Some Time!)
 
 ## Building
 
 ```
-git clone https://github.com/Ethan-Heimer/Astrum-Renderer
+git clone --recurse-submodules https://github.com/Ethan-Heimer/Astrum-Renderer
 cd Astrum-Renderer
 mkdir build && cd build
 cmake ..
@@ -30,7 +34,7 @@ make
 alternativly:
 
 ```
-git clone https://github.com/Ethan-Heimer/Astrum-Renderer
+git clone --recurse-submodules https://github.com/Ethan-Heimer/Astrum-Renderer
 cd Astrum-Renderer
 mkdir build
 ./build.sh
