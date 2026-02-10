@@ -61,6 +61,7 @@ void Core::Application::CreateWindow(){
 
         return;
     }
+
     glfwMakeContextCurrent(window);
 }
 

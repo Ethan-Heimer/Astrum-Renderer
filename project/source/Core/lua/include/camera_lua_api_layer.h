@@ -19,6 +19,7 @@ namespace Core{
             void Zoom(float zoom);
 
             tuple<float, float> GetRotation();
+            tuple<float, float, float> GetPosition();
         };
     }
 }

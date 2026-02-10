@@ -1,6 +1,7 @@
 #include "camera_lua_api_layer.h"
 
 #include "camera.h"
+#include "glm/fwd.hpp"
 #include "renderer/renderer.h"
 
 using namespace Core;
@@ -16,6 +17,7 @@ void CameraAPI::OnInit(){
     Function("Zoom", [this](float zoom){this->Zoom(zoom);});
  
     Function("GetRotation", [this](){return this->GetRotation();});
+    Function("GetPosition", [this](){return this->GetPosition();});
 }
 
 void CameraAPI::Move(float forward, float straif, float up){
@@ -54,4 +56,13 @@ tuple<float, float> CameraAPI::GetRotation(){
     camera.GetRotation(&pitch, &yaw);
 
     return {pitch, yaw};
+}
+
+tuple<float, float, float> CameraAPI::GetPosition(){ 
+    AppResource(Renderer::IRenderer, r);
+    Camera& camera = r->GetCamera();
+
+    glm::vec3 pos = camera.GetPos();
+
+    return {pos.x, pos.y, pos.z};
 }

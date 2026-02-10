@@ -1,13 +1,14 @@
-#ifndef MESH_BUILDER_H
-#define MESH_BUILDER_H
+#pragma once
 
 #include "mesh.h"
-#include <memory>
 #include <vector>
+
+using namespace std;
 
 namespace Renderer{
     namespace Primatives{
-        void Cube(std::vector<Vertex>& verticies, std::vector<unsigned int>& indicies);
+        void Cube(vector<Vertex>& verticies, vector<unsigned int>& indicies);
+        void Plane(vector<Vertex>& verticies, vector<unsigned int>& indicies);
     }
 
     namespace MeshBuilder{
@@ -18,4 +19,3 @@ namespace Renderer{
     }
 }
 
-#endif

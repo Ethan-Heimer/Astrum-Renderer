@@ -5,57 +5,58 @@
 
 void Renderer::Primatives::Cube(std::vector<Vertex>& verticies, std::vector<unsigned int>& indicies){
     float verts[] = {
-        -0.5f, -0.5f, -0.5f,  
-        0.5f, -0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f, 
-        -0.5f, 0.5f, -0.5f, 
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f, -0.5f, 0.5f,  
-        0.5f, -0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f, 
-        -0.5f, 0.5f, 0.5f, 
-        -0.5f, -0.5f, 0.5f,
-        
-        -0.5f, 0.5f, 0.5f,  
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
+        // back face
         -0.5f, -0.5f, -0.5f, 
-        -0.5f, -0.5f, 0.5f, 
-        -0.5f, 0.5f, 0.5f,
-
-        0.5f, 0.5f, 0.5f,  
-        0.5f, 0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f, 
-        0.5f, -0.5f, 0.5f, 
-        0.5f, 0.5f, 0.5f,
-
-        -0.5f, -0.5f, -0.5f,  
-        0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, 0.5f, 
-        -0.5f, -0.5f, 0.5f, 
-        -0.5f, -0.5f, -0.5f,
-        
+        0.5f, 0.5f, -0.5f,   
+        0.5f, -0.5f, -0.5f,  
+        0.5f, 0.5f, -0.5f,   
+        -0.5f, -0.5f, -0.5f, 
         -0.5f, 0.5f, -0.5f,  
-        0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f, 
-        -0.5f, 0.5f, 0.5f, 
-        -0.5f, 0.5f, -0.5f,
+        // front face
+        -0.5f, -0.5f, 0.5f,  
+        0.5f, -0.5f, 0.5f,   
+        0.5f, 0.5f, 0.5f,    
+        0.5f, 0.5f, 0.5f,    
+        -0.5f, 0.5f, 0.5f,   
+        -0.5f, -0.5f, 0.5f,  
+        // left face
+        -0.5f, 0.5f, 0.5f,   
+        -0.5f, 0.5f, -0.5f,  
+        -0.5f, -0.5f, -0.5f, 
+        -0.5f, -0.5f, -0.5f, 
+        -0.5f, -0.5f, 0.5f,  
+        -0.5f, 0.5f, 0.5f,   
+        // right face
+        0.5f, 0.5f, 0.5f,    
+        0.5f, -0.5f, -0.5f,  
+        0.5f, 0.5f, -0.5f,   
+        0.5f, -0.5f, -0.5f,  
+        0.5f, 0.5f, 0.5f,    
+        0.5f, -0.5f, 0.5f,   
+        // bottom face
+        -0.5f, -0.5f, -0.5f, 
+        0.5f, -0.5f, -0.5f,  
+        0.5f, -0.5f, 0.5f,   
+        0.5f, -0.5f, 0.5f,   
+        -0.5f, -0.5f, 0.5f,  
+        -0.5f, -0.5f, -0.5f, 
+        // top face
+        -0.5f, 0.5f, -0.5f,  
+        0.5f, 0.5f, 0.5f,    
+        0.5f, 0.5f, -0.5f,   
+        0.5f, 0.5f, 0.5f,    
+        -0.5f, 0.5f, -0.5f,  
+        -0.5f, 0.5f, 0.5f,   
     };
     
     
     float uvs[] = {
         0.0, 0.0,
+        1.0, 1.0,
         1.0, 0.0,
         1.0, 1.0,
-        1.0, 1.0,
-        0.0, 1.0,
         0.0, 0.0,
+        0.0, 1.0,
 
         0.0, 0.0,
         1.0, 0.0,
@@ -64,31 +65,31 @@ void Renderer::Primatives::Cube(std::vector<Vertex>& verticies, std::vector<unsi
         0.0, 1.0,
         0.0, 0.0,
 
-        0.0, 0.0,
         1.0, 0.0,
         1.0, 1.0,
-        1.0, 1.0,
+        0.0, 1.0,
         0.0, 1.0,
         0.0, 0.0,
+        1.0, 0.0,
 
-        0.0, 0.0,
         1.0, 0.0,
-        1.0, 1.0,
+        0.0, 1.0,
         1.0, 1.0,
         0.0, 1.0,
+        1.0, 0.0,
         0.0, 0.0,
         
-        0.0, 0.0,
-        1.0, 0.0,
-        1.0, 1.0,
-        1.0, 1.0,
         0.0, 1.0,
+        1.0, 1.0,
+        1.0, 0.0,
+        1.0, 0.0,
         0.0, 0.0,
+        0.0, 1.0,
 
-        0.0, 0.0,
+        0.0, 1.0,
         1.0, 0.0,
         1.0, 1.0,
-        1.0, 1.0,
+        1.0, 0.0,
         0.0, 1.0,
         0.0, 0.0,
 
@@ -168,6 +169,48 @@ void Renderer::Primatives::Cube(std::vector<Vertex>& verticies, std::vector<unsi
             uvs, uv_size, normals, normal_size);
 };
 
+void Renderer::Primatives::Plane(vector<Vertex>& verticies, vector<unsigned int>& indicies){
+    float verts[] = {
+        -0.5f, -0.5f, -0.5f,  
+        0.5f, -0.5f, -0.5f,
+        0.5f, 0.5f, -0.5f,
+        0.5f, 0.5f, -0.5f, 
+        -0.5f, 0.5f, -0.5f, 
+        -0.5f, -0.5f, -0.5f
+    };
+
+    float uvs[] = {
+        1.0, 1.0,
+        0.0, 1.0,
+        0.0, 0.0,
+        0.0, 0.0,
+        1.0, 0.0,
+        1.0, 1.0,
+    };
+
+    float normals[] = {
+        0.0, 0.0, -1.0,
+        0.0, 0.0, -1.0,
+        0.0, 0.0, -1.0,
+        0.0, 0.0, -1.0,
+        0.0, 0.0, -1.0,
+        0.0, 0.0, -1.0,
+    };
+
+    indicies = {
+        0, 1, 2,
+        3, 4, 5, 
+    };
+
+    unsigned int vert_size = sizeof(verts);
+    unsigned int uv_size = sizeof(uvs);
+    unsigned int normal_size = sizeof(normals);
+    unsigned int indicies_size = sizeof(indicies);
+
+    //create verticies
+    MeshBuilder::CreateVerticies(verticies, verts, vert_size, 
+            uvs, uv_size, normals, normal_size);
+}
 
 void Renderer::MeshBuilder::CreateVerticies(std::vector<Vertex>& verticies,
                 float* verts, unsigned int vert_size,

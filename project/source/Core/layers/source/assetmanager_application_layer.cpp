@@ -28,6 +28,9 @@ Core::AssetManagerApplicationLayer::AssetManagerApplicationLayer(Application* ap
 
             Renderer::Primatives::Cube(verticies, indicies);
             this->assetManager.CreateMesh("Cube", verticies, indicies);
+
+            Renderer::Primatives::Plane(verticies, indicies);
+            this->assetManager.CreateMesh("Plane", verticies, indicies);
             //---
     });
 }

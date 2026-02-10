@@ -19,6 +19,8 @@ namespace Core{
 
             private:
                 MeshSceneNode* Cube(); 
+                MeshSceneNode* Plane(); 
+
                 EmptyNode* Model(const string& path);
 
                 sol::table CreateMeshTable(SceneNode* node);

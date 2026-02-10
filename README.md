@@ -160,7 +160,7 @@ end
 
 ``` lua
 function Start()
-    local model = Model("./assets/model.obj");
+    local model = Model("./assets/model.obj")a
 end
 ```
 

@@ -62,6 +62,49 @@ void MeshAPI::OnInit(){
         return table;
     });
 
+    Function("Plane", [this](){
+        MeshSceneNode* node = Plane();   
+
+        sol::table table = CreateMeshTable(node);
+
+        table["Color"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
+            node->UseUniqueMaterial();          
+
+            node->GetMaterial().Ambient = {r/255.0, g/255.0, b/255.0};
+        };
+
+        table["Diffuse"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
+            node->UseUniqueMaterial();          
+
+            node->GetMaterial().Diffuse = {r/255.0, g/255.0, b/255.0};
+        };
+
+        table["Specular"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
+            node->UseUniqueMaterial();          
+
+            node->GetMaterial().Specular = {r/255.0, g/255.0, b/255.0};
+        };
+
+        table["Shine"] = [this, node](int shine){
+            node->UseUniqueMaterial();          
+
+            node->GetMaterial().Shininess = shine;
+        };
+
+        table["Texture"] = [this, node](const string& path){
+            node->UseUniqueMaterial();          
+
+            AppResource(Assets::AssetManager, assetManager);
+            Texture* texture = assetManager->CreateTexture(path);
+            if(texture == nullptr)
+                return;
+
+            node->GetMaterial().SetTexture(texture);
+        };
+
+        return table;
+    });
+
     Function("Model", [this](const string& path){
         SceneNode* node = Model(path);
 
@@ -74,6 +117,19 @@ Renderer::Scene::MeshSceneNode* MeshAPI::Cube(){
         AppResource(Renderer::Scene::Scene, scene);
 
         Mesh* mesh = assetManager->GetMesh("Cube");
+        Material* material = assetManager->GetMaterial("Default");
+
+        MeshSceneNode* node = 
+            scene->AddChildAtRoot<Renderer::Scene::MeshSceneNode>(mesh, material);
+
+        return node;
+}
+
+Renderer::Scene::MeshSceneNode* MeshAPI::Plane(){
+        AppResource(AssetManager, assetManager);
+        AppResource(Renderer::Scene::Scene, scene);
+
+        Mesh* mesh = assetManager->GetMesh("Plane");
         Material* material = assetManager->GetMaterial("Default");
 
         MeshSceneNode* node = 

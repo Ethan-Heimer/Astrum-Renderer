@@ -27,6 +27,8 @@ void StandardRenderer::Initalize(){
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glEnable(GL_MULTISAMPLE);
+    glEnable(GL_CULL_FACE);
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
@@ -39,7 +41,7 @@ void StandardRenderer::Draw(ICommandQueue* queue){
     float perspectiveRatio = (float)width/(float)height;
     projection = perspective(radians(camera.GetZoom()), perspectiveRatio, .1f, 100.0f);
 
-    glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0f);
+    glClearColor(clearColor.r, clearColor.g, clearColor.b, 0.1f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     while(!queue->IsEmpty(Command::Light)){
