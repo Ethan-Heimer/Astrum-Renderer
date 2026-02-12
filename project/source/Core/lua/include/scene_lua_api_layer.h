@@ -14,7 +14,7 @@ namespace Core{
                 void OnInit() override;
 
                 void SetBackgroundColor(const unsigned char r, const unsigned char g, 
-                        const unsigned char b);
+                        const unsigned char b, float a);
 
                 void SetDirectionalLightDirection(float x, float y, float z);
                 void SetDirectionalLightAmbient(const unsigned char r, const unsigned char g, const unsigned char b);

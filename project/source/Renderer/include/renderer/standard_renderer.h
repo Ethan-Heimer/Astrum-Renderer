@@ -21,7 +21,7 @@ namespace Renderer{
 
             void DrawMesh(const Mesh* mesh, mat4x4 transform, Material* material) override;
             void SetClearColor
-                (const unsigned char& r, const unsigned char& g, const unsigned char& b) override;
+                (const unsigned char& r, const unsigned char& g, const unsigned char& b, float a) override;
 
             void SetDirectionalLightDirection(float x, float y, float z) override;
             void SetDirectionalLightAmbient(unsigned char r, unsigned char g, unsigned char b) override;
@@ -40,7 +40,7 @@ namespace Renderer{
             mat4 viewMatrix{1};
             mat4 projection{1};
 
-            vec3 clearColor;
+            vec4 clearColor;
 
             std::unique_ptr<FrameBuffer> fbo;
             std::unique_ptr<Shader> screenShader;

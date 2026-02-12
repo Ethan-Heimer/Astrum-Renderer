@@ -1,5 +1,6 @@
 #include "application.h"
 
+#include "GLFW/glfw3.h"
 #include "console.h"
 #include "assetmanager_application_layer.h"
 #include "lua_application_layer.h"
@@ -47,12 +48,12 @@ void Core::Application::CreateWindow(){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_DECORATED, GL_TRUE);
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GL_TRUE);
 
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     //---------------------------------------------------------------------! <- monitor here for full screen
-    window = glfwCreateWindow(mode->width/2, mode->height/2, "Render Script", NULL, NULL);
+    window = glfwCreateWindow(mode->width/2, mode->height/2, "Astrum", NULL, NULL);
 
     if (window == NULL)
     {

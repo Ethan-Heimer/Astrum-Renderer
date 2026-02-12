@@ -26,10 +26,10 @@ void StandardRenderer::Initalize(){
     glViewport(0, 0, width, height);
 
     //setings
-    glEnable(GL_BLEND);
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_CULL_FACE);
 
+    glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     fbo = make_unique<FrameBuffer>(width, height);
@@ -47,7 +47,7 @@ void StandardRenderer::Draw(ICommandQueue* queue){
     projection = perspective(radians(camera.GetZoom()), perspectiveRatio, .1f, 100.0f);
 
     fbo->Use();
-    glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0);
+    glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
@@ -63,7 +63,7 @@ void StandardRenderer::Draw(ICommandQueue* queue){
     lights.clear();
 
     fbo->Disable();
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
     screenShader->Use();
@@ -116,8 +116,8 @@ void StandardRenderer::AddPointLight(PointLight* light){
 }
 
 void StandardRenderer::SetClearColor
-        (const unsigned char& r, const unsigned char& g, const unsigned char& b){
-    clearColor = {r/255.0, g/255.0, b/255.0};
+        (const unsigned char& r, const unsigned char& g, const unsigned char& b, float a){
+    clearColor = {r/255.0, g/255.0, b/255.0, a};
 }
 
 void StandardRenderer::SetDirectionalLightDirection(float x, float y, float z){

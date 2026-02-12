@@ -13,14 +13,14 @@ namespace Renderer{
 
                 void OnRendered(ICommandQueue* commandQueue) override;
 
-                void SetSkyColor(const unsigned char r, const unsigned char g, const unsigned char b);
+                void SetSkyColor(const unsigned char r, const unsigned char g, const unsigned char b, float a);
                 void SetDirectionalLightDirection(float x, float y, float z);
                 void SetDirectionalAmbientColor(const unsigned char r, const unsigned char g, const unsigned char b);
                 void SetDirectionalSpecularColor(const unsigned char r, const unsigned char g, const unsigned char b);
                 void SetDirectionalDiffuseColor(const unsigned char r, const unsigned char g, const unsigned char b);
 
             private:
-                vec3 skyColor{0, 0, 0};  
+                vec4 skyColor{0, 0, 0, 1};  
 
                 vec3 dirLightDirection{1, 0, 1};  
                 vec3 dirLightAmbient{255, 255, 255};  

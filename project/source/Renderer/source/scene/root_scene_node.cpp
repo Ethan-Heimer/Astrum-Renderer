@@ -11,7 +11,7 @@ RootSceneNode::RootSceneNode(SceneNode* parent) : SceneNode(parent){};
 void RootSceneNode::OnRendered(ICommandQueue* queue){
     queue->Queue(Standard, [this](IRenderer* renderer)
             {
-                renderer->SetClearColor(skyColor.r, skyColor.g, skyColor.b);
+                renderer->SetClearColor(skyColor.r, skyColor.g, skyColor.b, skyColor.a);
 
                 renderer->SetDirectionalLightDirection(dirLightDirection.x, dirLightDirection.y, dirLightDirection.z);
                 renderer->SetDirectionalLightAmbient(dirLightAmbient.r, dirLightAmbient.g, dirLightAmbient.b);
@@ -20,8 +20,8 @@ void RootSceneNode::OnRendered(ICommandQueue* queue){
             });
 }
 
-void RootSceneNode::SetSkyColor(const unsigned char r, const unsigned char g, const unsigned char b){
-    skyColor = {r, g, b};
+void RootSceneNode::SetSkyColor(const unsigned char r, const unsigned char g, const unsigned char b, float a){
+    skyColor = {r, g, b, a};
 }
 
 void RootSceneNode::SetDirectionalLightDirection(float x, float y, float z){

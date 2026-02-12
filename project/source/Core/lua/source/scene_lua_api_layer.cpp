@@ -5,8 +5,8 @@ using namespace Core;
 using namespace Lua;
 
 void SceneAPI::OnInit(){
-    Function("SetBackgroundColor", [this](unsigned char r, unsigned char g, unsigned char b)
-            {SetBackgroundColor(r, g, b);});
+    Function("SetBackgroundColor", [this](unsigned char r, unsigned char g, unsigned char b, float a)
+            {SetBackgroundColor(r, g, b, a);});
 
     Function("SetLightDirection", [this](float x, float y, float z){
         SetDirectionalLightDirection(x, y, z);
@@ -25,11 +25,11 @@ void SceneAPI::OnInit(){
     });
 }
 
-void SceneAPI::SetBackgroundColor(const unsigned char r, const unsigned char g, const unsigned char b){
+void SceneAPI::SetBackgroundColor(const unsigned char r, const unsigned char g, const unsigned char b, const float a){
     AppResource(Scene::Scene, scene);
     auto* rootNode = scene->GetRootNode(); 
 
-    rootNode->SetSkyColor(r, g, b);
+    rootNode->SetSkyColor(r, g, b, a);
 }
 
 void SceneAPI::SetDirectionalLightDirection(float x, float y, float z){

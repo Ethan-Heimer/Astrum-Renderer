@@ -29,7 +29,7 @@ namespace Renderer{
 
             virtual void DrawMesh(const Mesh* mesh, mat4x4 transform, Material* material) = 0; 
             virtual void SetClearColor
-                (const unsigned char& r, const unsigned char& g, const unsigned char& b) = 0;
+                (const unsigned char& r, const unsigned char& g, const unsigned char& b, float a) = 0;
 
             virtual void SetDirectionalLightDirection(float x, float y, float z) = 0;
             virtual void SetDirectionalLightAmbient(unsigned char r, unsigned char g, unsigned char b) = 0;
