@@ -469,7 +469,7 @@ end
 
 **Description:** Set The Background Color of The Scene.
 
-<code style="color : green">Test</code>
+<code">Alpha only works if a compositor is installed.</code>
 
 **Arguments:**
 
