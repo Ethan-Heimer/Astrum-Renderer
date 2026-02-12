@@ -1,12 +1,7 @@
 #include "mesh.h"
 
 #include "glad/glad.h"
-#include "glm/exponential.hpp"
-#include "glm/ext/quaternion_geometric.hpp"
-#include "glm/ext/vector_float3.hpp"
 
-#include <complex>
-#include <format>
 #include <vector>
 #include <iostream>
 

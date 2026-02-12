@@ -1,6 +1,8 @@
 #include "renderer/standard_renderer.h"
+#include "framebuffer.h"
 #include "glm/geometric.hpp"
 #include "renderer/render_commands.h"
+#include "renderer/renderer.h"
 #include <memory>
 #include <format>
 #include <iostream>
@@ -24,12 +26,15 @@ void StandardRenderer::Initalize(){
     glViewport(0, 0, width, height);
 
     //setings
-    glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_CULL_FACE);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    fbo = make_unique<FrameBuffer>(width, height);
+    screenShader = std::make_unique<Shader>("./shaders/screen_vertex.glsl", "./shaders/screen_fragment.glsl");
+    screen = std::make_unique<Screen>();
 }
 
 void StandardRenderer::Draw(ICommandQueue* queue){
@@ -41,8 +46,10 @@ void StandardRenderer::Draw(ICommandQueue* queue){
     float perspectiveRatio = (float)width/(float)height;
     projection = perspective(radians(camera.GetZoom()), perspectiveRatio, .1f, 100.0f);
 
-    glClearColor(clearColor.r, clearColor.g, clearColor.b, 0.1f);
+    fbo->Use();
+    glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
 
     while(!queue->IsEmpty(Command::Light)){
         std::unique_ptr<Command::Command> command = queue->Dequeue(Command::Light);
@@ -53,8 +60,17 @@ void StandardRenderer::Draw(ICommandQueue* queue){
         std::unique_ptr<Command::Command> command = queue->Dequeue(Command::Standard);
         command->Execute(this);
     }
-
     lights.clear();
+
+    fbo->Disable();
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    screenShader->Use();
+    screen->Use();
+    glDisable(GL_DEPTH_TEST);
+    glBindTexture(GL_TEXTURE_2D, fbo->GetColorBuffer()->GetTextureID());
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glfwSwapBuffers(window);
 }

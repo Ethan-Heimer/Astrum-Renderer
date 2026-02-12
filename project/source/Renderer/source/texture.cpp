@@ -5,7 +5,22 @@
 #include "glad/glad.h"
 #include "Image/stb_image.h"
 
-Renderer::Texture::Texture(std::string imagePath){
+using namespace Renderer;
+using namespace std;
+
+Texture::Texture(unsigned int width, unsigned int height){
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+Texture::Texture(string imagePath){
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
 

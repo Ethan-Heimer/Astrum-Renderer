@@ -6,6 +6,7 @@
 namespace Renderer{
     class Texture{
         public:
+            Texture(unsigned int width, unsigned int height);
             Texture(std::string imagePath);
 
             ~Texture();

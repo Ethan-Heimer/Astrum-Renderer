@@ -1,11 +1,12 @@
 #ifndef STANDARD_RENDERER_H
 #define STANDARD_RENDERER_H
 
+#include "framebuffer.h"
 #include "material.h"
 #include "renderer/render_commands.h"
 #include "renderer/renderer.h"
 #include "light.h"
-#include "transform.h"
+#include "screen.h"
 
 using namespace Renderer::Command;
 using namespace glm;
@@ -40,6 +41,10 @@ namespace Renderer{
             mat4 projection{1};
 
             vec3 clearColor;
+
+            std::unique_ptr<FrameBuffer> fbo;
+            std::unique_ptr<Shader> screenShader;
+            std::unique_ptr<Screen> screen;
     };
 }
 
