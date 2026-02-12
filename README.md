@@ -469,6 +469,8 @@ end
 
 **Description:** Set The Background Color of The Scene.
 
+<code style="color : green">Test</code>
+
 **Arguments:**
 
 | Description                     | Type              |
@@ -476,6 +478,7 @@ end
 | Red (r)                         | Number [0-255]    |
 | Green (g)                       | Number [0-255]    |
 | Blue (b)                        | Number [0-255]    |
+| Alpha (a)                       | Number [0-1]      |
 
 **Returns:** None.
 
@@ -483,7 +486,7 @@ end
 
 ``` lua
 function Start()
-    Scene.SetBackgroundColor(50, 50, 50);
+    Scene.SetBackgroundColor(50, 50, 50, 1);
 end
 ```
 
