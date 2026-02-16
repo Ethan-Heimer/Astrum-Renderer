@@ -1,6 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+#include "shader.h"
 #include <string>
 
 namespace Renderer{
@@ -12,6 +13,7 @@ namespace Renderer{
             ~Texture();
 
             void Delete();
+            void Use(Shader* shader);
 
             unsigned int GetTextureID() const;
 

@@ -24,7 +24,9 @@ void MeshAPI::OnInit(){
 
         sol::table table = CreateMeshTable(node);
 
-        table["Color"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
+        table["Color"] = [this, node](float r, float g, float b){
+            cout << r << g << b << endl;
+
             node->UseUniqueMaterial();          
 
             node->GetMaterial().Ambient = {r/255.0, g/255.0, b/255.0};
@@ -57,6 +59,17 @@ void MeshAPI::OnInit(){
                 return;
 
             node->GetMaterial().SetTexture(texture);
+        };
+
+        table["CubeMap"] = [this, node](const string& directory, const string& fileType){
+            node->UseUniqueMaterial();          
+
+            AppResource(Assets::AssetManager, assetManager);
+            CubeMap* cubeMap = assetManager->CreateCubeMap(directory, fileType);
+            if(cubeMap == nullptr)
+                return;
+
+            node->GetMaterial().SetCubemap(cubeMap);
         };
 
         return table;

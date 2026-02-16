@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "cubemap.h"
 #include "shader.h"
 #include "texture.h"
 #include "material.h"
@@ -29,12 +30,14 @@ namespace Assets{
             Mesh* CreateMesh(const string& name, Mesh&& mesh);
 
             Texture* CreateTexture(string texturePath);
+            CubeMap* CreateCubeMap(string baseDirectory, string fileType);
 
             Model* LoadModel(const string& path); 
 
             Shader* GetShader(const string& name);
             Material* GetMaterial(const string& name);
             Texture* GetTexture(const string& name);
+            CubeMap* GetCubeMap(const string& name);
             Mesh* GetMesh(const string& name);
 
             void ClearTextures();
@@ -44,6 +47,7 @@ namespace Assets{
             map<string, shared_ptr<Shader>> shaders;
             map<string, shared_ptr<Material>> materials;
             map<string, shared_ptr<Texture>> textures; 
+            map<string, shared_ptr<CubeMap>> cubemaps; 
             map<string, shared_ptr<Mesh>> meshs;
             map<string, shared_ptr<Model>> models;
     };

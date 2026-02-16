@@ -10,7 +10,7 @@ namespace Renderer{
 
             void Delete();
 
-            void Use() const;
+            void Use();
 
             unsigned int GetId() const;
 

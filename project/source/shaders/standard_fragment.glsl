@@ -4,6 +4,8 @@ in vec2 UV;
 in vec3 Normal;
 in vec3 FragPos;
 
+in vec3 VertexPos;
+
 out vec4 Color;
 
 struct Material {
@@ -42,7 +44,10 @@ uniform PointLight[MAX_LIGHTS] pointLights;
 uniform vec3 viewPos;
 
 uniform bool useTexture;
+uniform bool useCubemap;
+
 uniform sampler2D Texture;
+uniform samplerCube Cubemap;
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
@@ -59,8 +64,9 @@ void main(){
 
     if(useTexture){
         Color = texture(Texture, UV) * finalColor;
-    }
-    else{
+    } else if(useCubemap){
+        Color = texture(Cubemap, VertexPos) * finalColor;
+    } else {
         Color = finalColor;
     }
 }

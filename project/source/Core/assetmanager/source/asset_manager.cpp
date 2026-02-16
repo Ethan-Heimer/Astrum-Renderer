@@ -51,6 +51,16 @@ Texture* AssetManager::CreateTexture(string texturePath){
     return textures[texturePath].get();
 }
 
+CubeMap* AssetManager::CreateCubeMap(string baseDirectory, string fileType){
+    if(cubemaps.contains(baseDirectory))
+        return cubemaps[baseDirectory].get();
+
+    shared_ptr<CubeMap> newCubeMap = make_shared<CubeMap>(baseDirectory, fileType);
+    cubemaps[baseDirectory] = std::move(newCubeMap);
+
+    return cubemaps[baseDirectory].get();
+}
+
 Mesh* AssetManager::CreateMesh(const string& name,
     std::vector<Vertex>& verticies, std::vector<unsigned int>& indicies){
 

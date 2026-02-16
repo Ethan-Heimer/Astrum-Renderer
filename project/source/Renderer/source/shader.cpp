@@ -82,8 +82,12 @@ Renderer::Shader::~Shader(){
     Delete();
 }
 
-void Renderer::Shader::Use() const{
+void Renderer::Shader::Use(){
     glUseProgram(shaderProgramID);
+
+    /* Set Texture Units */
+    SetInt("Texture", 0);
+    SetInt("Cubemap", 1);
 }
 
 void Renderer::Shader::Delete(){

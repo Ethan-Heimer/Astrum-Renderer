@@ -52,6 +52,12 @@ void Renderer::Texture::Delete(){
     glDeleteTextures(1, &textureID);
 }
 
+void Renderer::Texture::Use(Renderer::Shader* shader){
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID); 
+    shader->SetBool("useTexture", true);
+}
+
 unsigned int Renderer::Texture::GetTextureID() const{
     return textureID;
 }

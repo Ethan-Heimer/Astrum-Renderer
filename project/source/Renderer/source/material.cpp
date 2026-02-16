@@ -5,9 +5,9 @@
 
 using namespace Renderer;
 
-Material::Material(Shader* shader) : shader(shader), texture(nullptr){}
+Material::Material(Shader* shader) : shader(shader), texture(nullptr), cubemap(nullptr){}
 
-Material::Material(const Material& src) : shader(src.shader){
+Material::Material(const Material& src) : shader(src.shader), cubemap(src.cubemap){
     this->texture = src.texture;
 
     this->Ambient = src.Ambient;
@@ -25,18 +25,21 @@ Material::Material(Material&& src) : shader(src.shader){
     this->Shininess = src.Shininess;
 
     src.texture = nullptr;
+    src.cubemap = nullptr;
 }
 
 void Material::Use() const{
     shader->Use();
 
+    shader->SetBool("useTexture", false);
+    shader->SetBool("useCubemap", false);
+
     //-- Set Color / Texture     
     if(HasTexture()){
-        glBindTexture(GL_TEXTURE_2D, GetTexture()->GetTextureID());
-        shader->SetBool("useTexture", true);
+        this->texture->Use(shader);
     }
-    else{
-        shader->SetBool("useTexture", false);
+    else if(HasCubeMap()){
+        this->cubemap->Use(shader);
     }
 
     shader->SetVector3("material.ambient", Ambient.x, Ambient.y, Ambient.z);
@@ -53,6 +56,11 @@ void Material::SetTexture(Texture* texture){
     this->texture = texture;
 }
 
+void Material::SetCubemap(CubeMap* cubemap){
+    this->cubemap = cubemap;
+    cout << "Cube Map Set" << endl;
+}
+
 Shader* Material::GetShader() const{
     return this->shader;
 }
@@ -61,7 +69,15 @@ Texture* Material::GetTexture() const{
     return this->texture;
 }
 
+CubeMap* Material::GetCubeMap() const{
+    return this->cubemap;
+}
+
 bool Material::HasTexture() const{
     return this->texture != nullptr;
+}
+
+bool Material::HasCubeMap() const{
+    return this->cubemap != nullptr;
 }
 

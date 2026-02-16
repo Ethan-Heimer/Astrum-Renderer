@@ -6,6 +6,7 @@
 
 #include "shader.h"
 #include "texture.h"
+#include "cubemap.h"
 
 namespace Renderer{
     class Material{
@@ -22,17 +23,23 @@ namespace Renderer{
             void Use() const;
 
             void SetShader(Shader* shader);
+
             void SetTexture(Texture* texture);
+            void SetCubemap(CubeMap* cubemap);
 
             Shader* GetShader() const;
+
             Texture* GetTexture() const;
+            CubeMap* GetCubeMap() const;
 
             bool HasTexture() const;
+            bool HasCubeMap() const;
 
         private:
-
             Shader* shader;
+
             Texture* texture;
+            CubeMap* cubemap;
     };
 }
 
