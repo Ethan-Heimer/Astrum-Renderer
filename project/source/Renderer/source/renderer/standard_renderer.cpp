@@ -3,6 +3,7 @@
 #include "glm/geometric.hpp"
 #include "renderer/render_commands.h"
 #include "renderer/renderer.h"
+#include <GL/gl.h>
 #include <memory>
 #include <format>
 #include <iostream>
@@ -46,6 +47,9 @@ void StandardRenderer::Draw(ICommandQueue* queue){
     float perspectiveRatio = (float)width/(float)height;
     projection = perspective(radians(camera.GetZoom()), perspectiveRatio, .1f, 100.0f);
 
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+
     fbo->Use();
     glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -60,15 +64,16 @@ void StandardRenderer::Draw(ICommandQueue* queue){
         std::unique_ptr<Command::Command> command = queue->Dequeue(Command::Standard);
         command->Execute(this);
     }
+
     lights.clear();
 
     fbo->Disable();
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    glClear(GL_COLOR_BUFFER_BIT);
 
     screenShader->Use();
     screen->Use();
+
     glDisable(GL_DEPTH_TEST);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, fbo->GetColorBuffer()->GetTextureID());
     glDrawArrays(GL_TRIANGLES, 0, 6);
 

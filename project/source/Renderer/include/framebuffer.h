@@ -1,6 +1,6 @@
 #pragma once
 
-#include "texture.h"
+#include "texture/texture.h"
 
 namespace Renderer{
     class FrameBuffer{

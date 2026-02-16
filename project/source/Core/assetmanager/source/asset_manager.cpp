@@ -41,7 +41,7 @@ Material* AssetManager::CreateMaterial(const string& name, Material&& material){
     return materials[name].get();
 }
 
-Texture* AssetManager::CreateTexture(string texturePath){
+ITexture* AssetManager::CreateTexture(string texturePath){
     if(textures.contains(texturePath))
         return textures[texturePath].get();
 
@@ -51,14 +51,14 @@ Texture* AssetManager::CreateTexture(string texturePath){
     return textures[texturePath].get();
 }
 
-CubeMap* AssetManager::CreateCubeMap(string baseDirectory, string fileType){
-    if(cubemaps.contains(baseDirectory))
-        return cubemaps[baseDirectory].get();
+ITexture* AssetManager::CreateCubeMap(string baseDirectory, string fileType){
+    if(textures.contains(baseDirectory))
+        return textures[baseDirectory].get();
 
-    shared_ptr<CubeMap> newCubeMap = make_shared<CubeMap>(baseDirectory, fileType);
-    cubemaps[baseDirectory] = std::move(newCubeMap);
+    shared_ptr<ITexture> newCubeMap = make_shared<CubeMap>(baseDirectory, fileType);
+    textures[baseDirectory] = std::move(newCubeMap);
 
-    return cubemaps[baseDirectory].get();
+    return textures[baseDirectory].get();
 }
 
 Mesh* AssetManager::CreateMesh(const string& name,
@@ -131,7 +131,7 @@ Model* AssetManager::LoadModel(const string& path){
 
             string texturePath = AssetImporter::ProcessAssimpTexture(directory, aiMaterial, aiTextureType_DIFFUSE, 0);
             if(!texturePath.empty()){
-                Texture* texture = CreateTexture(texturePath);
+                ITexture* texture = CreateTexture(texturePath);
 
                 if(texture)
                     material.SetTexture(texture);
@@ -159,7 +159,7 @@ Material* AssetManager::GetMaterial(const string& name){
     return materials[name].get();
 }
 
-Texture* AssetManager::GetTexture(const string& name){ 
+ITexture* AssetManager::GetTexture(const string& name){ 
     return textures[name].get();
 }
 

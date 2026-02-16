@@ -1,6 +1,5 @@
 #include "framebuffer.h"
 #include "glad/glad.h"
-#include "texture.h"
 #include <iostream>
 
 using namespace Renderer;
@@ -31,6 +30,7 @@ FrameBuffer::FrameBuffer(unsigned int windowWidth, unsigned int windowHeight) :
 }
 
 FrameBuffer::~FrameBuffer(){
+    cout << "Frame Buffer Deleted" << endl;
     Delete(); 
 }
 

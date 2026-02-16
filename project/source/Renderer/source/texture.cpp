@@ -1,14 +1,15 @@
-#include "texture.h"
+#include "texture/texture.h"
 
 #include <iostream>
 
 #include "glad/glad.h"
 #include "Image/stb_image.h"
+#include "texture/texture_interface.h"
 
 using namespace Renderer;
 using namespace std;
 
-Texture::Texture(unsigned int width, unsigned int height){
+Texture::Texture(unsigned int width, unsigned int height) : ITexture(){
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
 
@@ -20,7 +21,7 @@ Texture::Texture(unsigned int width, unsigned int height){
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-Texture::Texture(string imagePath){
+Texture::Texture(string imagePath) : ITexture(){
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
 
@@ -44,7 +45,7 @@ Texture::Texture(string imagePath){
     stbi_image_free(data);
 }
 
-Renderer::Texture::~Texture(){
+Texture::~Texture(){
     Delete();
 }
 

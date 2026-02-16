@@ -5,8 +5,7 @@
 #include "glm/glm.hpp"
 
 #include "shader.h"
-#include "texture.h"
-#include "cubemap.h"
+#include "texture/texture_interface.h"
 
 namespace Renderer{
     class Material{
@@ -24,13 +23,11 @@ namespace Renderer{
 
             void SetShader(Shader* shader);
 
-            void SetTexture(Texture* texture);
-            void SetCubemap(CubeMap* cubemap);
+            void SetTexture(ITexture* texture);
 
             Shader* GetShader() const;
 
-            Texture* GetTexture() const;
-            CubeMap* GetCubeMap() const;
+            ITexture* GetTexture() const;
 
             bool HasTexture() const;
             bool HasCubeMap() const;
@@ -38,8 +35,7 @@ namespace Renderer{
         private:
             Shader* shader;
 
-            Texture* texture;
-            CubeMap* cubemap;
+            ITexture* texture;
     };
 }
 

@@ -1,4 +1,4 @@
-#include "cubemap.h"
+#include "texture/cubemap.h"
 
 #include "glad/glad.h"
 #include "Image/stb_image.h"
@@ -7,9 +7,9 @@
 
 using namespace Renderer;
 
-CubeMap::CubeMap(const string& basePath, const string& fileType){
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+CubeMap::CubeMap(const string& basePath, const string& fileType) : ITexture(){
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -45,7 +45,6 @@ CubeMap::CubeMap(const string& basePath, const string& fileType){
     }
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
-
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
@@ -54,11 +53,15 @@ CubeMap::~CubeMap(){
 }
 
 void CubeMap::Delete(){
-    glDeleteTextures(1, &texture);
+    glDeleteTextures(1, &textureID);
 }
 
 void CubeMap::Use(Shader* shader){ 
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
     shader->SetBool("useCubemap", true);
+}
+
+unsigned int CubeMap::GetTextureID() const{
+    return textureID;
 }

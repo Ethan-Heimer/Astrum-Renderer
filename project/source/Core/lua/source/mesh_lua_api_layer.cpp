@@ -54,7 +54,7 @@ void MeshAPI::OnInit(){
             node->UseUniqueMaterial();          
 
             AppResource(Assets::AssetManager, assetManager);
-            Texture* texture = assetManager->CreateTexture(path);
+            ITexture* texture = assetManager->CreateTexture(path);
             if(texture == nullptr)
                 return;
 
@@ -65,11 +65,11 @@ void MeshAPI::OnInit(){
             node->UseUniqueMaterial();          
 
             AppResource(Assets::AssetManager, assetManager);
-            CubeMap* cubeMap = assetManager->CreateCubeMap(directory, fileType);
+            ITexture* cubeMap = assetManager->CreateCubeMap(directory, fileType);
             if(cubeMap == nullptr)
                 return;
 
-            node->GetMaterial().SetCubemap(cubeMap);
+            node->GetMaterial().SetTexture(cubeMap);
         };
 
         return table;
@@ -108,7 +108,7 @@ void MeshAPI::OnInit(){
             node->UseUniqueMaterial();          
 
             AppResource(Assets::AssetManager, assetManager);
-            Texture* texture = assetManager->CreateTexture(path);
+            ITexture* texture = assetManager->CreateTexture(path);
             if(texture == nullptr)
                 return;
 

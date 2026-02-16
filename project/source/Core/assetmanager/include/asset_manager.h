@@ -5,15 +5,13 @@
 #include <memory>
 #include <vector>
 
-#include "cubemap.h"
+#include "texture/cubemap.h"
+#include "texture/texture.h"
+
 #include "shader.h"
-#include "texture.h"
 #include "material.h"
 #include "mesh.h"
 #include "model.h"
-
-#include "assimp/Importer.hpp"
-#include "assimp/scene.h"
 
 using namespace std;
 
@@ -29,15 +27,16 @@ namespace Assets{
             Mesh* CreateMesh(const string& name, std::vector<Vertex>& verticies, std::vector<unsigned int>& indicies);
             Mesh* CreateMesh(const string& name, Mesh&& mesh);
 
-            Texture* CreateTexture(string texturePath);
-            CubeMap* CreateCubeMap(string baseDirectory, string fileType);
+            ITexture* CreateTexture(string texturePath);
+            ITexture* CreateCubeMap(string baseDirectory, string fileType);
 
             Model* LoadModel(const string& path); 
 
             Shader* GetShader(const string& name);
             Material* GetMaterial(const string& name);
-            Texture* GetTexture(const string& name);
-            CubeMap* GetCubeMap(const string& name);
+
+            ITexture* GetTexture(const string& name);
+
             Mesh* GetMesh(const string& name);
 
             void ClearTextures();
@@ -46,8 +45,7 @@ namespace Assets{
         private:
             map<string, shared_ptr<Shader>> shaders;
             map<string, shared_ptr<Material>> materials;
-            map<string, shared_ptr<Texture>> textures; 
-            map<string, shared_ptr<CubeMap>> cubemaps; 
+            map<string, shared_ptr<ITexture>> textures; 
             map<string, shared_ptr<Mesh>> meshs;
             map<string, shared_ptr<Model>> models;
     };
