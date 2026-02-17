@@ -61,3 +61,9 @@ void WindowManager::FrameBufferCallback(GLFWwindow* window, int width, int heigh
         f(width, height);
     }
 }
+void WindowManager::ResetWindow(){
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+    glfwSetWindowSize(window, mode->width/2, mode->height/2);
+}

@@ -6,6 +6,7 @@
 
 #include "file_watcher.h"
 #include "scene/scene.h"
+#include "window_manager.h"
 
 using namespace Core;
 using namespace Lua;
@@ -65,8 +66,10 @@ void API::StartScriptWatcher(){
 
     fileWatcher->WatchFile(filePath, [this](){
         AppResource(Renderer::Scene::Scene, scene);
+        AppResource(Core::WindowManager, windowManager);
 
         scene->Clear();
+        windowManager->ResetWindow();
 
         ShutDown();
 

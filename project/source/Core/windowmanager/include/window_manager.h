@@ -18,6 +18,8 @@ namespace Core{
 
             GLFWwindow* GetWindow();
 
+            void ResetWindow();
+
         private:
             static WindowManager* _Instance;
 
