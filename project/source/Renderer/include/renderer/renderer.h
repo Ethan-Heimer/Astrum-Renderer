@@ -19,7 +19,7 @@ namespace Renderer{
 
     class IRenderer{
         public:
-            IRenderer(GLFWwindow* window);
+            IRenderer();
             virtual ~IRenderer();
 
             virtual void Initalize() = 0;
@@ -40,7 +40,6 @@ namespace Renderer{
 
         protected:
             Camera camera{};
-            GLFWwindow* window;
     };
 
 }

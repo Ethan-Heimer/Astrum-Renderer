@@ -33,8 +33,6 @@ namespace Core{
 
             void Exit();
 
-            GLFWwindow* GetWindow();
-            void GetWindowSize(GLFWwindow* window, int* width, int* height);
             string GetArgument(const string& name);
 
             unsigned int GetDeltaTime();
@@ -74,8 +72,6 @@ namespace Core{
             unsigned int deltaTime;
 
             bool exit;
-
-            void CreateWindow();
 
             void ParseArguments(int argc, char** argv);
             void AddArgument(std::string name, std::string value);

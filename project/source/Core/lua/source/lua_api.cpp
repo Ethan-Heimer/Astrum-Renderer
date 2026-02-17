@@ -82,22 +82,20 @@ void API::UpdateAPI(){
     if(!scriptInitialized)
         return;
 
+    sol::protected_function update = lua["Update"];
+    if(!update)
+        return;
+
     for(auto& layer : layers){
         layer->OnUpdate();
     }
 
-    sol::protected_function update = lua["Update"];
-    if(update){
-        auto result = update();
-        if(!result.valid()){
-            Console::Log(Error, "Lua", Red, "Errors In Start");
-            sol::error e = result;
-            Console::Log(Error, e.what());
-        } 
+    auto result = update();
+    if(!result.valid()){
+        Console::Log(Error, "Lua", Red, "Errors In Start");
+        sol::error e = result;
+        Console::Log(Error, e.what());
     } 
-    else {
-        Console::Log(Message, "Lua", Yellow, "Update Not Found");
-    }
 
     lua.collect_garbage();
 }

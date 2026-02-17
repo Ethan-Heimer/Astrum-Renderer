@@ -7,14 +7,18 @@
 #include "renderer/renderer.h"
 #include "light.h"
 #include "screen.h"
+#include "viewport/viewport_interface.h"
+#include <memory>
+#include <type_traits>
 
 using namespace Renderer::Command;
 using namespace glm;
+using namespace std;
 
 namespace Renderer{
     class StandardRenderer : public IRenderer{
         public:
-            using IRenderer::IRenderer;
+            StandardRenderer(IViewport& viewport);
 
             void Initalize() override;
             void Draw(ICommandQueue* queue) override;
@@ -45,6 +49,8 @@ namespace Renderer{
             std::unique_ptr<FrameBuffer> fbo;
             std::unique_ptr<Shader> screenShader;
             std::unique_ptr<Screen> screen;
+
+            IViewport& viewport;
     };
 }
 

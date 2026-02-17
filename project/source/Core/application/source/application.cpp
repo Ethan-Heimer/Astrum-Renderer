@@ -6,6 +6,7 @@
 #include "lua_application_layer.h"
 #include "render_application_layer.h"
 #include "utils_application_layer.h"
+#include "windowmanager_application_layer.h"
 
 Core::Application::Application(int argc, char* argv[]) : exit(false){
     /*
@@ -13,17 +14,13 @@ Core::Application::Application(int argc, char* argv[]) : exit(false){
      */
     ParseArguments(argc, argv);
 
-    /*
-     * Initialize Window
-     */
-
     glfwInit();
-    CreateWindow(); 
     
     /*
     * Integrate Application Layers here
     */
 
+    Core::WindowManagerApplicationLayer windowLayer{this};
     Core::RendererApplicationLayer rendererLayer{this}; 
     Core::AssetManagerApplicationLayer assetManagerLayer{this};
     Core::UtilsApplicationLayer utilsLayer{this};
@@ -44,42 +41,12 @@ Core::Application::Application(int argc, char* argv[]) : exit(false){
     glfwTerminate();
 }
 
-void Core::Application::CreateWindow(){
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GL_TRUE);
-
-    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-    //---------------------------------------------------------------------! <- monitor here for full screen
-    window = glfwCreateWindow(mode->width/2, mode->height/2, "Astrum", NULL, NULL);
-
-    if (window == NULL)
-    {
-        Console::Log(Error, "Failed to create GLFW window");
-        glfwTerminate();
-
-        return;
-    }
-
-    glfwMakeContextCurrent(window);
-}
-
-GLFWwindow* Core::Application::GetWindow(){
-    return window;
-}
-
 void Core::Application::Exit(){
     exit = true;
 }
 
 unsigned int Core::Application::GetDeltaTime(){
     return deltaTime;
-}
-
-void GetWindowSize(GLFWwindow* window, int* width, int* height){
-    glfwGetWindowSize(window, width, height);
 }
 
 void Core::Application::SubscribeToInitialize(std::function<void()> callback){
@@ -113,7 +80,6 @@ void Core::Application::Run(){
     while(!exit){ 
         glfwPollEvents(); 
 
-
         if(diff >= 1000/60){
             unsigned long deltaTimeStampStart = TimeStamp();
             ExecuteDelegate(&updateEvent); 
@@ -126,8 +92,7 @@ void Core::Application::Run(){
         }
 
         currentTime = TimeStamp();
-        diff = currentTime - startTime;
-            
+        diff = currentTime - startTime;            
     }
 }
 

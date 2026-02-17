@@ -7,6 +7,7 @@
 #include "debug_lua_api_layer.h"
 #include "scene_lua_api_layer.h"
 #include "light_lua_api_layer.h"
+#include "window_lua_api_layer.h"
 
 using namespace Core;
 using namespace Renderer;
@@ -22,6 +23,7 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
     api.AddLayer<Lua::SceneAPI>("Scene");
 
     api.AddLayer<Lua::LightAPI>("Light");
+    api.AddLayer<Lua::WindowAPI>("Window");
 
     application->SubscribeToInitialize([this](){
         // -- Initialize Sol and Load Script

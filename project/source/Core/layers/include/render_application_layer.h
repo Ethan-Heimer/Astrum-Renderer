@@ -4,6 +4,7 @@
 #include "renderer/render_commands.h"
 #include "renderer/renderer.h"
 #include "scene/scene.h"
+#include "viewport/viewport_interface.h"
 
 namespace Core{
     class RendererApplicationLayer : ApplicationLayer{
@@ -16,5 +17,7 @@ namespace Core{
 
             Renderer::Command::ICommandQueue* commandQueue;
             Renderer::IRenderer* renderer;
+            Renderer::IViewport* viewport;
+            
     };
 }

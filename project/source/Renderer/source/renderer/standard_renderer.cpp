@@ -3,29 +3,19 @@
 #include "glm/geometric.hpp"
 #include "renderer/render_commands.h"
 #include "renderer/renderer.h"
+#include "viewport/viewport_interface.h"
 #include <GL/gl.h>
 #include <memory>
 #include <format>
-#include <iostream>
 
 using namespace Renderer;
 using namespace Command;
 using namespace std;
 using namespace glm;
 
+StandardRenderer::StandardRenderer(IViewport& viewport) : IRenderer(), viewport(viewport){}
+
 void StandardRenderer::Initalize(){
-    std::cout << "Renderer Initialized" << std::endl;
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return;
-    }
-
-    int width, height;
-    glfwGetWindowSize(this->window, &width, &height);
-    glViewport(0, 0, width, height);
-
     //setings
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_CULL_FACE);
@@ -33,16 +23,26 @@ void StandardRenderer::Initalize(){
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    this->viewport.SubscribeToOnSizeChanged([this](int width, int height){
+        fbo.reset();
+
+        fbo = make_unique<FrameBuffer>(width, height);
+    });
+
+    int width, height;
+    this->viewport.GetSize(&width, &height);
+
     fbo = make_unique<FrameBuffer>(width, height);
+
     screenShader = std::make_unique<Shader>("./shaders/screen_vertex.glsl", "./shaders/screen_fragment.glsl");
     screen = std::make_unique<Screen>();
 }
 
 void StandardRenderer::Draw(ICommandQueue* queue){
-    int width, height;
-    glfwGetWindowSize(this->window, &width, &height);
-
     viewMatrix = camera.GetViewMatrix();
+
+    int width, height;
+    this->viewport.GetSize(&width, &height);
 
     float perspectiveRatio = (float)width/(float)height;
     projection = perspective(radians(camera.GetZoom()), perspectiveRatio, .1f, 100.0f);
@@ -77,7 +77,7 @@ void StandardRenderer::Draw(ICommandQueue* queue){
     glBindTexture(GL_TEXTURE_2D, fbo->GetColorBuffer()->GetTextureID());
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    glfwSwapBuffers(window);
+    this->viewport.SwapBuffer();
 }
 
 void StandardRenderer::DrawMesh(const Mesh* mesh, mat4x4 transform, Material* material){

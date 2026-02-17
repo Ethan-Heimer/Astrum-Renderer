@@ -77,6 +77,10 @@ target_include_directories(${NAME} PUBLIC
 )
 
 target_include_directories(${NAME} PUBLIC
+    ${CMAKE_SOURCE_DIR}/project/source/Core/windowmanager/include
+)
+
+target_include_directories(${NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/project/source/Core/console/include
 )
 

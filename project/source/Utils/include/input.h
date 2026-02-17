@@ -6,9 +6,7 @@
 namespace Utils{
     class Input{
         public:
-            Input(GLFWwindow* window);
-
-            void Initalize();
+            void Initalize(GLFWwindow* window);
             void PollInputState();
 
             bool IsKeyDown(unsigned int KeyCode);
@@ -25,7 +23,7 @@ namespace Utils{
             double xMouseDelta, yMouseDelta;
             double xScrollDelta, yScrollDelta;
 
-            int isInputFocused;
+            int isInputFocused = 0;
 
             void mouseCallback(GLFWwindow* window, double xpos, double ypos);
             void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);

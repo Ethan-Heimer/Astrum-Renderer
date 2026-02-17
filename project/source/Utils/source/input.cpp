@@ -10,13 +10,11 @@
  * this cam probably be removed when app core is implemented
  */
 
-Utils::Input::Input(GLFWwindow* window)
-    : window(window), isInputFocused(0){}
 
-
-void Utils::Input::Initalize(){
+void Utils::Input::Initalize(GLFWwindow* window){
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
+    this->window = window;
     int width, height;
     glfwGetWindowSize(window, &width, &height);
 

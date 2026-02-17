@@ -2,8 +2,7 @@
 
 using namespace Renderer;
 
-IRenderer::IRenderer(GLFWwindow* window){
-    this->window = window;
+IRenderer::IRenderer(){
     camera.SetRotation(0, -90);
 }
 
