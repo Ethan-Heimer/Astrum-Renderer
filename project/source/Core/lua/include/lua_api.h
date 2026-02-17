@@ -5,18 +5,7 @@
 #include <string>
 #include <type_traits>
 
-#include "lua_api_layer.h"
-
-#define CheckLuaPointerArg(pointer, functionName, ...)\
-    if(pointer == nullptr){\
-        string message;\
-        message = "A Reference to an Objetc is expected as an argument to the function '";\
-        message += functionName;\
-        message += "'";\
-        Console::Log(Warning, "Lua API Error", message);\
-        return __VA_ARGS__;\
-    }\
-    
+#include "lua_api_layer.h"    
 
 using namespace std;
 
@@ -40,7 +29,7 @@ namespace Core{
 
                 void LoadScript();
                 void StartScript();
-                void StartScriptWatcher();
+                void RestartScript();
 
                 void UpdateAPI();
                 void ShutDown();

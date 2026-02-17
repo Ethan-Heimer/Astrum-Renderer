@@ -60,27 +60,6 @@ void API::StartScript(){
     }
 }
 
-void API::StartScriptWatcher(){
-    string filePath = application->GetArgument("s");
-    AppResource(Utils::FileWatcher, fileWatcher);
-
-    fileWatcher->WatchFile(filePath, [this](){
-        AppResource(Renderer::Scene::Scene, scene);
-        AppResource(Core::WindowManager, windowManager);
-
-        scene->Clear();
-        windowManager->ResetWindow();
-
-        ShutDown();
-
-        // Restart Script
-        LoadScript(); 
-        StartScript();
-
-        Console::Log(Message, "Lua", Yellow, "Lua Script Loaded");
-    });
-}
-
 void API::UpdateAPI(){ 
     if(!scriptInitialized)
         return;
@@ -101,6 +80,13 @@ void API::UpdateAPI(){
     } 
 
     lua.collect_garbage();
+}
+
+void API::RestartScript(){
+    ShutDown();
+
+    LoadScript();
+    StartScript();
 }
 
 void API::ShutDown(){
