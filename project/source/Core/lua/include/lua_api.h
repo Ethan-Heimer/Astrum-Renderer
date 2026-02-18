@@ -31,6 +31,7 @@ namespace Core{
                 void StartScript();
                 void RestartScript();
 
+                void InvokeStart();
                 void UpdateAPI();
                 void ShutDown();
 

@@ -44,20 +44,8 @@ void API::StartScript(){
     for(auto& layer : layers){
         layer->OnInit();
     }
-
-    sol::protected_function start = lua["Start"];
-    if(start){
-        auto result = start();
-        if(result.valid()){
-            Console::Log(Message, "Lua", Green, "Start Executed Correctly");
-        } else {
-            Console::Log(Error, "Lua", Red, "Errors In Start");
-            sol::error e = result;
-            Console::Log(Error, e.what());
-        } 
-    } else {
-        Console::Log(Message, "Lua", Yellow, "Start Not Found");
-    }
+    
+    InvokeStart();
 }
 
 void API::UpdateAPI(){ 
@@ -82,11 +70,27 @@ void API::UpdateAPI(){
     lua.collect_garbage();
 }
 
+void API::InvokeStart(){
+    sol::protected_function start = lua["Start"];
+    if(start){
+        auto result = start();
+        if(result.valid()){
+            Console::Log(Message, "Lua", Green, "Start Executed Correctly");
+        } else {
+            Console::Log(Error, "Lua", Red, "Errors In Start");
+            sol::error e = result;
+            Console::Log(Error, e.what());
+        } 
+    } else {
+        Console::Log(Message, "Lua", Yellow, "Start Not Found");
+    }
+}
+
 void API::RestartScript(){
     ShutDown();
 
     LoadScript();
-    StartScript();
+    InvokeStart();
 }
 
 void API::ShutDown(){

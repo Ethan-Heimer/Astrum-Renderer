@@ -1,16 +1,20 @@
 #include "application.h"
 
 #include "mesh_lua_api_layer.h"
-#include "lua_api.h"
 
 #include "asset_manager.h"
 #include "console.h"
 #include "scene/scene.h"
 #include "mesh.h"
 #include "scene/mesh_scene_node.h"
-#include "sol/state_view.hpp"
 #include "sol/table.hpp"
-#include "sol/types.hpp"
+
+/*
+ * Random Segfaults somtimes happens here, given a segfault investigate here.
+ *
+ * I'm Sure I'll look back on this code and think i was crazy for writting this.
+ * But it works and it looks cool so whatever.
+ */
 
 using namespace Core;
 using namespace Renderer;
@@ -19,31 +23,47 @@ using namespace Assets;
 using namespace Scene;
 
 void MeshAPI::OnInit(){
-    Function("Cube", [this](){
-        MeshSceneNode* node = Cube();   
+    /*
+     * Diffrent Mesh's share certain functions but reject others, thereforw this 
+     * System composes functions together into 'classes' to be able to manage
+     * this. 
+     */
 
-        sol::table table = CreateMeshTable(node);
+    /*
+     * Member Functions Definitions
+     */
 
-        table["Color"] = [this, node](float r, float g, float b){
-            cout << r << g << b << endl;
+    MemberFunction Color("Color",
+        [this](MeshSceneNode* node, unsigned char r, unsigned char g, unsigned char b){
+            if(node == nullptr)
+                return;
 
             node->UseUniqueMaterial();          
-
             node->GetMaterial().Ambient = {r/255.0, g/255.0, b/255.0};
-        };
+        }, U_CHAR, U_CHAR, U_CHAR);
 
-        table["Diffuse"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
+    MemberFunction Diffuse("Diffuse", [this](MeshSceneNode* node, unsigned char r, unsigned char g, unsigned char b){
+            if(node == nullptr)
+                return;
+
             node->UseUniqueMaterial();          
-
             node->GetMaterial().Diffuse = {r/255.0, g/255.0, b/255.0};
-        };
+        }, U_CHAR, U_CHAR, U_CHAR);  
 
-        table["Specular"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
-            node->UseUniqueMaterial();          
+    MemberFunction Specular("Specular", [this](MeshSceneNode* node, unsigned char r, unsigned char g, unsigned char b){
 
-            node->GetMaterial().Specular = {r/255.0, g/255.0, b/255.0};
-        };
+    });
 
+    Class CubeClass{lua, Color, Diffuse};
+
+    Function("Cube", [this, CubeClass]() mutable {
+        MeshSceneNode* node = Cube(); 
+        return CubeClass.GetTable(node);
+    });
+
+    /*
+    Function("Cube", [this, &c](){
+        table["Specular"] =
         table["Shine"] = [this, node](int shine){
             node->UseUniqueMaterial();          
 
@@ -70,11 +90,13 @@ void MeshAPI::OnInit(){
                 return;
 
             node->GetMaterial().SetTexture(cubeMap);
-        };
+        }; 
 
         return table;
     });
+    */
 
+    /*
     Function("Plane", [this](){
         MeshSceneNode* node = Plane();   
 
@@ -123,6 +145,7 @@ void MeshAPI::OnInit(){
 
         return CreateMeshTable(node);
     });
+    */
 }
 
 Renderer::Scene::MeshSceneNode* MeshAPI::Cube(){
@@ -175,19 +198,5 @@ EmptyNode* MeshAPI::Model(const string& path){
     return parentNode;
 }
 
-sol::table MeshAPI::CreateMeshTable(SceneNode* node){
-    sol::table table = lua.create_table();
-    table["Translate"] = [this, node](float x, float y, float z){
-        node->GetLocalTransform().SetPosition(x, y, z);
-    };
-
-    table["Rotate"] = [this, node](float x, float y, float z){
-        node->GetLocalTransform().SetRotation(x, y, z);
-    };
-
-    table["Scale"] = [this, node](float x, float y, float z){
-        node->GetLocalTransform().SetScale(x, y, z);
-    };
-
-    return table;
+void MeshAPI::SetColor(MeshSceneNode* node, unsigned char r, unsigned char g, unsigned char b){
 }
