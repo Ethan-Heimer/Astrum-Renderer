@@ -1,6 +1,8 @@
 #include "asset_importer.h"
 #include "assimp/mesh.h"
 
+#include <iostream>
+
 using namespace Renderer;
 using namespace Assets;
 
@@ -77,22 +79,22 @@ void AssetImporter::ProcessAssimpMaterial(aiMaterial* material, const aiScene* s
     
     if(AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuse)){
         meshMaterial.Diffuse = {diffuse.r, diffuse.g, diffuse.b};
-        //std::cout << diffuse.r << " " << diffuse.g << " " << diffuse.b << std::endl;
     }
 
     if(AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &specular)){
         meshMaterial.Specular = {specular.r, specular.g, specular.b};
-        //std::cout << specular.r << " " << specular.g << " " << specular.b << std::endl;
     }
     
-    if(AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &ambient)){
+    if(AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &ambient)){
         meshMaterial.Ambient = {ambient.r, ambient.g, ambient.b};
-        //std::cout << ambient.r << " " << ambient.g << " " << ambient.b << std::endl;
     }
 
     if(AI_SUCCESS == material->Get(AI_MATKEY_SHININESS, shine)){
+        if(shine == 0)
+            shine = 32;
+
         meshMaterial.Shininess = shine;
-        //std::cout << shine << std::endl;
+        std::cout << shine << std::endl;
     }
 }
 
