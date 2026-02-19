@@ -8,20 +8,19 @@ using namespace Renderer;
 using namespace Lua;
 
 void LightAPI::OnInit(){
-    Function("Point", [this](){
-        Scene::LightSceneNode* light = PointLight();
-
-        sol::table table = lua.create_table();
-
-        table["Color"] = [this, light](unsigned char r, unsigned char g, unsigned char b){
+    MemberFunction color{"Color", [this](Scene::LightSceneNode* light, unsigned char r, unsigned char g, unsigned char b){
             light->SetAmbient(r, g, b);
-        };
+    }};
 
-        table["Position"] = [this, light](float x, float y, float z){
-            light->SetPosition(x, y, z);
-        };
+    MemberFunction position{"Position", [this](Scene::LightSceneNode* light, float x, float y, float z){
+        light->SetPosition(x, y, z);
+    }};
 
-        return table;
+    Class point{lua, color, position};
+
+    Function("Point", [this, point]() mutable {
+        Scene::LightSceneNode* light = PointLight();
+        return point.Instanciate(light);
     });
 }
 
