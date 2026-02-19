@@ -94,7 +94,6 @@ void AssetImporter::ProcessAssimpMaterial(aiMaterial* material, const aiScene* s
             shine = 32;
 
         meshMaterial.Shininess = shine;
-        std::cout << shine << std::endl;
     }
 }
 
