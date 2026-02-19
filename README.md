@@ -111,16 +111,17 @@ script. All code that uses any of Asrtum's api should be placed in these functio
 
 **Children Functions**
 
-| Signurature        |
--------------------- |
-| Translate(x, y, z) |
-| Scale(x, y, z)     |
-| Rotate(x, y, z)    |
-| Color(r, g, b)     |
-| Diffuse(r, g, b)   |
-| Specular(r, g, b)  |
-| Shine(value)       |
-| Texture(path)      |
+| Signurature                       |
+----------------------------------- |
+| Position(x, y, z)                 |
+| Scale(x, y, z)                    |
+| Rotate(x, y, z)                   |
+| Color(r, g, b)                    |
+| Diffuse(r, g, b)                  |
+| Specular(r, g, b)                 |
+| Shine(value)                      |
+| Texture(path)                     |
+| CubeMap(dir_path, file_type)      |
 
 **Example**
 
@@ -293,6 +294,42 @@ local cube = {}
 function Start()
     cube = Cube()
     cube.Texture("Path")
+end
+```
+
+<br>
+
+### -- .CubeMap --
+
+**Description:** Changes a cube's texture to be a cubemap. It takes a directiory with six
+textures inside of it, where each texture is mapped to one side of the cube. The textures inside
+the directory must be named:
+
+- left.*
+- right.*
+- top.*
+- bottom.*
+- front.*
+- back.*
+
+(the * represents any image type)
+
+**Arguments:** 
+
+| Description                       | Type    |
+| --------------------------------- | ------- |
+| Directory Path                    | String  |
+| File type                         | String  |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+local cube = {}
+function Start()
+    cube = Cube()
+    cube.CubeMap("./assets/grass_block", ".png")
 end
 ```
 
@@ -873,3 +910,31 @@ end
 
 <br>
 
+## Window
+
+| Sub-API Name  | Description                           |
+| ------------- | ------------------------------------- |
+| Window        | Mutates the application's window.     |
+
+### -- Size --
+
+**Description:** Changed the size of the window.
+
+**Arguments:**
+
+| Description         | Type              |
+| --------------------| ----------------- |
+| Width               | Number            |
+| Height              | Number            |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    Window.Size(800, 600);
+end
+```
+
+<br>
