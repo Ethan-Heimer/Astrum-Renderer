@@ -7,7 +7,6 @@
 #include "scene/scene.h"
 #include "mesh.h"
 #include "scene/mesh_scene_node.h"
-#include "sol/table.hpp"
 
 /*
  * Random Segfaults somtimes happens here, given a segfault investigate here.
@@ -33,6 +32,27 @@ void MeshAPI::OnInit(){
      * Member Functions Definitions
      */
 
+    MemberFunction Position("Position", [this](SceneNode* node, float x, float y, float z){
+        if(node == nullptr)
+            return;
+
+        node->GetLocalTransform().SetPosition(x, y, z);
+    });
+
+    MemberFunction Rotation("Rotate", [this](SceneNode* node, float x, float y, float z){
+        if(node == nullptr)
+            return;
+
+        node->GetLocalTransform().SetRotation(x, y, z);
+    });
+
+    MemberFunction Scale("Scale", [this](SceneNode* node, float x, float y, float z){
+        if(node == nullptr)
+            return;
+
+        node->GetLocalTransform().SetScale(x, y, z);
+    });
+
     MemberFunction Color("Color",
         [this](MeshSceneNode* node, unsigned char r, unsigned char g, unsigned char b){
             if(node == nullptr)
@@ -40,7 +60,7 @@ void MeshAPI::OnInit(){
 
             node->UseUniqueMaterial();          
             node->GetMaterial().Ambient = {r/255.0, g/255.0, b/255.0};
-        }, U_CHAR, U_CHAR, U_CHAR);
+        });
 
     MemberFunction Diffuse("Diffuse", [this](MeshSceneNode* node, unsigned char r, unsigned char g, unsigned char b){
             if(node == nullptr)
@@ -48,29 +68,25 @@ void MeshAPI::OnInit(){
 
             node->UseUniqueMaterial();          
             node->GetMaterial().Diffuse = {r/255.0, g/255.0, b/255.0};
-        }, U_CHAR, U_CHAR, U_CHAR);  
+        });  
 
     MemberFunction Specular("Specular", [this](MeshSceneNode* node, unsigned char r, unsigned char g, unsigned char b){
+        if(node == nullptr)
+            return;
 
+        node->UseUniqueMaterial();          
+        node->GetMaterial().Diffuse = {r/255.0, g/255.0, b/255.0};
     });
 
-    Class CubeClass{lua, Color, Diffuse};
+    MemberFunction Shine("Shine", [this](MeshSceneNode* node, int shine){
+        if(node == nullptr)
+            return;
 
-    Function("Cube", [this, CubeClass]() mutable {
-        MeshSceneNode* node = Cube(); 
-        return CubeClass.GetTable(node);
+        node->UseUniqueMaterial();          
+        node->GetMaterial().Shininess = shine;
     });
 
-    /*
-    Function("Cube", [this, &c](){
-        table["Specular"] =
-        table["Shine"] = [this, node](int shine){
-            node->UseUniqueMaterial();          
-
-            node->GetMaterial().Shininess = shine;
-        };
-
-        table["Texture"] = [this, node](const string& path){
+    MemberFunction Texture("Texture", [this](MeshSceneNode* node, string path){
             node->UseUniqueMaterial();          
 
             AppResource(Assets::AssetManager, assetManager);
@@ -79,9 +95,9 @@ void MeshAPI::OnInit(){
                 return;
 
             node->GetMaterial().SetTexture(texture);
-        };
+    });
 
-        table["CubeMap"] = [this, node](const string& directory, const string& fileType){
+    MemberFunction CubeMap("CubeMap", [this](MeshSceneNode* node, string directory, string fileType){
             node->UseUniqueMaterial();          
 
             AppResource(Assets::AssetManager, assetManager);
@@ -90,62 +106,31 @@ void MeshAPI::OnInit(){
                 return;
 
             node->GetMaterial().SetTexture(cubeMap);
-        }; 
-
-        return table;
-    });
-    */
-
-    /*
-    Function("Plane", [this](){
-        MeshSceneNode* node = Plane();   
-
-        sol::table table = CreateMeshTable(node);
-
-        table["Color"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
-            node->UseUniqueMaterial();          
-
-            node->GetMaterial().Ambient = {r/255.0, g/255.0, b/255.0};
-        };
-
-        table["Diffuse"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
-            node->UseUniqueMaterial();          
-
-            node->GetMaterial().Diffuse = {r/255.0, g/255.0, b/255.0};
-        };
-
-        table["Specular"] = [this, node](unsigned char r, unsigned char g, unsigned char b){
-            node->UseUniqueMaterial();          
-
-            node->GetMaterial().Specular = {r/255.0, g/255.0, b/255.0};
-        };
-
-        table["Shine"] = [this, node](int shine){
-            node->UseUniqueMaterial();          
-
-            node->GetMaterial().Shininess = shine;
-        };
-
-        table["Texture"] = [this, node](const string& path){
-            node->UseUniqueMaterial();          
-
-            AppResource(Assets::AssetManager, assetManager);
-            ITexture* texture = assetManager->CreateTexture(path);
-            if(texture == nullptr)
-                return;
-
-            node->GetMaterial().SetTexture(texture);
-        };
-
-        return table;
     });
 
-    Function("Model", [this](const string& path){
+
+    Class cube{lua, Position, Rotation, Scale, Color, 
+        Diffuse, Specular, Shine, Texture, CubeMap};
+
+    Class plane(lua, Position, Rotation, Scale, Color,
+            Diffuse, Specular, Shine, Texture);
+
+    Class model(lua, Position, Rotation, Scale);
+
+    Function("Cube", [this, cube]() mutable {
+        MeshSceneNode* node = Cube(); 
+        return cube.Instanciate(node);
+    });
+    
+    Function("Plane", [this, plane]() mutable {
+        MeshSceneNode* node = Plane(); 
+        return plane.Instanciate(node);
+    });
+
+    Function("Model", [this, model](string path) mutable {
         SceneNode* node = Model(path);
-
-        return CreateMeshTable(node);
+        return model.Instanciate(node);
     });
-    */
 }
 
 Renderer::Scene::MeshSceneNode* MeshAPI::Cube(){
@@ -196,7 +181,4 @@ EmptyNode* MeshAPI::Model(const string& path){
     }
 
     return parentNode;
-}
-
-void MeshAPI::SetColor(MeshSceneNode* node, unsigned char r, unsigned char g, unsigned char b){
 }
