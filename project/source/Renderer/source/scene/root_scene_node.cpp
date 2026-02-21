@@ -17,6 +17,9 @@ void RootSceneNode::OnRendered(ICommandQueue* queue){
                 renderer->SetDirectionalLightAmbient(dirLightAmbient.r, dirLightAmbient.g, dirLightAmbient.b);
                 renderer->SetDirectionalLightSpecular(dirLightSpecular.r, dirLightSpecular.g, dirLightSpecular.b);
                 renderer->SetDirectionalLightDiffuse(dirLightDiffuse.r, dirLightDiffuse.g, dirLightDiffuse.b);
+
+                renderer->SetColorOffset(colorOffset.r, colorOffset.g, colorOffset.b, colorOffset.a);
+                renderer->SetChannelMultiplyer(channelMultiplyer.r, channelMultiplyer.g, channelMultiplyer.b, channelMultiplyer.a);
             });
 }
 
@@ -38,4 +41,12 @@ void RootSceneNode::SetDirectionalSpecularColor(const unsigned char r, const uns
 
 void RootSceneNode::SetDirectionalDiffuseColor(const unsigned char r, const unsigned char g, const unsigned char b){
     dirLightDiffuse = {r, g, b};
+}
+
+void RootSceneNode::SetColorOffset(unsigned char r, unsigned char g, unsigned char b, unsigned char a){
+    colorOffset = {r, g, b, a};
+}
+
+void RootSceneNode::SetChannelMultiplyer(float r, float g, float b, float a){
+    channelMultiplyer = {r, g, b, a};
 }

@@ -32,7 +32,11 @@ namespace Renderer{
             void SetDirectionalLightDiffuse(unsigned char r, unsigned char g, unsigned char b) override;
             void SetDirectionalLightSpecular(unsigned char r, unsigned char g, unsigned char b) override;
 
+            void SetColorOffset(unsigned char r, unsigned char g, unsigned char b, unsigned char a) override;
+            void SetChannelMultiplyer(float r, float g, float b, float a) override;
+
             void AddPointLight(PointLight* light) override;
+            void AddPostProcessingKernal(mat3 kernal) override;
 
             Camera& GetCamera() override;
 
@@ -40,17 +44,23 @@ namespace Renderer{
             DirectionalLight dirLight{};
 
             vector<PointLight*> lights;
+            vector<mat3> postProcessingKernals;
 
             mat4 viewMatrix{1};
             mat4 projection{1};
 
             vec4 clearColor;
 
+            /* Post Processing */
+            vec4 colorOffset{0, 0, 0, 0};
+            vec4 channelMultiplyer{1, 1, 1, 1};
+
             std::unique_ptr<FrameBuffer> fbo;
             std::unique_ptr<Shader> screenShader;
             std::unique_ptr<Screen> screen;
 
             IViewport& viewport;
+            void DrawScreen();
     };
 }
 

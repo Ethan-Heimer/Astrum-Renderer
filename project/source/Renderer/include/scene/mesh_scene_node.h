@@ -1,5 +1,4 @@
-#ifndef MESH_SCENE_NODE_H
-#define MESH_SCENE_NODE_H
+#pragma once
 
 #include "scene/scene_node.h"
 #include "mesh.h"
@@ -33,4 +32,3 @@ namespace Renderer{
     }
 }
 
-#endif

@@ -13,7 +13,8 @@ namespace Renderer{
     namespace Command{
         enum Type{
             Light,
-            Standard
+            Standard,
+            PostProcessingKernal
         };
 
         class Command{
@@ -38,6 +39,7 @@ namespace Renderer{
             protected:
                 std::queue<std::unique_ptr<Command>> renderQueue;
                 std::queue<std::unique_ptr<Command>> lightQueue;
+                std::queue<std::unique_ptr<Command>> kernalQueue;
 
         };
     }

@@ -24,6 +24,7 @@ namespace Renderer{
             void SetVector4(const std::string& name, float x, float y, float z, float w);
 
             void SetMatrix4x4(const std::string& name, const float* matrix);
+            void SetMatrix3x3(const std::string& name, const float* matrix);
 
         private:
             unsigned int shaderProgramID;

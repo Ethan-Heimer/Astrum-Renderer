@@ -26,6 +26,7 @@ namespace Renderer{
             virtual Camera& GetCamera() = 0;
 
             virtual void AddPointLight(PointLight* light) = 0;
+            virtual void AddPostProcessingKernal(mat3 kernal) = 0;
 
             virtual void DrawMesh(const Mesh* mesh, mat4x4 transform, Material* material) = 0; 
             virtual void SetClearColor
@@ -35,6 +36,9 @@ namespace Renderer{
             virtual void SetDirectionalLightAmbient(unsigned char r, unsigned char g, unsigned char b) = 0;
             virtual void SetDirectionalLightDiffuse(unsigned char r, unsigned char g, unsigned char b) = 0;
             virtual void SetDirectionalLightSpecular(unsigned char r, unsigned char g, unsigned char b) = 0;
+
+            virtual void SetColorOffset(unsigned char r, unsigned char g, unsigned char b, unsigned char a) = 0;
+            virtual void SetChannelMultiplyer(float r, float g, float b, float a) = 0;
 
             virtual void Draw(ICommandQueue* queue) = 0;
 

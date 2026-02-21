@@ -124,6 +124,10 @@ void Renderer::Shader::SetMatrix4x4(const std::string& name, const float* matrix
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, name.c_str()), 1, GL_FALSE, matrix);
 }
 
+void Renderer::Shader::SetMatrix3x3(const std::string& name, const float* matrix){
+    glUniformMatrix3fv(glGetUniformLocation(shaderProgramID, name.c_str()), 1, GL_FALSE, matrix);
+}
+
 unsigned int Renderer::Shader::GetId() const {
     return shaderProgramID;
 }

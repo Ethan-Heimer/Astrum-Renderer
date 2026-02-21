@@ -6,6 +6,7 @@
 #include "input_lua_api_layer.h"
 #include "camera_lua_api_layer.h"
 #include "debug_lua_api_layer.h"
+#include "postprocessing_lua_api_layer.h"
 #include "scene/scene.h"
 #include "scene_lua_api_layer.h"
 #include "light_lua_api_layer.h"
@@ -27,6 +28,8 @@ Core::LuaApplicationLayer::LuaApplicationLayer(Core::Application* application)
 
     api.AddLayer<Lua::LightAPI>("Light");
     api.AddLayer<Lua::WindowAPI>("Window");
+
+    api.AddLayer<Lua::PostProcessingAPI>("PostProcessing");
 
     application->SubscribeToInitialize([this, application](){
         // -- Initialize Sol and Load Script

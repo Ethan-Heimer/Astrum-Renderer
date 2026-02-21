@@ -7,6 +7,7 @@
 #include <GL/gl.h>
 #include <memory>
 #include <format>
+#include <iostream>
 
 using namespace Renderer;
 using namespace Command;
@@ -65,17 +66,17 @@ void StandardRenderer::Draw(ICommandQueue* queue){
         command->Execute(this);
     }
 
-    lights.clear();
+    while(!queue->IsEmpty(Command::PostProcessingKernal)){
+        std::unique_ptr<Command::Command> command = 
+            queue->Dequeue(Command::PostProcessingKernal);
 
+        command->Execute(this);
+    }
+
+    lights.clear();
     fbo->Disable();
 
-    screenShader->Use();
-    screen->Use();
-
-    glDisable(GL_DEPTH_TEST);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, fbo->GetColorBuffer()->GetTextureID());
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    DrawScreen();
 
     this->viewport.SwapBuffer();
 }
@@ -120,6 +121,10 @@ void StandardRenderer::AddPointLight(PointLight* light){
     lights.push_back(light);
 }
 
+void StandardRenderer::AddPostProcessingKernal(mat3 kernal){
+    this->postProcessingKernals.push_back(kernal);
+}
+
 void StandardRenderer::SetClearColor
         (const unsigned char& r, const unsigned char& g, const unsigned char& b, float a){
     clearColor = {r/255.0, g/255.0, b/255.0, a};
@@ -144,6 +149,39 @@ void StandardRenderer::SetDirectionalLightSpecular(unsigned char r, unsigned cha
     dirLight.Specular = {r/255.0, g/255.0, b/255.0};
 }
 
+void StandardRenderer::SetColorOffset(unsigned char r, unsigned char g, unsigned char b, unsigned char a){
+    colorOffset = {r/255.0, g/255.0, b/255.0, a};
+}
+
+void StandardRenderer::SetChannelMultiplyer(float r, float g, float b, float a){
+    channelMultiplyer = {r, g, b, a};
+}
+
 Camera& StandardRenderer::GetCamera(){ 
     return camera;
+}
+
+void StandardRenderer::DrawScreen(){
+    screenShader->Use();
+    screen->Use();
+
+    glDisable(GL_DEPTH_TEST);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, fbo->GetColorBuffer()->GetTextureID());
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    screenShader->SetVector4("ColorOffset", colorOffset.r, colorOffset.g, colorOffset.b, colorOffset.a);
+    screenShader->SetVector4("ChannelMultiplyer", channelMultiplyer.r, channelMultiplyer.g, 
+            channelMultiplyer.b, channelMultiplyer.a);
+
+    const int kernalCount = postProcessingKernals.size();
+    screenShader->SetInt("kernal_count", kernalCount);
+
+    for(int i = 0; i < kernalCount; i++){
+        string kernalName = std::format("kernal[{}].matrix", i);
+
+        screenShader->SetMatrix3x3(kernalName, value_ptr(postProcessingKernals[i]));
+    }
+
+    postProcessingKernals.clear();
 }

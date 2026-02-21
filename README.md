@@ -910,6 +910,166 @@ end
 
 <br>
 
+## Post Processing
+
+| Sub-API Name   | Description                           |
+| -------------- | ------------------------------------- |
+| PostProcessing | Applies Post Processing to the Scene. |
+
+### -- ColorOffset --
+
+**Description:** Offsets all color values by a r, g, b, a value
+
+**Arguments:**
+
+| Description         | Type              |
+| --------------------| ----------------- |
+| r                   | Number [0-255]    |
+| g                   | Number [0-255]    |
+| b                   | Number [0-255]    |
+| a                   | Number [0-1]      |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    PostProcessing.ColorOffset(150, 100, 20, 0);
+end
+```
+
+<br>
+
+### -- ChannelMultiplyer --
+
+**Description:** Offsets all color values by a r, g, b, a value
+
+**Arguments:**
+
+| Description         | Type              |
+| --------------------| ----------------- |
+| r                   | Number            |
+| g                   | Number            |
+| b                   | Number            |
+| a                   | Number            |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    PostProcessing.ChannelMultiplyer(1, .5, .1, 1);
+end
+```
+
+<br>
+
+### -- EdgeDetection --
+
+**Description:** Applies an edge detection effect.
+
+**Arguments:** None.
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    PostProcessing.EdgeDetection();
+end
+```
+
+<br>
+
+### -- Sharpen --
+
+**Description:** Applies an sharpen effect.
+
+**Arguments:** None.
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    PostProcessing.Sharpen();
+end
+```
+
+<br>
+
+### -- BoxBlur --
+
+**Description:** Applies an box blur effect.
+
+**Arguments:** None.
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    PostProcessing.BoxBlur();
+end
+```
+
+<br>
+
+### -- GaussianBlur --
+
+**Description:** Applies an gaussian blur effect.
+
+**Arguments:** None.
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    PostProcessing.GaussianBlur();
+end
+```
+
+<br>
+
+### -- Kernal --
+
+**Description:** Applies a custom 3x3 kernal effect.
+
+**Arguments:**
+
+| Description         | Type              |
+| --------------------| ----------------- |
+| x11                 | number            |
+| x12                 | number            |
+| x13                 | number            |
+| x21                 | number            |
+| x22                 | number            |
+| x23                 | number            |
+| x31                 | number            |
+| x32                 | number            |
+| x33                 | number            |
+
+**Returns:** None.
+
+**Example**
+
+``` lua
+function Start()
+    PostProcessing.Kernal(0, -1,  0,
+                          -1, 4, -1,
+                          0, -1,  0);
+end
+```
+
+<br>
+
 ## Window
 
 | Sub-API Name  | Description                           |
