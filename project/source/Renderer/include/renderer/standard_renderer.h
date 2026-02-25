@@ -60,6 +60,7 @@ namespace Renderer{
             std::unique_ptr<Screen> screen;
 
             IViewport& viewport;
+
             void DrawScreen();
     };
 }
