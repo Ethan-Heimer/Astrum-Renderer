@@ -1,8 +1,11 @@
 #include "camera_lua_api_layer.h"
 
+#include "application.h"
 #include "camera.h"
 #include "glm/fwd.hpp"
 #include "renderer/renderer.h"
+
+#include "scene/scene.h"
 
 using namespace Core;
 using namespace Renderer;
@@ -21,48 +24,46 @@ void CameraAPI::OnInit(){
 }
 
 void CameraAPI::Move(float forward, float straif, float up){
-    AppResource(Renderer::IRenderer, r);
-    Camera& camera = r->GetCamera();
+    AppResource(Scene::Scene, scene);
+    auto* root = scene->GetRootNode();
 
-    camera.Move(forward, straif, up);
+    vec3 pos = root->GetCameraPosition();
+    root->SetCameraPosition(pos.x + forward, pos.y + straif, pos.z + up);
 };
 
 void CameraAPI::Position(float forward, float straif, float up){
-    AppResource(Renderer::IRenderer, r);
-    Camera& camera = r->GetCamera();
+    AppResource(Scene::Scene, scene);
+    auto* root = scene->GetRootNode();
 
-    camera.SetPos(forward, straif, up);
+    root->SetCameraPosition(forward, straif, up);
 };
 
 void CameraAPI::Rotate(float pitch, float yaw){
-    AppResource(Renderer::IRenderer, r);
-    Camera& camera = r->GetCamera();
+    AppResource(Scene::Scene, scene);
+    auto* root = scene->GetRootNode();
 
-    camera.SetRotation(pitch, yaw);
+    root->SetCameraRotation(pitch, yaw);
 }
 
 void CameraAPI::Zoom(float zoom){
-    AppResource(Renderer::IRenderer, r);
-    Camera& camera = r->GetCamera();
+    AppResource(Scene::Scene, scene);
+    auto* root = scene->GetRootNode();
 
-    camera.SetZoom(zoom);
+    root->SetCameraZoom(zoom);
 }
 
 tuple<float, float> CameraAPI::GetRotation(){ 
-    AppResource(Renderer::IRenderer, r);
-    Camera& camera = r->GetCamera();
+    AppResource(Scene::Scene, scene);
+    auto* root = scene->GetRootNode();
 
-    float pitch = 0, yaw = 0;
-    camera.GetRotation(&pitch, &yaw);
-
-    return {pitch, yaw};
+    vec2 rotation = root->GetCameraRotation();
+    return {rotation.x, rotation.y};
 }
 
 tuple<float, float, float> CameraAPI::GetPosition(){ 
-    AppResource(Renderer::IRenderer, r);
-    Camera& camera = r->GetCamera();
+    AppResource(Scene::Scene, scene);
+    auto* root = scene->GetRootNode();
 
-    glm::vec3 pos = camera.GetPos();
-
-    return {pos.x, pos.y, pos.z};
+    vec3 position = root->GetCameraPosition();
+    return {position.x, position.y, position.z};
 }

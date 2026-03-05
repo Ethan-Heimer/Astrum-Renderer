@@ -153,7 +153,7 @@ end
 
 | Signurature        |
 -------------------- |
-| Translate(x, y, z) |
+| Position(x, y, z) |
 | Scale(x, y, z)     |
 | Rotate(x, y, z)    |
 
@@ -167,7 +167,7 @@ end
 
 <br>
 
-### -- .Translate --
+### -- .Position --
 
 **Description:** Moves a Mesh Or Model.
 
@@ -188,7 +188,7 @@ local cube = {}
 
 function Start()
     cube = Cube()
-    cube.Translate(10, 0, 1)
+    cube.Position(10, 0, 1)
 end
 ```
 

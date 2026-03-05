@@ -38,6 +38,10 @@ namespace Renderer{
             void AddPointLight(PointLight* light) override;
             void AddPostProcessingKernal(mat3 kernal) override;
 
+            void SetCameraPosition(vec3 cameraPosition) override;
+            void SetCameraRotation(vec2 cameraRotation) override;
+            void SetCameraZoom(float zoom) override;
+
             Camera& GetCamera() override;
 
         private:

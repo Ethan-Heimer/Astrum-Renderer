@@ -185,3 +185,15 @@ void StandardRenderer::DrawScreen(){
 
     postProcessingKernals.clear();
 }
+
+void StandardRenderer::SetCameraPosition(vec3 cameraPosition){
+    this->camera.SetPos(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+}
+
+void StandardRenderer::SetCameraRotation(vec2 cameraRotation){
+    this->camera.SetRotation(cameraRotation.x, cameraRotation.y);
+}
+
+void StandardRenderer::SetCameraZoom(float zoom){
+    this->camera.SetZoom(zoom);
+}

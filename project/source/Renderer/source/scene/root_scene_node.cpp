@@ -20,6 +20,11 @@ void RootSceneNode::OnRendered(ICommandQueue* queue){
 
                 renderer->SetColorOffset(colorOffset.r, colorOffset.g, colorOffset.b, colorOffset.a);
                 renderer->SetChannelMultiplyer(channelMultiplyer.r, channelMultiplyer.g, channelMultiplyer.b, channelMultiplyer.a);
+
+                renderer->SetCameraPosition(cameraPosition);
+                renderer->SetCameraRotation(cameraRotation);
+
+                renderer->SetCameraZoom(zoom);
             });
 }
 
@@ -49,4 +54,24 @@ void RootSceneNode::SetColorOffset(unsigned char r, unsigned char g, unsigned ch
 
 void RootSceneNode::SetChannelMultiplyer(float r, float g, float b, float a){
     channelMultiplyer = {r, g, b, a};
+}
+
+void RootSceneNode::SetCameraPosition(float x, float y, float z){
+    cameraPosition = {x, y, z};
+}
+
+void RootSceneNode::SetCameraRotation(float x, float y){
+    cameraRotation = {x, y};
+}
+
+vec3 RootSceneNode::GetCameraPosition(){
+    return cameraPosition;
+}
+
+vec2 RootSceneNode::GetCameraRotation(){
+    return cameraRotation;
+}
+
+void RootSceneNode::SetCameraZoom(float zoom){
+    this->zoom = zoom;
 }

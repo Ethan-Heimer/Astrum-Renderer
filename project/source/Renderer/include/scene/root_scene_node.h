@@ -22,6 +22,14 @@ namespace Renderer{
                 void SetColorOffset(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
                 void SetChannelMultiplyer(float r, float g, float b, float a);
 
+                void SetCameraPosition(float x, float y, float z);
+                void SetCameraRotation(float x, float y);
+
+                void SetCameraZoom(float zoom);
+
+                vec3 GetCameraPosition();
+                vec2 GetCameraRotation();
+
                 void SetWindowSize();
 
             private:
@@ -34,6 +42,10 @@ namespace Renderer{
 
                 vec4 colorOffset{0, 0, 0, 0};
                 vec4 channelMultiplyer{1, 1, 1, 1};
+
+                vec3 cameraPosition{0, 0, 0};
+                vec2 cameraRotation{0, 0};
+                float zoom;
         };
     }
 }

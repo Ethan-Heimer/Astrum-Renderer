@@ -40,6 +40,10 @@ namespace Renderer{
             virtual void SetColorOffset(unsigned char r, unsigned char g, unsigned char b, unsigned char a) = 0;
             virtual void SetChannelMultiplyer(float r, float g, float b, float a) = 0;
 
+            virtual void SetCameraPosition(vec3 cameraPosition) = 0;
+            virtual void SetCameraRotation(vec2 cameraRotation) = 0;
+            virtual void SetCameraZoom(float zoom) = 0;
+
             virtual void Draw(ICommandQueue* queue) = 0;
 
         protected:
