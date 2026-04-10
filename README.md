@@ -9,6 +9,8 @@ One of the biggest goals with Astrum is to provide a very basic and intuitive 3D
 rendering interface that anyone with any skill level can use. Because of this, Lua
 scripts are used to provide a high level interface to Astrum's rendering capabilities.
 
+**Generative AI was not used to make this project. Hand made and hand spagettied code!**
+
 # Install
 
 ## Dependendicies
